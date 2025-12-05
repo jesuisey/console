@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Windows XP</title>
+<link href="https://fonts.googleapis.com/css2?family=Tahoma:wght@400;700&display=swap" rel="stylesheet">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Tahoma", sans-serif;
+  overflow: hidden;
+  height: 100vh;
+  cursor: default;
+  user-select: none;
+}
+
+/* BUREAU */
+#desktop {
+  height: calc(100vh - 30px);
+  background: linear-gradient(to bottom, #245edb 0%, #3f8cf3 50%, #245edb 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+#desktop::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+  pointer-events: none;
+  animation: vhsScan 0.15s infinite;
+}
+
+@keyframes vhsScan {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.9; }
+}
+
+/* ICÔNES BUREAU */
+.desktop-icons {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
+
+.desktop-icon {
+  width: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.desktop-icon:hover {
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.5);
+}
+
+.desktop-icon.selected {
+  background: rgba(51,153,255,0.3);
+  border: 1px solid rgba(51,153,255,0.8);
+}
+
+.icon-image {
+  font-size: 48px;
+  filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
+}
+
+.icon-label {
+  font-size: 11px;
+  color: #ffffff;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+  word-wrap: break-word;
+  max-width: 70px;
+}
+
+/* BARRE DES TÂCHES */
+#taskbar {
+  height: 30px;
+  background: linear-gradient(to bottom, #245edb 0%, #1f4ba8 100%);
+  border-top: 1px solid #1941a5;
+  display: flex;
+  align-items: center;
+  padding: 0 2px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+}
+
+.start-button {
+  height: 24px;
+  background: linear-gradient(to bottom, #5ebd5e 0%, #3d8b3d 100%);
+  border: 1px solid #1a5c1a;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 8px;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  font-size: 11px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
+.start-button:hover {
+  background: linear-gradient(to bottom, #6ecd6e 0%, #4d9b4d 100%);
+}
+
+.start-button:active {
+  background: linear-gradient(to bottom, #4d9b4d 0%, #6ecd6e 100%);
+}
+
+.start-icon {
+  font-size: 16px;
+}
+
+.taskbar-apps {
+  flex: 1;
+  display: flex;
+  gap: 2px;
+  margin-left: 5px;
+  height: 100%;
+  align-items: center;
+}
+
+.taskbar-item {
+  height: 22px;
+  background: linear-gradient(to bottom, #3d8aed 0%, #2868c8 100%);
+  border: 1px solid #1941a5;
+  border-radius: 2px;
+  padding: 0 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  font-size: 11px;
+  color: white;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.taskbar-item:hover {
+  background: linear-gradient(to bottom, #4d9afd 0%, #3878d8 100%);
+}
+
+.taskbar-item.active {
+  background: linear-gradient(to bottom, #2868c8 0%, #1941a5 100%);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.system-tray {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px;
+  border-left: 1px solid #1941a5;
+  margin-left: 5px;
+}
+
+.tray-icon {
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.clock {
+  font-size: 11px;
+  color: white;
+  min-width: 50px;
+  text-align: center;
+}
+
+/* MENU DÉMARRER */
+#startMenu {
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  width: 320px;
+  background: linear-gradient(to right, #245edb 0px, #245edb 50px, #f0f0f0 50px);
+  border: 2px solid #0831d9;
+  border-radius: 5px 5px 0 0;
+  box-shadow: 3px 3px 10px rgba(0,0,0,0.5);
+  display: none;
+  z-index: 10000;
+}
+
+#startMenu.show {
+  display: block;
+  animation: slideUp 0.2s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.start-user {
+  height: 50px;
+  background: linear-gradient(to bottom, #5a8dd6 0%, #3f72b5 100%);
+  display: flex;
+  align-items: center;
+  padding: 0 60px 0 10px;
+  border-bottom: 1px solid #1941a5;
+}
+
+.start-user-icon {
+  font-size: 32px;
+  margin-right: 10px;
+}
+
+.start-user-name {
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+}
+
+.start-items {
+  padding: 5px 0;
+}
+
+.start-item {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 60px 0 10px;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.start-item:hover {
+  background: #d1e5ff;
+}
+
+.start-item-icon {
+  font-size: 20px;
+  width: 24px;
+  text-align: center;
+}
+
+.start-separator {
+  height: 1px;
+  background: #c0c0c0;
+  margin: 3px 10px 3px 60px;
+}
+
+.start-footer {
+  height: 36px;
+  background: #4b8fd9;
+  display: flex;
+  align-items: center;
+  padding: 0 60px 0 10px;
+  cursor: pointer;
+  gap: 8px;
+  border-top: 1px solid #2868c8;
+}
+
+.start-footer:hover {
+  background: #5a9ee9;
+}
+
+.start-footer-icon {
+  font-size: 20px;
+  margin-left: 5px;
+}
+
+.start-footer-text {
+  font-size: 11px;
+  font-weight: bold;
+  color: white;
+}
+
+/* FENÊTRES */
+.window {
+  position: absolute;
+  background: #ece9d8;
+  border: 3px solid;
+  border-color: #0831d9 #0831d9 #042a7c #042a7c;
+  box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
+  min-width: 400px;
+  min-height: 300px;
+  display: none;
+  flex-direction: column;
+  z-index: 100;
+}
+
+.window.active {
+  display: flex;
+}
+
+.window-titlebar {
+  height: 28px;
+  background: linear-gradient(to bottom, #0997ff 0%, #0053ee 50%, #0050ee 51%, #06f 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px 0 8px;
+  cursor: move;
+}
+
+.window-title {
+  font-size: 11px;
+  font-weight: bold;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.window-title-icon {
+  font-size: 14px;
+}
+
+.window-controls {
+  display: flex;
+  gap: 2px;
+}
+
+.window-control {
+  width: 21px;
+  height: 21px;
+  background: linear-gradient(to bottom, #f0f0f0 0%, #d8d8d8 100%);
+  border: 1px solid #003c74;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.window-control:hover {
+  background: linear-gradient(to bottom, #ffffff 0%, #e8e8e8 100%);
+}
+
+.window-control:active {
+  background: linear-gradient(to bottom, #d0d0d0 0%, #f0f0f0 100%);
+}
+
+.window-control.close {
+  background: linear-gradient(to bottom, #ff6b6b 0%, #d93f3f 100%);
+  color: white;
+}
+
+.window-control.close:hover {
+  background: linear-gradient(to bottom, #ff8b8b 0%, #e95f5f 100%);
+}
+
+.window-menubar {
+  background: #f0f0f0;
+  border-bottom: 1px solid #c0c0c0;
+  padding: 2px 5px;
+  display: flex;
+  gap: 5px;
+  font-size: 11px;
+}
+
+.menu-item {
+  padding: 3px 8px;
+  cursor: pointer;
+}
+
+.menu-item:hover {
+  background: #d1e5ff;
+}
+
+.window-toolbar {
+  background: #f0f0f0;
+  border-bottom: 1px solid #c0c0c0;
+  padding: 4px;
+  display: flex;
+  gap: 2px;
+}
+
+.toolbar-button {
+  padding: 4px 8px;
+  background: linear-gradient(to bottom, #ffffff 0%, #e8e8e8 100%);
+  border: 1px solid #a0a0a0;
+  cursor: pointer;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.toolbar-button:hover {
+  background: linear-gradient(to bottom, #ffffff 0%, #f5f5f5 100%);
+  border-color: #0078d7;
+}
+
+.toolbar-button:active {
+  background: linear-gradient(to bottom, #d8d8d8 0%, #e8e8e8 100%);
+}
+
+.window-content {
+  flex: 1;
+  overflow: auto;
+  background: white;
+}
+
+.window-statusbar {
+  height: 22px;
+  background: #f0f0f0;
+  border-top: 1px solid #c0c0c0;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 11px;
+  color: #000;
+}
+
+/* EXPLORATEUR */
+.explorer-layout {
+  display: flex;
+  height: 100%;
+}
+
+.explorer-sidebar {
+  width: 180px;
+  background: #f0f0f0;
+  border-right: 1px solid #c0c0c0;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.explorer-tree-item {
+  padding: 3px 5px;
+  cursor: pointer;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.explorer-tree-item:hover {
+  background: #d1e5ff;
+}
+
+.explorer-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.explorer-address {
+  padding: 5px;
+  background: #f0f0f0;
+  border-bottom: 1px solid #c0c0c0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+}
+
+.address-bar {
+  flex: 1;
+  padding: 3px 5px;
+  border: 1px solid #7f9db9;
+  background: white;
+  font-size: 11px;
+}
+
+.explorer-files {
+  flex: 1;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 15px;
+  align-content: start;
+  overflow-y: auto;
+}
+
+.file-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.file-item:hover {
+  background: #d1e5ff;
+  border: 1px solid #99c8ff;
+}
+
+.file-item.selected {
+  background: #3399ff;
+  border: 1px solid #0078d7;
+}
+
+.file-item.selected .file-name {
+  color: white;
+}
+
+.file-icon {
+  font-size: 32px;
+}
+
+.file-name {
+  font-size: 11px;
+  text-align: center;
+  word-wrap: break-word;
+  max-width: 70px;
+  color: #000;
+}
+
+/* VISIONNEUSE D'IMAGES */
+.image-viewer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #2b2b2b;
+  padding: 20px;
+}
+
+.image-viewer img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+}
+
+/* NOTEPAD */
+.notepad-content {
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 5px;
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  resize: none;
+  background: white;
+  color: #000;
+}
+
+/* MESSAGES D'ERREUR */
+.error-dialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 380px;
+  background: #ece9d8;
+  border: 3px solid;
+  border-color: #0831d9 #0831d9 #042a7c #042a7c;
+  box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
+  z-index: 10001;
+  display: none;
+}
+
+.error-dialog.show {
+  display: block;
+  animation: errorShake 0.3s;
+}
+
+@keyframes errorShake {
+  0%, 100% { transform: translate(-50%, -50%); }
+  25% { transform: translate(-52%, -50%); }
+  75% { transform: translate(-48%, -50%); }
+}
+
+.error-titlebar {
+  height: 24px;
+  background: linear-gradient(to bottom, #cc0000 0%, #990000 100%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px 0 8px;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.error-body {
+  padding: 15px;
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+}
+
+.error-icon-large {
+  font-size: 32px;
+}
+
+.error-message {
+  flex: 1;
+  font-size: 11px;
+}
+
+.error-buttons {
+  padding: 0 15px 15px;
+  display: flex;
+  justify-content: center;
+}
+
+.error-button {
+  padding: 5px 20px;
+  background: linear-gradient(to bottom, #f0f0f0 0%, #d8d8d8 100%);
+  border: 1px solid #003c74;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.error-button:hover {
+  background: linear-gradient(to bottom, #ffffff 0%, #e8e8e8 100%);
+}
+
+/* ANIMATIONS GLITCHES */
+@keyframes windowGlitch {
+  0%, 96%, 100% { filter: brightness(1) contrast(1); }
+  97% { filter: brightness(0.7) contrast(1.5); }
+  98% { filter: brightness(1.2) contrast(0.8); }
+}
+
+.glitch-effect {
+  animation: windowGlitch 5s infinite;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .window {
+    min-width: 90% !important;
+    max-width: 90% !important;
+  }
+  .explorer-sidebar {
+    display: none;
+  }
+}
+</style>
+</head>
+<body>
+
+<div id="desktop">
+  <div class="desktop-icons">
+    <div class="desktop-icon" data-type="trash" ondblclick="openTrash()">
+      <div class="icon-image">🗑️</div>
+      <div class="icon-label">Corbeille</div>
+    </div>
+    <div class="desktop-icon" data-type="folder" ondblclick="openFolder('relations')">
+      <div class="icon-image">📁</div>
+      <div class="icon-label">relations</div>
+    </div>
+    <div class="desktop-icon" data-type="image" ondblclick="openImage('him.jpg')">
+      <div class="icon-image">🖼️</div>
+      <div class="icon-label">him.jpg</div>
+    </div>
+  </div>
+</div>
+
+<div id="taskbar">
+  <div class="start-button" onclick="toggleStartMenu()">
+    <span class="start-icon">🪟</span>
+    <span>Démarrer</span>
+  </div>
+  <div class="taskbar-apps" id="taskbarApps"></div>
+  <div class="system-tray">
+    <span class="tray-icon">🔊</span>
+    <span class="clock" id="clock">00:00</span>
+  </div>
+</div>
+
+<div id="startMenu">
+  <div class="start-user">
+    <span class="start-user-icon">👁️</span>
+    <span class="start-user-name">Ey.</span>
+  </div>
+  <div class="start-items">
+    <div class="start-item" onclick="openMyDocuments()">
+      <span class="start-item-icon">📄</span>
+      <span>Mes documents</span>
+    </div>
+    <div class="start-item" onclick="openMyComputer()">
+      <span class="start-item-icon">💻</span>
+      <span>Poste de travail</span>
+    </div>
+    <div class="start-separator"></div>
+    <div class="start-item">
+      <span class="start-item-icon">🔧</span>
+      <span>Panneau de configuration</span>
+    </div>
+    <div class="start-item">
+      <span class="start-item-icon">🔍</span>
+      <span>Rechercher</span>
+    </div>
+  </div>
+  <div class="start-footer" onclick="shutdown()">
+    <span class="start-footer-icon">🔴</span>
+    <span class="start-footer-text">Arrêter l'ordinateur</span>
+  </div>
+</div>
+
+<div id="errorDialog" class="error-dialog">
+  <div class="error-titlebar">
+    <span id="errorTitle">Erreur</span>
+    <span class="window-control close" onclick="closeError()">✕</span>
+  </div>
+  <div class="error-body">
+    <span class="error-icon-large">⚠️</span>
+    <div class="error-message" id="errorMessage"></div>
+  </div>
+  <div class="error-buttons">
+    <button class="error-button" onclick="closeError()">OK</button>
+  </div>
+</div>
+
+<script>
+// DONNÉES DES FICHIERS
+const fileSystem = {
+  'relations': {
+    type: 'folder',
+    files: {
+      'haesoo.txt': {
+        type: 'text',
+        content: `Haesoo
+
+Je l'aime plutôt bien. Elle est impressionnante.
+
+Il y a quelque chose dans sa manière d'être qui force le respect. Une présence qui ne se nie pas. Elle possède une force tranquille, une assurance qui n'a pas besoin de mots.
+
+Je pense qu'elle pourrait accomplir de grandes choses.
+
+- Ey.`
+      },
+      'aphiro.txt': {
+        type: 'text',
+        content: `Aphiro
+
+Je ne lui ai jamais parlé directement.
+
+Mais d'après ce que j'ai pu observer, il semble fort. Puissant même. Le genre de personne dont on sent l'énergie avant même qu'elle n'ouvre la bouche.
+
+Il y a quelque chose d'intimidant chez lui. Pas dans le mauvais sens. Juste... de la puissance brute.
+
+J'aimerais peut-être en savoir plus un jour.
+
+- Ey.`
+      },
+      'koden.txt': {
+        type: 'text',
+        content: `K̷̢̛o̸̧̾d̴̨̈́e̵̛̳n̶̰̚
+
+T̵̢̆U̶̹͝E̷̳̽R̸͚̕ T̴̰̓U̸̢̍E̷̛̜R̶̭͝ T̸̳̾U̵͚̇E̷̢̔R̶̰͠ T̵̜̈́U̸̳͆E̶̢̛R̷̳͝ T̴̜̿U̶̢̎E̵̳̔R̸̰͑
+
+̶̭̏J̵̳͝e̴̢̛ ̷̰̀n̸̜̈́e̶̢͝ ̵̳̔p̸̰̕e̵̜͝u̶̢̍x̷̳͐ ̸̰̓p̵̜̈́ä̴̧s̷̳̈́ ̸̰̕m̵̜̔'̶̢̛e̷̳̽m̸̰͝p̵̜̈́ê̶̢c̷̳̈́ḧ̴̰e̵̜͝r̶̢̛ ̷̳̔d̸̰̕ë̵̜́ ̶̢̍p̷̳̈́ḛ̸͝n̵̜̔s̶̢̛ė̷̳r̸̰̈́ ̵̜̕à̶̧ ̷̳̔l̸̰̕u̵̜͝i̶̢̛
+
+T̴U̷E̸R̶ T̵U̸E̷R̶ T̴U̷E̸R̶ T̵U̷E̸R̶ T̴U̷E̸R̶ T̵U̷E̸R̶ T̴U̷E̸R̶
+
+Q̶̰̕ű̸̢ė̷̳l̸͚̈́q̵̜̔ŭ̶̢ḙ̷̈́ ̸̰̓c̵̜̈h̶̢̛o̷̳͝s̸̰̕e̵̜͝ ̶̢̍n̷̳̈́ḛ̸̈́ ̵̜̕v̶̢̛ȁ̷̳ ̸̰̓p̵̜̈́ȧ̶̢s̷̳̈́.̸̰̕ ̵̜̔J̶̢̛ë̷̳́ ̸̰̓d̵̜̕ȯ̶̢ǐ̷̳s̸̰̈́ ̵̜̔l̶̢̛ě̷̳ ̸̰̈́f̵̜̕ȃ̶̧ǐ̷̳r̸̰̕ė̵̜ ̶̢̛t̷̳̔ḁ̸̕ǐ̵̜r̶̢̛ė̷̳
+
+T̵U̸E̷R̶ T̴U̷E̸R̶ T̵U̸E̷R̶ T̴U̷E̸R̶ T̵U̸E̷R̶ T̴U̷E̸R̶ T̵U̸E̷R̶ T̴U̷E̸R̶
+
+C̷̳̈́'̸̰̕ḙ̷̈́s̸̜̔t̶̢̛ ̷̳̈́l̸̰̕ȧ̵̜ ̶̢̍s̷̳̕ḛ̸̇ű̵̜l̶̢̛ë̷̳ ̸̰̓s̵̜̕ȯ̶̧l̷̳̔ů̸̢t̵̜̔ǐ̶̢o̷̳͝n̸̰̕
+
+T̶U̷E̸R̶ T̵U̷E̸R̶ T̴U̷E̸R̶ T̵U̷E̸R̶ T̴U̷E̸R̶ T̵U̷E̸R̶ T̴U̷E̸R̶ T̵U̷E̸R̶ T̴U̷E̸R̶`
+      },
+      'ozzy.txt': {
+        type: 'corrupted',
+        content: null
+      },
+      'maki.txt': {
+        type: 'text',
+        content: `Maki
+
+Il y a quelque chose de doux dans son existence. Comme une lueur dans l'obscurité.
+
+Quand je pense à elle, je ressens une forme de paix. C'est rare. Précieux même.
+
+Elle a cette capacité à rendre les choses plus légères, plus supportables. Sans effort, sans artifice. Juste par sa présence.
+
+Je crois que je l'apprécie particulièrement. Plus que je ne le pensais possible.
+
+Elle me fait me sentir... presque humain.
+
+- Ey.`
+      }
+    }
+  },
+  'Mes documents': {
+    type: 'folder',
+    files: {}
+  },
+  'Corbeille': {
+    type: 'trash',
+    files: {
+      'remords.dll': { type: 'corrupted', content: null },
+      'regrets.sys': { type: 'corrupted', content: null },
+      'utilité.exe': { type: 'corrupted', content: null }
+    }
+  }
+};
+
+// ÉTAT DE L'APPLICATION
+let openWindows = [];
+let activeWindow = null;
+let zIndexCounter = 100;
+let selectedIcon = null;
+let draggedWindow = null;
+let dragOffsetX = 0;
+let dragOffsetY = 0;
+
+// INITIALISATION
+function init() {
+  updateClock();
+  setInterval(updateClock, 1000);
+  
+  // Désélectionner si clic sur le bureau
+  document.getElementById('desktop').addEventListener('click', (e) => {
+    if (e.target.id === 'desktop' || e.target.className === 'desktop-icons') {
+      if (selectedIcon) selectedIcon.classList.remove('selected');
+      selectedIcon = null;
+    }
+    document.getElementById('startMenu').classList.remove('show');
+  });
+
+  // Fermer le menu démarrer si clic ailleurs
+  document.addEventListener('click', (e) => {
+    const startMenu = document.getElementById('startMenu');
+    const startButton = document.querySelector('.start-button');
+    if (!startMenu.contains(e.target) && !startButton.contains(e.target)) {
+      startMenu.classList.remove('show');
+    }
+  });
+}
+
+// HORLOGE
+function updateClock() {
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  document.getElementById('clock').textContent = `${hours}:${minutes}`;
+}
+
+// MENU DÉMARRER
+function toggleStartMenu() {
+  const menu = document.getElementById('startMenu');
+  menu.classList.toggle('show');
+}
+
+// GESTION DES FENÊTRES
+function createWindow(title, icon, content, width = 600, height = 450) {
+  const windowId = 'window-' + Date.now();
+  const window = document.createElement('div');
+  window.className = 'window active glitch-effect';
+  window.id = windowId;
+  window.style.width = width + 'px';
+  window.style.height = height + 'px';
+  window.style.left = (Math.random() * 200 + 100) + 'px';
+  window.style.top = (Math.random() * 100 + 50) + 'px';
+  window.style.zIndex = ++zIndexCounter;
+
+  window.innerHTML = `
+    <div class="window-titlebar" onmousedown="startDrag(event, '${windowId}')">
+      <div class="window-title">
+        <span class="window-title-icon">${icon}</span>
+        <span>${title}</span>
+      </div>
+      <div class="window-controls">
+        <div class="window-control" onclick="minimizeWindow('${windowId}')">_</div>
+        <div class="window-control" onclick="maximizeWindow('${windowId}')">□</div>
+        <div class="window-control close" onclick="closeWindow('${windowId}')">✕</div>
+      </div>
+    </div>
+    <div class="window-content">
+      ${content}
+    </div>
+    <div class="window-statusbar">Prêt</div>
+  `;
+
+  document.body.appendChild(window);
+  openWindows.push(windowId);
+  activeWindow = windowId;
+  updateTaskbar();
+
+  // Activer la fenêtre au clic
+  window.addEventListener('mousedown', () => {
+    activateWindow(windowId);
+  });
+
+  return windowId;
+}
+
+function activateWindow(windowId) {
+  document.querySelectorAll('.window').forEach(w => w.style.zIndex = 100);
+  const window = document.getElementById(windowId);
+  if (window) {
+    window.style.zIndex = ++zIndexCounter;
+    activeWindow = windowId;
+    updateTaskbar();
+  }
+}
+
+function closeWindow(windowId) {
+  const window = document.getElementById(windowId);
+  if (window) {
+    window.remove();
+    openWindows = openWindows.filter(id => id !== windowId);
+    if (activeWindow === windowId) {
+      activeWindow = openWindows[openWindows.length - 1] || null;
+    }
+    updateTaskbar();
+  }
+}
+
+function minimizeWindow(windowId) {
+  const window = document.getElementById(windowId);
+  if (window) {
+    window.style.display = 'none';
+    updateTaskbar();
+  }
+}
+
+function maximizeWindow(windowId) {
+  const window = document.getElementById(windowId);
+  if (window) {
+    if (window.style.width === '100%') {
+      window.style.width = '600px';
+      window.style.height = '450px';
+      window.style.left = '100px';
+      window.style.top = '50px';
+    } else {
+      window.style.width = '100%';
+      window.style.height = 'calc(100vh - 30px)';
+      window.style.left = '0';
+      window.style.top = '0';
+    }
+  }
+}
+
+function restoreWindow(windowId) {
+  const window = document.getElementById(windowId);
+  if (window) {
+    window.style.display = 'flex';
+    activateWindow(windowId);
+  }
+}
+
+// DRAG AND DROP DES FENÊTRES
+function startDrag(e, windowId) {
+  draggedWindow = document.getElementById(windowId);
+  const rect = draggedWindow.getBoundingClientRect();
+  dragOffsetX = e.clientX - rect.left;
+  dragOffsetY = e.clientY - rect.top;
+  
+  document.addEventListener('mousemove', dragWindow);
+  document.addEventListener('mouseup', stopDrag);
+  activateWindow(windowId);
+}
+
+function dragWindow(e) {
+  if (draggedWindow) {
+    draggedWindow.style.left = (e.clientX - dragOffsetX) + 'px';
+    draggedWindow.style.top = (e.clientY - dragOffsetY) + 'px';
+  }
+}
+
+function stopDrag() {
+  draggedWindow = null;
+  document.removeEventListener('mousemove', dragWindow);
+  document.removeEventListener('mouseup', stopDrag);
+}
+
+// BARRE DES TÂCHES
+function updateTaskbar() {
+  const taskbarApps = document.getElementById('taskbarApps');
+  taskbarApps.innerHTML = '';
+  
+  openWindows.forEach(windowId => {
+    const window = document.getElementById(windowId);
+    if (window) {
+      const title = window.querySelector('.window-title span:last-child').textContent;
+      const icon = window.querySelector('.window-title-icon').textContent;
+      const isActive = window.style.display !== 'none';
+      
+      const taskbarItem = document.createElement('div');
+      taskbarItem.className = 'taskbar-item' + (windowId === activeWindow && isActive ? ' active' : '');
+      taskbarItem.innerHTML = `<span>${icon}</span><span>${title}</span>`;
+      taskbarItem.onclick = () => {
+        if (window.style.display === 'none') {
+          restoreWindow(windowId);
+        } else if (windowId === activeWindow) {
+          minimizeWindow(windowId);
+        } else {
+          activateWindow(windowId);
+        }
+      };
+      taskbarApps.appendChild(taskbarItem);
+    }
+  });
+}
+
+// EXPLORATEUR DE FICHIERS
+function openFolder(folderName) {
+  const content = createExplorerContent(folderName);
+  createWindow(folderName, '📁', content, 700, 500);
+  document.getElementById('startMenu').classList.remove('show');
+}
+
+function createExplorerContent(folderName) {
+  const folder = fileSystem[folderName];
+  if (!folder) return '<div style="padding: 20px;">Dossier introuvable</div>';
+
+  let filesHTML = '';
+  for (const [fileName, fileData] of Object.entries(folder.files)) {
+    const icon = getFileIcon(fileData.type);
+    filesHTML += `
+      <div class="file-item" ondblclick="openFile('${folderName}', '${fileName}')">
+        <div class="file-icon">${icon}</div>
+        <div class="file-name">${fileName}</div>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="explorer-layout">
+      <div class="explorer-sidebar">
+        <div class="explorer-tree-item" onclick="openFolder('Mes documents')">📄 Mes documents</div>
+        <div class="explorer-tree-item" onclick="openMyComputer()">💻 Poste de travail</div>
+        <div class="explorer-tree-item" onclick="openFolder('relations')">📁 relations</div>
+        <div class="explorer-tree-item" onclick="openTrash()">🗑️ Corbeille</div>
+      </div>
+      <div class="explorer-main">
+        <div class="explorer-address">
+          <span>Adresse:</span>
+          <input type="text" class="address-bar" value="C:\\${folderName}" readonly>
+        </div>
+        <div class="explorer-files">
+          ${filesHTML}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function getFileIcon(type) {
+  switch(type) {
+    case 'text': return '📄';
+    case 'folder': return '📁';
+    case 'corrupted': return '⚠️';
+    case 'image': return '🖼️';
+    default: return '📄';
+  }
+}
+
+function openFile(folderName, fileName) {
+  const fileData = fileSystem[folderName].files[fileName];
+  
+  if (fileData.type === 'corrupted') {
+    showError('Erreur d\'ouverture', `Le fichier "${fileName}" est corrompu et ne peut pas être ouvert.`);
+    return;
+  }
+
+  if (fileData.type === 'text') {
+    const content = `<textarea class="notepad-content" readonly>${fileData.content}</textarea>`;
+    createWindow(fileName, '📄', content, 500, 400);
+  }
+}
+
+// MES DOCUMENTS
+function openMyDocuments() {
+  openFolder('Mes documents');
+}
+
+// POSTE DE TRAVAIL
+function openMyComputer() {
+  const content = `
+    <div class="explorer-layout">
+      <div class="explorer-sidebar">
+        <div class="explorer-tree-item" onclick="openFolder('Mes documents')">📄 Mes documents</div>
+        <div class="explorer-tree-item" onclick="openFolder('relations')">📁 relations</div>
+        <div class="explorer-tree-item" onclick="openTrash()">🗑️ Corbeille</div>
+      </div>
+      <div class="explorer-main">
+        <div class="explorer-address">
+          <span>Adresse:</span>
+          <input type="text" class="address-bar" value="Poste de travail" readonly>
+        </div>
+        <div class="explorer-files">
+          <div class="file-item" ondblclick="openFolder('Mes documents')">
+            <div class="file-icon">📄</div>
+            <div class="file-name">Mes documents</div>
+          </div>
+          <div class="file-item" ondblclick="openFolder('relations')">
+            <div class="file-icon">📁</div>
+            <div class="file-name">relations</div>
+          </div>
+          <div class="file-item">
+            <div class="file-icon">💾</div>
+            <div class="file-name">Disque local (C:)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  createWindow('Poste de travail', '💻', content, 700, 500);
+  document.getElementById('startMenu').classList.remove('show');
+}
+
+// CORBEILLE
+function openTrash() {
+  const content = createExplorerContent('Corbeille');
+  createWindow('Corbeille', '🗑️', content, 700, 500);
+  document.getElementById('startMenu').classList.remove('show');
+}
+
+// VISIONNEUSE D'IMAGES
+function openImage(imageName) {
+  const content = `
+    <div class="image-viewer">
+      <img src="images/${imageName}" alt="${imageName}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect fill=%22%23000%22 width=%22400%22 height=%22400%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-family=%22Arial%22 font-size=%2220%22 fill=%22%23fff%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3E${imageName}%3C/text%3E%3C/svg%3E'">
+    </div>
+  `;
+  createWindow(imageName, '🖼️', content, 600, 500);
+}
+
+// MESSAGES D'ERREUR
+function showError(title, message) {
+  document.getElementById('errorTitle').textContent = title;
+  document.getElementById('errorMessage').textContent = message;
+  document.getElementById('errorDialog').classList.add('show');
+}
+
+function closeError() {
+  document.getElementById('errorDialog').classList.remove('show');
+}
+
+// ARRÊT DU SYSTÈME
+function shutdown() {
+  document.body.style.transition = 'opacity 2s';
+  document.body.style.opacity = '0';
+  setTimeout(() => {
+    document.body.innerHTML = '<div style="width:100vw;height:100vh;background:#000;display:flex;align-items:center;justify-content:center;color:#fff;font-family:Tahoma;font-size:20px;">Il est maintenant possible d\'éteindre votre ordinateur en toute sécurité.</div>';
+    document.body.style.opacity = '1';
+  }, 2000);
+}
+
+// DÉMARRAGE
+window.onload = init;
+</script>
+</body>
+</html> Gestion des clics sur les icônes
+  document.querySelectorAll('.desktop-icon').forEach(icon => {
+    icon.addEventListener('click', (e) => {
+      if (selectedIcon) selectedIcon.classList.remove('selected');
+      selectedIcon = icon;
+      icon.classList.add('selected');
+      e.stopPropagation();
+    });
+  });
+
+  //
