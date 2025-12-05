@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Ey.</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+  /* === RESET & BACKGROUND PLEIN NOIR === */
+  html,body {
+    height: 100%;
+    margin: 0;
+    background: #000000;
+    color: #ffffff;
+    font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    overflow-y: auto;
+    cursor: none;
+  }
+
+  /* === EFFET VHS GLOBAL === */
+  body::before {
+    content: "";
+    pointer-events: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,0.035) 0px,
+      rgba(255,255,255,0.035) 1px,
+      transparent 2px,
+      transparent 4px
+    );
+    mix-blend-mode: overlay;
+    opacity: 1;
+    animation: scanlineFlicker 0.15s infinite;
+  }
+
+  @keyframes scanlineFlicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.92; }
+  }
+
+  @keyframes vhsFlicker {
+    0%, 18%, 22%, 25%, 53%, 57%, 100% { filter: contrast(1) brightness(1); }
+    20%, 24%, 55% { filter: contrast(1.4) brightness(0.88); }
+    19%, 23%, 54%, 56% { filter: brightness(1.15) contrast(0.8); }
+  }
+
+  @keyframes staticNoise {
+    0%, 100% { background-position: 0 0; opacity: 0.02; }
+    50% { background-position: 40px 60px; opacity: 0.05; }
+  }
+
+  @keyframes pageRespire {
+    0%, 100% { transform: scale(1); box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 0 60px rgba(0,0,0,0.4); }
+    50% { transform: scale(1.01); box-shadow: inset 0 0 60px rgba(0,0,0,0.5), 0 0 80px rgba(0,0,0,0.2); }
+  }
+
+  @keyframes pageIntro {
+    from { opacity: 0; transform: translateY(30px) scaleY(0.95); filter: blur(4px); }
+    to { opacity: 1; transform: translateY(0) scaleY(1); filter: blur(0); }
+  }
+
+  .page {
+    animation: pageIntro 1.2s ease-out forwards, vhsFlicker 5s infinite, pageRespire 4s ease-in-out infinite;
+    max-width: 880px;
+    margin: 48px auto;
+    padding: 26px;
+    border: 2px solid #ffffff;
+    position: relative;
+    background: #000000;
+    box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 0 60px rgba(0,0,0,0.4);
+  }
+
+  .page::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: 
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 4px),
+      repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(255,255,255,0.02) 3px, rgba(255,255,255,0.02) 6px);
+    pointer-events: none;
+    animation: staticNoise 0.3s infinite;
+  }
+
+  .bar-left {
+    position: absolute;
+    left: -1px;
+    top: 0;
+    width: 3px;
+    height: 100%;
+    background: #ffffff;
+    box-shadow: 0 0 8px rgba(255,255,255,0.6);
+  }
+
+  header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 18px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .file {
+    font-size: 13px;
+    letter-spacing: 2px;
+    opacity: 0.85;
+    text-transform: uppercase;
+    animation: filePulse 3s ease-in-out infinite;
+  }
+
+  @keyframes filePulse {
+    0%, 100% { opacity: 0.85; text-shadow: 0 0 2px rgba(255,255,255,0.2); }
+    50% { opacity: 1; text-shadow: 0 0 8px rgba(255,255,255,0.4); }
+  }
+
+  h1 {
+    margin: 0;
+    font-weight: 300;
+    font-size: 52px;
+    letter-spacing: 3px;
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(255,255,255,0.95), 0 0 20px rgba(255,255,255,0.3);
+    animation: titleGlitch 0.4s infinite;
+  }
+
+  @keyframes titleGlitch {
+    0%, 100% { text-shadow: 0 0 8px rgba(255,255,255,0.95), 0 0 20px rgba(255,255,255,0.3); }
+    33% { text-shadow: -2px 0 rgba(255,255,255,0.7), 2px 0 rgba(255,255,255,0.7), 0 0 8px rgba(255,255,255,0.5); }
+    66% { text-shadow: 0 0 8px rgba(255,255,255,0.95), 0 0 20px rgba(255,255,255,0.3); }
+  }
+
+  .access {
+    margin-left: auto;
+    font-size: 12px;
+    opacity: 0.9;
+    text-transform: uppercase;
+    border: 2px solid #ffffff;
+    padding: 6px 8px;
+    box-shadow: 0 0 8px rgba(255,255,255,0.4), inset 0 0 8px rgba(255,255,255,0.1);
+    animation: accessPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes accessPulse {
+    0%, 100% { box-shadow: 0 0 8px rgba(255,255,255,0.4), inset 0 0 8px rgba(255,255,255,0.1); }
+    50% { box-shadow: 0 0 16px rgba(255,255,255,0.7), inset 0 0 12px rgba(255,255,255,0.2); }
+  }
+
+  .main {
+    display: flex;
+    gap: 22px;
+    align-items: flex-start;
+    position: relative;
+    z-index: 5;
+  }
+
+  .portrait {
+    width: 52%;
+    min-width: 300px;
+    height: 420px;
+    border: 2px solid #ffffff;
+    background: #050505;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    color: rgba(255,255,255,0.06);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    transform-origin: center;
+    animation: portraitIn 0.9s ease-out both;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.6), 0 0 20px rgba(0,0,0,0.3);
+  }
+
+  .portrait::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 2px,
+      rgba(0,0,0,0.4) 2px,
+      rgba(0,0,0,0.4) 4px
+    );
+    pointer-events: none;
+    animation: vhsRoll 0.1s linear infinite;
+    z-index: 1;
+  }
+
+  @keyframes vhsRoll {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(4px); }
+  }
+
+  .portrait::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.2) 100%);
+    pointer-events: none;
+    z-index: 2;
+    animation: portraitVignette 3s ease-in-out infinite;
+  }
+
+  @keyframes portraitVignette {
+    0%, 100% { box-shadow: inset 0 0 40px rgba(0,0,0,0.6); }
+    50% { box-shadow: inset 0 0 60px rgba(0,0,0,0.3); }
+  }
+
+  @keyframes portraitIn {
+    from { opacity: 0; transform: translateX(-30px) scale(0.95); }
+    to { opacity: 1; transform: translateX(0) scale(1); }
+  }
+
+  .mini {
+    position: absolute;
+    right: 16px;
+    top: 14px;
+    width: 120px;
+    height: 120px;
+    border: 2px solid #ffffff;
+    background: #050505;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.15);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 0 12px rgba(255,255,255,0.3), inset 0 0 12px rgba(255,255,255,0.1);
+    z-index: 3;
+    animation: miniPulse 2.5s ease-in-out infinite;
+  }
+
+  @keyframes miniPulse {
+    0%, 100% { box-shadow: 0 0 12px rgba(255,255,255,0.3), inset 0 0 12px rgba(255,255,255,0.1); }
+    50% { box-shadow: 0 0 25px rgba(255,255,255,0.6), inset 0 0 20px rgba(255,255,255,0.15); }
+  }
+
+  .portrait:hover { 
+    animation: portraitGlitch 0.25s steps(3, end) infinite;
+  }
+
+  @keyframes portraitGlitch {
+    0%{ transform: translate(0,0) }
+    20%{ transform: translate(-6px,3px) skewX(-3deg) }
+    40%{ transform: translate(4px,-3px) skewX(2deg) }
+    60%{ transform: translate(-3px,2px) skewX(-1deg) }
+    80%{ transform: translate(3px,-2px) skewX(1deg) }
+    100%{ transform: translate(0,0) }
+  }
+
+  .info {
+    width: 46%;
+    min-width: 240px;
+    border: 2px solid #ffffff;
+    padding: 14px;
+    box-sizing: border-box;
+    animation: infoIn 1s ease-out both;
+    background: #000000;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5), inset 0 0 15px rgba(0,0,0,0.3);
+    position: relative;
+  }
+
+  @keyframes infoIn {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .info h2 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-bottom: 2px solid rgba(255,255,255,0.4);
+    padding-bottom: 8px;
+    color: #ffffff;
+    text-shadow: 0 0 4px rgba(255,255,255,0.3);
+  }
+
+  .meta {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px 12px;
+    margin-top: 10px;
+    font-size: 13px;
+  }
+
+  .meta .k { 
+    opacity: 0.9; 
+    text-transform: uppercase; 
+    letter-spacing: 1.5px; 
+    color: rgba(255,255,255,0.8);
+  }
+  
+  .meta .v { 
+    text-align: right; 
+    opacity: 0.95; 
+    color: #ffffff;
+  }
+
+  .meta-glitch {
+    animation: metaFlicker 2s ease-in-out infinite;
+  }
+
+  @keyframes metaFlicker {
+    0%, 100% { opacity: 0.95; }
+    40% { opacity: 0.95; }
+    45% { opacity: 0.2; }
+    50% { opacity: 0.2; }
+    55% { opacity: 0.95; }
+  }
+
+  .distorted-text {
+    animation: textDistort 0.3s ease-in-out infinite;
+  }
+
+  @keyframes textDistort {
+    0%, 100% { transform: skewX(0deg) scaleX(1); }
+    33% { transform: skewX(-1deg) scaleX(0.99); }
+    66% { transform: skewX(1deg) scaleX(1.01); }
+  }
+
+  .chart {
+    margin-top: 16px;
+    border-top: 1px dashed rgba(255,255,255,0.2);
+    padding-top: 12px;
+    font-size: 13px;
+  }
+
+  .stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 6px 0;
+  }
+
+  .stars {
+    letter-spacing: 2px;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 0 4px rgba(255,255,255,0.5);
+  }
+
+  .stat-value {
+    animation: statGlitch 0.4s steps(2, end) infinite;
+  }
+
+  @keyframes statGlitch {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .progress-bars {
+    margin-top: 20px;
+    border-top: 1px dashed rgba(255,255,255,0.2);
+    padding-top: 14px;
+  }
+
+  .progress-item {
+    margin: 10px 0;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #050505;
+    border: 1px solid rgba(255,255,255,0.3);
+    margin-top: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: #ffffff;
+    position: relative;
+    animation: progressGlitch 2s ease-in-out infinite;
+  }
+
+  @keyframes progressGlitch {
+    0% { width: 45%; opacity: 1; }
+    40% { width: 45%; opacity: 1; }
+    50% { width: 12%; opacity: 0.5; }
+    60% { width: 67%; opacity: 0.7; }
+    100% { width: 45%; opacity: 1; }
+  }
+
+  .dossier {
+    margin-top: 20px;
+    border: 2px solid #ffffff;
+    padding: 16px;
+    font-size: 15px;
+    line-height: 1.7;
+    background: #000000;
+    animation: dossierIn 1s ease-out both;
+    box-shadow: 0 0 20px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,0,0,0.4);
+    position: relative;
+    z-index: 5;
+  }
+
+  @keyframes dossierIn {
+    from { opacity: 0; transform: translateY(12px) scaleY(0.95); }
+    to { opacity: 1; transform: translateY(0) scaleY(1); }
+  }
+
+  .dossier:hover {
+    animation: dossierShake 0.28s infinite;
+    box-shadow: 0 0 30px rgba(0,0,0,0.6), inset 0 0 20px rgba(0,0,0,0.4);
+  }
+
+  @keyframes dossierShake {
+    0% { transform: translate(0,0) }
+    25% { transform: translate(-1px,1px) }
+    50% { transform: translate(1px,-1px) }
+    75% { transform: translate(1px,1px) }
+    100% { transform: translate(0,0) }
+  }
+
+  .subliminal {
+    font-size: 11px;
+    color: #ffffff;
+    opacity: 0.03;
+    margin-top: 10px;
+    letter-spacing: 4px;
+    user-select: none;
+    text-shadow: 0 0 2px rgba(255,255,255,0.5);
+  }
+  
+  .subliminal:hover { 
+    opacity: 0.6; 
+    text-shadow: 0 0 8px rgba(255,255,255,0.8);
+  }
+
+  .dont {
+    margin-top: 12px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: #ffffff;
+    opacity: 0.85;
+    animation: dontPulse 2.2s infinite;
+    text-shadow: 0 0 4px rgba(255,255,255,0.6);
+  }
+
+  @keyframes dontPulse {
+    0% { opacity: 0.65; transform: scale(1) translateY(0); }
+    50% { opacity: 1; transform: scale(1.03) translateY(-1px); text-shadow: 0 0 12px rgba(255,255,255,0.9); }
+    100% { opacity: 0.65; transform: scale(1) translateY(0); }
+  }
+
+  /* CURSEUR - ŒIL GLAUQUE */
+  .glauque-cursor {
+    position: fixed;
+    pointer-events: none;
+    z-index: 10000;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #ffffff;
+    background: radial-gradient(circle at 30% 30%, #ffffff 0%, #ffffff 25%, rgba(255,255,255,0.1) 40%, transparent 60%);
+    box-shadow: 0 0 15px rgba(255,255,255,0.95), 0 0 35px rgba(255,255,255,0.3), inset 0 0 10px rgba(255,255,255,0.4);
+    transform: translate(-50%, -50%) scale(1);
+    transition: transform 0.06s linear;
+    mix-blend-mode: screen;
+  }
+
+  .glauque-cursor::before {
+    content: "";
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: #000000;
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    animation: eyePupil 3s ease-in-out infinite;
+  }
+
+  @keyframes eyePupil {
+    0%, 100% { transform: translate(-50%, -50%); }
+    25% { transform: translate(-40%, -40%); }
+    50% { transform: translate(20%, 30%); }
+    75% { transform: translate(-30%, 40%); }
+  }
+
+  .glauque-cursor.big { 
+    transform: translate(-50%,-50%) scale(2.5); 
+    border-width: 3px;
+    box-shadow: 0 0 25px rgba(255,255,255,0.95), 0 0 60px rgba(255,255,255,0.5), inset 0 0 15px rgba(255,255,255,0.3);
+  }
+
+  /* COMPTEUR OBSERVÉ */
+  .observer-counter {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.6;
+    color: #ffffff;
+    z-index: 100;
+    text-shadow: 0 0 4px rgba(255,255,255,0.4);
+    animation: counterPulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes counterPulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 0.9; }
+  }
+
+  /* MESSAGES CACHÉS AU HOVER */
+  .hidden-message {
+    position: absolute;
+    font-size: 11px;
+    color: #ffffff;
+    opacity: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    text-shadow: 0 0 4px rgba(255,255,255,0.6);
+  }
+
+  .info:hover .hidden-message {
+    opacity: 0.7;
+  }
+
+  .portrait:hover .hidden-message {
+    opacity: 0.7;
+  }
+
+  .dossier:hover .hidden-message {
+    opacity: 0.7;
+  }
+
+  @media (max-width: 900px) {
+    .page { margin: 20px; padding: 18px; }
+    .main { flex-direction: column; }
+    .portrait, .info { width: 100%; }
+    .portrait { height: 360px; }
+  }
+
+</style>
+</head>
+<body>
+  <div id="cursor" class="glauque-cursor" aria-hidden="true"></div>
+  <div class="observer-counter" id="observerCounter">OBSERVÉ : 0</div>
+
+  <div class="page" role="main" aria-label="Fiche Ey">
+    <div class="bar-left" aria-hidden="true"></div>
+
+    <header>
+      <div class="file">FICHIER N° 01</div>
+      <h1>Ey.</h1>
+      <div class="access">ACCÈS : RESTREINT</div>
+    </header>
+
+    <div class="main">
+      <div class="portrait" id="portrait">
+        IMAGE PRINCIPALE
+        <div class="hidden-message">NE REGARDE PAS</div>
+        <div class="mini" id="mini">IMAGE<br/>MINI</div>
+      </div>
+
+      <aside class="info">
+        <h2>Caractéristiques</h2>
+        <div class="hidden-message" style="top: 8px; right: 8px;">SURVEILLANCE</div>
+
+        <div class="meta">
+          <div class="k">Type</div><div class="v meta-glitch distorted-text">Inconnu</div>
+          <div class="k">Préférences</div><div class="v meta-glitch distorted-text">Silence, invisibilité</div>
+          <div class="k">Répulsions</div><div class="v meta-glitch distorted-text">Regard prolongé</div>
+          <div class="k">Niveau d'alerte</div><div class="v meta-glitch distorted-text">⚠️ CRITIQUE</div>
+        </div>
+
+        <div class="chart">
+          <div class="stat"><div>Intelligence</div><div class="stars stat-value">★★★★★</div></div>
+          <div class="stat"><div>Instabilité</div><div class="stars stat-value">★★★★☆</div></div>
+          <div class="stat"><div>Hostilité</div><div class="stars stat-value">★★★★★</div></div>
+          <div class="stat"><div>Contrôle</div><div class="stars stat-value">★☆☆☆☆</div></div>
+          <div class="stat"><div>Empathie</div><div class="stars stat-value">☆☆☆☆☆</div></div>
+        </div>
+
+        <div class="progress-bars">
+          <div class="progress-item">▓▓▓</div>
+          <div class="progress-bar">
+            <div class="progress-fill"></div>
+          </div>
+          <div class="progress-item">███████</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="animation: progressGlitch 2.5s ease-in-out infinite; animation-delay: 0.5s;"></div>
+          </div>
+          <div class="progress-item">█████████████</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="animation: progressGlitch 2s ease-in-out infinite; animation-delay: 1s;"></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <section class="dossier">
+      <strong>Résumé :</strong><br>
+      Présence froide. Documents incomplets. Ce fichier a été scellé parce que la lecture est dangereuse. Ey ne souhaite pas d'observateurs. Chaque mot écrit ici a l'air d'observer en retour. La lecture prolongée provoque une sensation d'intrusion. Les yeux ne doivent pas s'attarder trop longtemps.
+      
+      <div class="hidden-message" style="bottom: 10px; left: 16px;">AIDE MOI</div>
+      <div class="subliminal">NE VOUS ATTARDEZ PAS. PARTEZ MAINTENANT.</div>
+      <div class="dont" id="dont">NE REGARDEZ PAS</div>
+    </section>
+  </div>
+
+<script>
+  /* CURSEUR */
+  (function(){
+    const cursor = document.getElementById('cursor');
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursor.style.left = mouseX + 'px';
+      cursor.style.top = mouseY + 'px';
+    });
+
+    window.addEventListener('mousedown', () => cursor.classList.add('big'));
+    window.addEventListener('mouseup', () => cursor.classList.remove('big'));
+  })();
+
+  /* GLITCH + MESSAGES + PERTURBATIONS */
+  (function(){
+    const dont = document.getElementById('dont');
+    const portrait = document.getElementById('portrait');
+    const page = document.querySelector('.page');
+
+    const msgs = [
+      'NE PAS REGARDER',
+      'RETOURNE-TOI',
+      'IL SAIT',
+      'FERME CETTE PAGE',
+      'ENLEVE TES YEUX',
+      'TOURNE-TOI',
+      'ARRÊTE',
+      'QUELQUE CHOSE REGARDE'
+    ];
+
+    function flashMsg() {
+      const m = msgs[Math.floor(Math.random()*msgs.length)];
+      dont.textContent = m;
+      dont.style.opacity = 1;
+      dont.style.transform = 'scale(1.08) rotate(' + (Math.random()*2-1) + 'deg)';
+      setTimeout(()=> {
+        dont.style.opacity = 0.12;
+        dont.style.transform = 'scale(1)';
+        setTimeout(()=> { 
+          dont.textContent = 'NE REGARDEZ PAS'; 
+          dont.style.opacity = 0.85;
+          dont.style.transform = 'scale(1)';
+        }, 600);
+      }, 1200);
+    }
+
+    function smallGlitch(){
+      const t = Math.random()*7000 + 2500;
+      setTimeout(()=> {
+        portrait.style.transition = 'transform 0.08s';
+        const glitchX = Math.random()*12 - 6;
+        const glitchY = Math.random()*8 - 4;
+        const glitchRot = Math.random()*1 - 0.5;
+        portrait.style.transform = `translate(${glitchX}px, ${glitchY}px) rotate(${glitchRot}deg)`;
+        
+        setTimeout(()=> { 
+          portrait.style.transition = 'transform 0.3s'; 
+          portrait.style.transform = ''; 
+        }, 120);
+
+        if (Math.random() > 0.65) flashMsg();
+        smallGlitch();
+      }, t);
+    }
+    smallGlitch();
+
+    function subliminalFlash(){
+      const sub = document.querySelector('.subliminal');
+      const delay = Math.random()*10000 + 4000;
+      setTimeout(()=> {
+        sub.style.opacity = 0.8;
+        sub.style.textShadow = '0 0 12px rgba(255,255,255,0.9)';
+        setTimeout(()=> { 
+          sub.style.opacity = 0.03;
+          sub.style.textShadow = '0 0 2px rgba(255,255,255,0.5)';
+        }, 350);
+        subliminalFlash();
+      }, delay);
+    }
+    subliminalFlash();
+
+    function extremeGlitch(){
+      const delay = Math.random()*25000 + 15000;
+      setTimeout(()=> {
+        page.style.filter = 'brightness(0.7) contrast(1.5)';
+        portrait.style.transform = 'scaleX(-1) rotate(2deg)';
+        dont.style.opacity = 1;
+        dont.style.fontSize = '14px';
+        
+        setTimeout(()=> {
+          page.style.filter = 'brightness(1) contrast(1)';
+          portrait.style.transform = '';
+          dont.style.fontSize = '12px';
+        }, 300);
+        
+        extremeGlitch();
+      }, delay);
+    }
+    extremeGlitch();
+
+    function visualNoise(){
+      const delay = Math.random()*6000 + 3000;
+      setTimeout(()=> {
+        const intensity = Math.random()*0.15 + 0.08;
+        page.style.backgroundImage = `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' seed='${Math.random()}'/%3E%3C/filter%3E%3Crect width='400' height='300' fill='%23000' filter='url(%23noise)' opacity='${intensity}'/%3E%3C/svg%3E")`;
+        setTimeout(()=> {
+          page.style.backgroundImage = 'none';
+        }, 200);
+        visualNoise();
+      }, delay);
+    }
+    visualNoise();
+
+    function statFlicker(){
+      const stats = document.querySelectorAll('.stat-value');
+      const possibleStars = ['★☆☆☆☆', '★★☆☆☆', '★★★☆☆', '★★★★☆', '★★★★★', '?????', '█████', 'ERROR', '...'];
+      
+      setInterval(()=> {
+        if (Math.random() > 0.85) {
+          stats.forEach(stat => {
+            if (Math.random() > 0.5) {
+              stat.textContent = possibleStars[Math.floor(Math.random() * possibleStars.length)];
+            }
+          });
+        }
+      }, 500);
+    }
+    statFlicker();
+
+    function metaGlitch(){
+      const metaValues = document.querySelectorAll('.meta-glitch');
+      const alternatives = [
+        ['ERREUR', 'INDÉFINI', '[DONNÉES CORROMPUES]', '?', 'ABSENT'],
+        ['???', 'NON TROUVÉ', 'REDACTÉ', '◼◼◼◼◼', 'INTERDIT'],
+        ['SILENCE', 'VIDE', 'RIEN', 'OUBLI', 'NÉANT']
+      ];
+
+      setInterval(()=> {
+        if (Math.random() > 0.8) {
+          metaValues.forEach((el, idx) => {
+            if (Math.random() > 0.6) {
+              const alt = alternatives[idx] || alternatives[0];
+              el.textContent = alt[Math.floor(Math.random() * alt.length)];
+            }
+          });
+        }
+      }, 800);
+    }
+    metaGlitch();
+
+    function observerCounter(){
+      const counter = document.getElementById('observerCounter');
+      let count = 0;
+      setInterval(()=> {
+        if (Math.random() > 0.7) {
+          count += Math.floor(Math.random() * 5) + 1;
+          counter.textContent = `OBSERVÉ : ${count}`;
+        }
+      }, 1500);
+    }
+    observerCounter();
+  })();
+</script>
+
+</body>
+</html>
