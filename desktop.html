@@ -1961,11 +1961,11 @@ function initPong() {
   let aiY = height / 2 - 40;
   let ballX = width / 2;
   let ballY = height / 2;
-  let ballSpeedX = 10;
-  let ballSpeedY = 6;
+  let ballSpeedX = 5;
+  let ballSpeedY = 3;
   let playerScore = 0;
   let aiScore = 0;
-  let varballspeed=7;
+  
   
   const paddleWidth = 10;
   const paddleHeight = 80;
@@ -2013,19 +2013,15 @@ function initPong() {
     if (ballX <= paddleWidth && ballY >= playerY && ballY <= playerY + paddleHeight) {
       ballSpeedX = -ballSpeedX;
       ballSpeedX += varballspeed
-      if(varballspeed!=0) {
-        varballspeed-=0.5
-      }
-      ballSpeedX *= 1.02;
+      ballSpeedX *= 0.2;
+      ballSpeedX *= 1.01;
     }
     
     // Collision IA
     if (ballX >= width - paddleWidth - ballSize && ballY >= aiY && ballY <= aiY + paddleHeight) {
       ballSpeedX = -ballSpeedX;
-      if(varballspeed!=0) {
-        varballspeed-=0.5
-      }
-      ballSpeedX *= 1.02;
+      ballSpeedX += 0.2;
+      ballSpeedX *= 1.01;
     }
     
     // Score
