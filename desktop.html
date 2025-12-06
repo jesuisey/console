@@ -2009,20 +2009,18 @@ function initPong() {
       ballSpeedY = -ballSpeedY;
     }
     
-    // Collision joueur
+     // Collision joueur
     if (ballX <= paddleWidth && ballY >= playerY && ballY <= playerY + paddleHeight) {
       ballSpeedX = -ballSpeedX;
-      ballSpeedX += varballspeed
-      ballSpeedX *= 0.2;
-      ballSpeedX *= 1.01;
+      ballSpeedX *= 1.05;
     }
     
     // Collision IA
     if (ballX >= width - paddleWidth - ballSize && ballY >= aiY && ballY <= aiY + paddleHeight) {
       ballSpeedX = -ballSpeedX;
-      ballSpeedX += 0.2;
-      ballSpeedX *= 1.01;
+      ballSpeedX *= 1.05;
     }
+    
     
     // Score
     if (ballX < 0) {
@@ -2135,4 +2133,5 @@ window.onload = init;
 </script>
 </body>
 </html>
+
 
