@@ -1961,11 +1961,13 @@ function initPong() {
   let aiY = height / 2 - 40;
   let ballX = width / 2;
   let ballY = height / 2;
+  let ballSpeedXFixed = 5;
   let ballSpeedX = 5;
+  let ballSpeedYFixed = 3;
   let ballSpeedY = 3;
   let playerScore = 0;
   let aiScore = 0;
-  let varballspeed=3;
+  let varballspeed=2;
   
   const paddleWidth = 10;
   const paddleHeight = 80;
@@ -2012,8 +2014,8 @@ function initPong() {
     if (ballX <= paddleWidth && ballY >= playerY && ballY <= playerY + paddleHeight) {
       ballSpeedX = -ballSpeedX;
       ballSpeedX += varballspeed
-      if(varballspeed!=0) {
-        varballspeed-=0.5
+      if(varballspeed>=0.3) {
+        varballspeed-=0.3
       }
       ballSpeedX *= 1.02;
      
@@ -2023,8 +2025,8 @@ function initPong() {
     if (ballX >= width - paddleWidth - ballSize && ballY >= aiY && ballY <= aiY + paddleHeight) {
       ballSpeedX = -ballSpeedX;
       ballSpeedX += varballspeed
-      if(varballspeed!=0) {
-        varballspeed-=0.5
+      if(varballspeed>=0.3) {
+        varballspeed-=0.3
       }
       ballSpeedX *= 1.02;
     }
@@ -2051,8 +2053,8 @@ function initPong() {
   function resetBall() {
     ballX = width / 2;
     ballY = height / 2;
-    ballSpeedX = (Math.random() > 0.5 ? 1 : -1) * 5;
-    ballSpeedY = (Math.random() - 0.5) * 6;
+    ballSpeedX = ballSpeedXFixed;
+    ballSpeedY = ballSpeedYFixed;
   }
   
   function draw() {
@@ -2140,4 +2142,5 @@ window.onload = init;
 </script>
 </body>
 </html>
+
 
