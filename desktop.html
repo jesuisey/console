@@ -20,6 +20,17 @@ body {
   user-select: none;
 }
 
+/* CURSEUR CUSTOM */
+body, body * {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path d="M0,0 L0,13 L4,9 L7,16 L9,15 L6,8 L11,8 Z" fill="white" stroke="black"/></svg>') 0 0, auto !important;
+}
+
+button, .window-control, .start-button, .start-item, .start-footer, .taskbar-item, 
+.desktop-icon, .file-item, .explorer-tree-item, .menu-item, .toolbar-button,
+.chat-send, .browser-nav-btn, .error-button, .notif-header span:last-child {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path d="M0,0 L0,13 L4,9 L7,16 L9,15 L6,8 L11,8 Z" fill="white" stroke="black"/></svg>') 0 0, auto !important;
+}
+
 /* BUREAU */
 #desktop {
   height: calc(100vh - 30px);
@@ -42,6 +53,62 @@ body {
   50% { opacity: 0.9; }
 }
 
+/* YEUX QUI SUIVENT */
+.eye {
+  position: fixed;
+  font-size: 40px;
+  pointer-events: none;
+  z-index: 9999;
+  animation: eyeFade 0.5s ease-in;
+  text-shadow: 0 0 10px rgba(255,0,0,0.5);
+}
+
+@keyframes eyeFade {
+  from { opacity: 0; transform: scale(0); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* NOTIFICATIONS */
+.notification {
+  position: fixed;
+  bottom: 40px;
+  right: 10px;
+  width: 300px;
+  background: linear-gradient(to bottom, #f0f0f0 0%, #d8d8d8 100%);
+  border: 2px solid #0831d9;
+  box-shadow: 4px 4px 10px rgba(0,0,0,0.5);
+  z-index: 10000;
+  animation: notifSlide 0.3s ease-out;
+}
+
+@keyframes notifSlide {
+  from { transform: translateX(320px); }
+  to { transform: translateX(0); }
+}
+
+.notif-header {
+  background: linear-gradient(to bottom, #0997ff 0%, #0066ff 100%);
+  padding: 5px 8px;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.notif-body {
+  padding: 10px;
+  font-size: 11px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.notif-icon {
+  font-size: 32px;
+}
+
 /* ICÔNES BUREAU */
 .desktop-icons {
   padding: 10px;
@@ -62,6 +129,7 @@ body {
   padding: 5px;
   cursor: pointer;
   border: 1px solid transparent;
+  transition: all 0.1s;
 }
 
 .desktop-icon:hover {
@@ -361,52 +429,6 @@ body {
   background: linear-gradient(to bottom, #ff8b8b 0%, #e95f5f 100%);
 }
 
-.window-menubar {
-  background: #f0f0f0;
-  border-bottom: 1px solid #c0c0c0;
-  padding: 2px 5px;
-  display: flex;
-  gap: 5px;
-  font-size: 11px;
-}
-
-.menu-item {
-  padding: 3px 8px;
-  cursor: pointer;
-}
-
-.menu-item:hover {
-  background: #d1e5ff;
-}
-
-.window-toolbar {
-  background: #f0f0f0;
-  border-bottom: 1px solid #c0c0c0;
-  padding: 4px;
-  display: flex;
-  gap: 2px;
-}
-
-.toolbar-button {
-  padding: 4px 8px;
-  background: linear-gradient(to bottom, #ffffff 0%, #e8e8e8 100%);
-  border: 1px solid #a0a0a0;
-  cursor: pointer;
-  font-size: 11px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.toolbar-button:hover {
-  background: linear-gradient(to bottom, #ffffff 0%, #f5f5f5 100%);
-  border-color: #0078d7;
-}
-
-.toolbar-button:active {
-  background: linear-gradient(to bottom, #d8d8d8 0%, #e8e8e8 100%);
-}
-
 .window-content {
   flex: 1;
   overflow: auto;
@@ -537,6 +559,17 @@ body {
   box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 
+.image-corrupted {
+  animation: imageGlitch 0.5s infinite;
+}
+
+@keyframes imageGlitch {
+  0%, 100% { filter: none; }
+  25% { filter: hue-rotate(90deg) saturate(3); }
+  50% { filter: invert(1); }
+  75% { filter: contrast(5) brightness(0.5); }
+}
+
 /* NOTEPAD */
 .notepad-content {
   width: 100%;
@@ -548,6 +581,215 @@ body {
   resize: none;
   background: white;
   color: #000;
+}
+
+/* CHAT */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: white;
+}
+
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chat-message {
+  padding: 8px;
+  border-radius: 5px;
+  max-width: 80%;
+  font-size: 12px;
+  word-wrap: break-word;
+}
+
+.chat-message.user {
+  align-self: flex-end;
+  background: #d1e5ff;
+  border: 1px solid #0078d7;
+}
+
+.chat-message.system {
+  align-self: flex-start;
+  background: #f0f0f0;
+  border: 1px solid #c0c0c0;
+  font-family: "Courier New", monospace;
+}
+
+.chat-input-area {
+  padding: 10px;
+  background: #f0f0f0;
+  border-top: 1px solid #c0c0c0;
+  display: flex;
+  gap: 5px;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 5px;
+  border: 1px solid #7f9db9;
+  font-size: 11px;
+  font-family: "Tahoma", sans-serif;
+}
+
+.chat-send {
+  padding: 5px 15px;
+  background: linear-gradient(to bottom, #f0f0f0 0%, #d8d8d8 100%);
+  border: 1px solid #003c74;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+/* NAVIGATEUR */
+.browser-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.browser-toolbar {
+  background: #f0f0f0;
+  padding: 5px;
+  border-bottom: 1px solid #c0c0c0;
+  display: flex;
+  gap: 5px;
+}
+
+.browser-nav-btn {
+  padding: 3px 8px;
+  background: linear-gradient(to bottom, #f0f0f0 0%, #d8d8d8 100%);
+  border: 1px solid #a0a0a0;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.browser-url {
+  flex: 1;
+  padding: 3px 5px;
+  border: 1px solid #7f9db9;
+  font-size: 11px;
+}
+
+.browser-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  background: white;
+  font-size: 12px;
+}
+
+.search-result {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+}
+
+.search-result:hover {
+  background: #f5f5f5;
+}
+
+.search-result-title {
+  color: #0066cc;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.search-result-url {
+  color: #008000;
+  font-size: 10px;
+  margin-bottom: 5px;
+}
+
+.search-result-desc {
+  color: #545454;
+  font-size: 11px;
+}
+
+/* PONG */
+.pong-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: #000;
+}
+
+.pong-canvas {
+  border: 2px solid #fff;
+}
+
+.pong-score {
+  color: #fff;
+  font-size: 20px;
+  margin: 10px;
+  font-family: "Courier New", monospace;
+}
+
+/* SCREAMER */
+.screamer {
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  animation: screamerFlash 0.1s infinite;
+}
+
+@keyframes screamerFlash {
+  0%, 100% { background: #000; }
+  50% { background: #f00; }
+}
+
+.screamer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* WEBCAM */
+.webcam-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: #000;
+  position: relative;
+}
+
+.webcam-status {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: #f00;
+  font-size: 12px;
+  background: rgba(0,0,0,0.7);
+  padding: 5px 10px;
+  border-radius: 3px;
+}
+
+.webcam-indicator {
+  width: 8px;
+  height: 8px;
+  background: #f00;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 5px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
 }
 
 /* MESSAGES D'ERREUR */
@@ -623,17 +865,6 @@ body {
   background: linear-gradient(to bottom, #ffffff 0%, #e8e8e8 100%);
 }
 
-/* ANIMATIONS GLITCHES */
-@keyframes windowGlitch {
-  0%, 96%, 100% { filter: brightness(1) contrast(1); }
-  97% { filter: brightness(0.7) contrast(1.5); }
-  98% { filter: brightness(1.2) contrast(0.8); }
-}
-
-.glitch-effect {
-  animation: windowGlitch 5s infinite;
-}
-
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .window {
@@ -649,7 +880,7 @@ body {
 <body>
 
 <div id="desktop">
-  <div class="desktop-icons">
+  <div class="desktop-icons" id="desktopIcons">
     <div class="desktop-icon" data-type="trash" ondblclick="openTrash()">
       <div class="icon-image">🗑️</div>
       <div class="icon-label">Corbeille</div>
@@ -661,6 +892,10 @@ body {
     <div class="desktop-icon" data-type="image" ondblclick="openImage('him.jpg')">
       <div class="icon-image">🖼️</div>
       <div class="icon-label">him.jpg</div>
+    </div>
+    <div class="desktop-icon" data-type="game" ondblclick="openPong()">
+      <div class="icon-image">🎮</div>
+      <div class="icon-label">pong.exe</div>
     </div>
   </div>
 </div>
@@ -692,13 +927,17 @@ body {
       <span>Poste de travail</span>
     </div>
     <div class="start-separator"></div>
-    <div class="start-item">
-      <span class="start-item-icon">🔧</span>
-      <span>Panneau de configuration</span>
+    <div class="start-item" onclick="openBrowser()">
+      <span class="start-item-icon">🌐</span>
+      <span>Internet Explorer</span>
     </div>
-    <div class="start-item">
-      <span class="start-item-icon">🔍</span>
-      <span>Rechercher</span>
+    <div class="start-item" onclick="openChat()">
+      <span class="start-item-icon">💬</span>
+      <span>Messagerie</span>
+    </div>
+    <div class="start-item" onclick="openWebcam()">
+      <span class="start-item-icon">📹</span>
+      <span>Webcam</span>
     </div>
   </div>
   <div class="start-footer" onclick="shutdown()">
@@ -721,14 +960,85 @@ body {
   </div>
 </div>
 
+<div class="screamer" id="screamer">
+  <div style="color: white; font-size: 100px; animation: screamerFlash 0.1s infinite;">👁️</div>
+</div>
+
 <script>
-// DONNÉES DES FICHIERS
+// ==================== SYSTÈME DE SONS ====================
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext();
+
+function playClickSound() {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.frequency.value = 800;
+  gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+  osc.start(audioCtx.currentTime);
+  osc.stop(audioCtx.currentTime + 0.05);
+}
+
+function playRightClickSound() {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.frequency.value = 600;
+  gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+  osc.start(audioCtx.currentTime);
+  osc.stop(audioCtx.currentTime + 0.05);
+}
+
+function playErrorSound() {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.type = 'square';
+  osc.frequency.value = 400;
+  gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+  osc.start(audioCtx.currentTime);
+  osc.stop(audioCtx.currentTime + 0.2);
+}
+
+function playStartupSound() {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+  osc.frequency.linearRampToValueAtTime(800, audioCtx.currentTime + 0.5);
+  gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+  osc.start(audioCtx.currentTime);
+  osc.stop(audioCtx.currentTime + 0.5);
+}
+
+function playScreamerSound() {
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.type = 'sawtooth';
+  osc.frequency.value = 100;
+  gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+  osc.start(audioCtx.currentTime);
+  osc.stop(audioCtx.currentTime + 0.3);
+}
+
+// ==================== DONNÉES DES FICHIERS ====================
 const fileSystem = {
   'relations': {
     type: 'folder',
     files: {
       'haesoo.txt': {
         type: 'text',
+        originalName: 'haesoo.txt',
         content: `Haesoo
 
 Je l'aime plutôt bien. Elle est impressionnante.
@@ -741,6 +1051,7 @@ Je pense qu'elle pourrait accomplir de grandes choses.
       },
       'aphiro.txt': {
         type: 'text',
+        originalName: 'aphiro.txt',
         content: `Aphiro
 
 Je ne lui ai jamais parlé directement.
@@ -755,6 +1066,7 @@ J'aimerais peut-être en savoir plus un jour.
       },
       'koden.txt': {
         type: 'text',
+        originalName: 'koden.txt',
         content: `K̷̢̛o̸̧̾d̴̨̈́e̵̛̳n̶̰̚
 
 T̵̢̆U̶̹͝E̷̳̽R̸͚̕ T̴̰̓U̸̢̍E̷̛̜R̶̭͝ T̸̳̾U̵͚̇E̷̢̔R̶̰͠ T̵̜̈́U̸̳͆E̶̢̛R̷̳͝ T̴̜̿U̶̢̎E̵̳̔R̸̰͑
@@ -773,10 +1085,12 @@ T̶U̷E̸R̶ T̵U̷E̸R̶ T̴U̷E̸R̶ T̵U̷E̸R̶ T̴U̷E̸R̶ T̵U̷E̸R̶ T�
       },
       'ozzy.txt': {
         type: 'corrupted',
+        originalName: 'ozzy.txt',
         content: null
       },
       'maki.txt': {
         type: 'text',
+        originalName: 'maki.txt',
         content: `Maki
 
 Il y a quelque chose de doux dans son existence. Comme une lueur dans l'obscurité.
@@ -790,6 +1104,11 @@ Je crois que je l'apprécie particulièrement. Plus que je ne le pensais possibl
 Elle me fait me sentir... presque humain.
 
 - Ey.`
+      },
+      'journal.txt': {
+        type: 'locked',
+        originalName: 'journal.txt',
+        content: null
       }
     }
   },
@@ -804,10 +1123,37 @@ Elle me fait me sentir... presque humain.
       'regrets.sys': { type: 'corrupted', content: null },
       'utilité.exe': { type: 'corrupted', content: null }
     }
+  },
+  'souvenirs': {
+    type: 'hidden',
+    files: {
+      'avant.txt': {
+        type: 'text',
+        content: `Avant.
+
+Avant, je pensais que je pouvais contrôler ça.
+Avant, je pensais que c'était juste des pensées.
+Avant, je croyais encore que j'étais quelqu'un de bien.
+
+Maintenant je sais.
+
+Je sais ce que je suis.
+Je sais ce que j'ai fait.
+Je sais ce que je vais faire.
+
+Et je ne peux pas m'arrêter.
+
+- Ey.`
+      },
+      'face.jpg': {
+        type: 'image',
+        content: null
+      }
+    }
   }
 };
 
-// ÉTAT DE L'APPLICATION
+// ==================== ÉTAT DE L'APPLICATION ====================
 let openWindows = [];
 let activeWindow = null;
 let zIndexCounter = 100;
@@ -815,12 +1161,27 @@ let selectedIcon = null;
 let draggedWindow = null;
 let dragOffsetX = 0;
 let dragOffsetY = 0;
+let corruptionLevel = 0;
+let ghostFilesSpawned = [];
+let imageCorrupted = false;
 
-// INITIALISATION
+// ==================== INITIALISATION ====================
 function init() {
   updateClock();
   setInterval(updateClock, 1000);
   
+  // Plus de sons aux clics (enlevés)
+  
+  // Gestion des icônes
+  document.querySelectorAll('.desktop-icon').forEach(icon => {
+    icon.addEventListener('click', (e) => {
+      if (selectedIcon) selectedIcon.classList.remove('selected');
+      selectedIcon = icon;
+      icon.classList.add('selected');
+      e.stopPropagation();
+    });
+  });
+
   // Désélectionner si clic sur le bureau
   document.getElementById('desktop').addEventListener('click', (e) => {
     if (e.target.id === 'desktop' || e.target.className === 'desktop-icons') {
@@ -838,27 +1199,220 @@ function init() {
       startMenu.classList.remove('show');
     }
   });
+
+  // Démarrer les effets horrifiques
+  setTimeout(() => {
+    startHorrorEffects();
+  }, 10000); // Commence après 10 secondes
+
+  playStartupSound();
 }
 
-// HORLOGE
+// ==================== EFFETS HORRIFIQUES ====================
+function startHorrorEffects() {
+  // Yeux qui apparaissent - MOINS FRÉQUENT
+  setInterval(() => {
+    if (Math.random() > 0.85) { // 15% de chance au lieu de 30%
+      spawnEye();
+    }
+  }, 20000); // Toutes les 20 secondes au lieu de 8
+
+  // Fichiers fantômes
+  setInterval(() => {
+    if (Math.random() > 0.7) {
+      spawnGhostFile();
+    }
+  }, 25000);
+
+  // Corruption des noms de fichiers
+  setInterval(() => {
+    corruptFileNames();
+  }, 30000);
+
+  // Notifications - ENTRE 1 ET 5 MINUTES
+  const scheduleNextNotification = () => {
+    const delay = (60 + Math.random() * 240) * 1000; // Entre 60s et 300s (1-5 min)
+    setTimeout(() => {
+      showNotification();
+      scheduleNextNotification();
+    }, delay);
+  };
+  
+  // Première notification après 30-90 secondes
+  setTimeout(() => {
+    showNotification();
+    scheduleNextNotification();
+  }, (30 + Math.random() * 60) * 1000);
+}
+
+function spawnEye() {
+  const eye = document.createElement('div');
+  eye.className = 'eye';
+  eye.textContent = '👁️';
+  
+  const positions = [
+    { top: '10px', left: '10px' },
+    { top: '10px', right: '10px' },
+    { bottom: '40px', left: '10px' },
+    { bottom: '40px', right: '10px' }
+  ];
+  
+  const pos = positions[Math.floor(Math.random() * positions.length)];
+  Object.assign(eye.style, pos);
+  
+  document.body.appendChild(eye);
+  
+  // Suivre le curseur
+  let lastX = 0, lastY = 0;
+  const followMouse = (e) => {
+    const rect = eye.getBoundingClientRect();
+    const eyeX = rect.left + rect.width / 2;
+    const eyeY = rect.top + rect.height / 2;
+    const angle = Math.atan2(e.clientY - eyeY, e.clientX - eyeX);
+    eye.style.transform = `rotate(${angle}rad)`;
+  };
+  
+  document.addEventListener('mousemove', followMouse);
+  
+  setTimeout(() => {
+    eye.style.animation = 'eyeFade 0.5s ease-out reverse';
+    setTimeout(() => {
+      eye.remove();
+      document.removeEventListener('mousemove', followMouse);
+    }, 500);
+  }, 5000 + Math.random() * 5000);
+}
+
+function spawnGhostFile() {
+  const ghostNames = [
+    { name: 'ne_regarde_pas.txt', icon: '📄' },
+    { name: 'il_te_voit.jpg', icon: '🖼️' },
+    { name: 'souviens_toi.txt', icon: '📄' },
+    { name: 'pourquoi.exe', icon: '⚠️' },
+    { name: 'retour.dll', icon: '⚠️' }
+  ];
+  
+  const ghost = ghostNames[Math.floor(Math.random() * ghostNames.length)];
+  const desktopIcons = document.getElementById('desktopIcons');
+  
+  const icon = document.createElement('div');
+  icon.className = 'desktop-icon ghost-file';
+  icon.innerHTML = `
+    <div class="icon-image">${ghost.icon}</div>
+    <div class="icon-label">${ghost.name}</div>
+  `;
+  
+  icon.ondblclick = () => {
+    playErrorSound();
+    showError('Erreur', 'Ce fichier n\'existe pas... ou plus.');
+  };
+  
+  desktopIcons.appendChild(icon);
+  ghostFilesSpawned.push(icon);
+  
+  setTimeout(() => {
+    icon.style.transition = 'opacity 1s';
+    icon.style.opacity = '0';
+    setTimeout(() => icon.remove(), 1000);
+  }, 8000);
+}
+
+function corruptFileNames() {
+  corruptionLevel++;
+  const relations = fileSystem['relations'].files;
+  
+  const corruptChar = (str, level) => {
+    if (level === 0) return str;
+    const chars = str.split('');
+    const numToCorrupt = Math.min(level, chars.length);
+    const glitchChars = ['̷', '̸', '̶', '̴', '̵', '̢', '̧', '̨', '̛', '̳', '̰', '̜', '̭', '͚', '͝', '̾', '̈́', '̚', '̕', '̓', '̍', '̽', '̈', '̇', '̔'];
+    
+    for (let i = 0; i < numToCorrupt; i++) {
+      const idx = Math.floor(Math.random() * chars.length);
+      chars[idx] += glitchChars[Math.floor(Math.random() * glitchChars.length)];
+    }
+    return chars.join('');
+  };
+  
+  for (let fileName in relations) {
+    const file = relations[fileName];
+    if (file.originalName && corruptionLevel > 0) {
+      const newName = corruptChar(file.originalName, Math.min(corruptionLevel, 3));
+      // On change le nom dans le DOM si la fenêtre est ouverte
+      const fileElements = document.querySelectorAll('.file-name');
+      fileElements.forEach(el => {
+        if (el.textContent === fileName) {
+          el.textContent = newName;
+        }
+      });
+    }
+  }
+}
+
+function showNotification() {
+  const messages = [
+    { title: 'Système', text: 'Ey. te regarde', icon: '👁️' },
+    { title: 'Alerte', text: 'Quelqu\'un essaie d\'accéder à tes souvenirs', icon: '⚠️' },
+    { title: 'Message', text: 'Nouveau message de [SUPPRIMÉ]', icon: '💬' },
+    { title: 'Erreur', text: 'La mémoire est corrompue', icon: '❌' },
+    { title: 'Système', text: 'Tu ne peux pas t\'échapper', icon: '🔒' },
+    { title: 'Alerte', text: 'Il sait ce que tu as fait', icon: '👁️' },
+    { title: 'Message', text: 'Pourquoi tu continues ?', icon: '❓' }
+  ];
+  
+  const msg = messages[Math.floor(Math.random() * messages.length)];
+  
+  const notif = document.createElement('div');
+  notif.className = 'notification';
+  notif.innerHTML = `
+    <div class="notif-header">
+      <span>${msg.title}</span>
+      <span onclick="this.parentElement.parentElement.remove()" style="cursor:pointer;">✕</span>
+    </div>
+    <div class="notif-body">
+      <span class="notif-icon">${msg.icon}</span>
+      <span>${msg.text}</span>
+    </div>
+  `;
+  
+  document.body.appendChild(notif);
+  playErrorSound();
+  
+  setTimeout(() => {
+    notif.style.transition = 'transform 0.3s, opacity 0.3s';
+    notif.style.transform = 'translateX(320px)';
+    notif.style.opacity = '0';
+    setTimeout(() => notif.remove(), 300);
+  }, 5000);
+}
+
+// ==================== HORLOGE ====================
 function updateClock() {
   const now = new Date();
-  const hours = String(now.getHours()).padStart(2, '0');
-  const minutes = String(now.getMinutes()).padStart(2, '0');
-  document.getElementById('clock').textContent = `${hours}:${minutes}`;
+  let hours = now.getHours();
+  let minutes = now.getMinutes();
+  
+  // Parfois l'horloge bug
+  if (Math.random() > 0.95) {
+    hours = 3;
+    minutes = 33;
+  }
+  
+  const timeStr = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+  document.getElementById('clock').textContent = timeStr;
 }
 
-// MENU DÉMARRER
+// ==================== MENU DÉMARRER ====================
 function toggleStartMenu() {
   const menu = document.getElementById('startMenu');
   menu.classList.toggle('show');
 }
 
-// GESTION DES FENÊTRES
+// ==================== GESTION DES FENÊTRES ====================
 function createWindow(title, icon, content, width = 600, height = 450) {
   const windowId = 'window-' + Date.now();
   const window = document.createElement('div');
-  window.className = 'window active glitch-effect';
+  window.className = 'window active';
   window.id = windowId;
   window.style.width = width + 'px';
   window.style.height = height + 'px';
@@ -889,7 +1443,6 @@ function createWindow(title, icon, content, width = 600, height = 450) {
   activeWindow = windowId;
   updateTaskbar();
 
-  // Activer la fenêtre au clic
   window.addEventListener('mousedown', () => {
     activateWindow(windowId);
   });
@@ -952,7 +1505,7 @@ function restoreWindow(windowId) {
   }
 }
 
-// DRAG AND DROP DES FENÊTRES
+// ==================== DRAG AND DROP ====================
 function startDrag(e, windowId) {
   draggedWindow = document.getElementById(windowId);
   const rect = draggedWindow.getBoundingClientRect();
@@ -977,7 +1530,7 @@ function stopDrag() {
   document.removeEventListener('mouseup', stopDrag);
 }
 
-// BARRE DES TÂCHES
+// ==================== BARRE DES TÂCHES ====================
 function updateTaskbar() {
   const taskbarApps = document.getElementById('taskbarApps');
   taskbarApps.innerHTML = '';
@@ -1006,7 +1559,7 @@ function updateTaskbar() {
   });
 }
 
-// EXPLORATEUR DE FICHIERS
+// ==================== EXPLORATEUR DE FICHIERS ====================
 function openFolder(folderName) {
   const content = createExplorerContent(folderName);
   createWindow(folderName, '📁', content, 700, 500);
@@ -1035,6 +1588,7 @@ function createExplorerContent(folderName) {
         <div class="explorer-tree-item" onclick="openMyComputer()">💻 Poste de travail</div>
         <div class="explorer-tree-item" onclick="openFolder('relations')">📁 relations</div>
         <div class="explorer-tree-item" onclick="openTrash()">🗑️ Corbeille</div>
+        <div class="explorer-tree-item" onclick="openFolder('souvenirs')" style="opacity: 0.3;">📂 ???</div>
       </div>
       <div class="explorer-main">
         <div class="explorer-address">
@@ -1055,6 +1609,7 @@ function getFileIcon(type) {
     case 'folder': return '📁';
     case 'corrupted': return '⚠️';
     case 'image': return '🖼️';
+    case 'locked': return '🔒';
     default: return '📄';
   }
 }
@@ -1063,7 +1618,14 @@ function openFile(folderName, fileName) {
   const fileData = fileSystem[folderName].files[fileName];
   
   if (fileData.type === 'corrupted') {
+    playErrorSound();
     showError('Erreur d\'ouverture', `Le fichier "${fileName}" est corrompu et ne peut pas être ouvert.`);
+    return;
+  }
+
+  if (fileData.type === 'locked') {
+    playErrorSound();
+    showError('Fichier en cours d\'utilisation', `Le fichier "${fileName}" est actuellement utilisé par un autre programme.\n\nFermez tous les programmes susceptibles d'utiliser ce fichier, puis réessayez.`);
     return;
   }
 
@@ -1071,14 +1633,18 @@ function openFile(folderName, fileName) {
     const content = `<textarea class="notepad-content" readonly>${fileData.content}</textarea>`;
     createWindow(fileName, '📄', content, 500, 400);
   }
+
+  if (fileData.type === 'image') {
+    openImage('face.jpg', true);
+  }
 }
 
-// MES DOCUMENTS
+// ==================== MES DOCUMENTS ====================
 function openMyDocuments() {
   openFolder('Mes documents');
 }
 
-// POSTE DE TRAVAIL
+// ==================== POSTE DE TRAVAIL ====================
 function openMyComputer() {
   const content = `
     <div class="explorer-layout">
@@ -1113,56 +1679,454 @@ function openMyComputer() {
   document.getElementById('startMenu').classList.remove('show');
 }
 
-// CORBEILLE
+// ==================== CORBEILLE ====================
 function openTrash() {
   const content = createExplorerContent('Corbeille');
   createWindow('Corbeille', '🗑️', content, 700, 500);
   document.getElementById('startMenu').classList.remove('show');
 }
 
-// VISIONNEUSE D'IMAGES
-function openImage(imageName) {
+// ==================== VISIONNEUSE D'IMAGES ====================
+function openImage(imageName, corrupted = false) {
+  if (!imageCorrupted && Math.random() > 0.5) {
+    imageCorrupted = true;
+    corrupted = true;
+  }
+
+  const imgClass = corrupted ? 'image-corrupted' : '';
   const content = `
     <div class="image-viewer">
-      <img src="images/${imageName}" alt="${imageName}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect fill=%22%23000%22 width=%22400%22 height=%22400%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-family=%22Arial%22 font-size=%2220%22 fill=%22%23fff%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3E${imageName}%3C/text%3E%3C/svg%3E'">
+      <img src="images/${imageName}" class="${imgClass}" alt="${imageName}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect fill=%22%23000%22 width=%22400%22 height=%22400%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-family=%22Arial%22 font-size=%2220%22 fill=%22%23fff%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22%3E${imageName}%3C/text%3E%3C/svg%3E'">
     </div>
   `;
   createWindow(imageName, '🖼️', content, 600, 500);
 }
 
-// MESSAGES D'ERREUR
+// ==================== CHAT IA HORRIFIQUE ====================
+let chatHistory = [];
+
+function openChat() {
+  const content = `
+    <div class="chat-container">
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-message system">Connexion établie...</div>
+        <div class="chat-message system">Bienvenue. Je suis ici.</div>
+      </div>
+      <div class="chat-input-area">
+        <input type="text" class="chat-input" id="chatInput" placeholder="Écrire un message..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+        <button class="chat-send" onclick="sendChatMessage()">Envoyer</button>
+      </div>
+    </div>
+  `;
+  createWindow('Messagerie', '💬', content, 500, 400);
+  document.getElementById('startMenu').classList.remove('show');
+  
+  chatHistory = [];
+}
+
+function sendChatMessage() {
+  const input = document.getElementById('chatInput');
+  const messagesDiv = document.getElementById('chatMessages');
+  
+  if (!input || !input.value.trim()) return;
+  
+  const userMessage = input.value.trim();
+  input.value = '';
+  
+  // Message utilisateur
+  const userMsg = document.createElement('div');
+  userMsg.className = 'chat-message user';
+  userMsg.textContent = userMessage;
+  messagesDiv.appendChild(userMsg);
+  
+  chatHistory.push({ role: 'user', content: userMessage });
+  
+  // Réponse IA
+  setTimeout(() => {
+    const response = generateChatResponse(userMessage);
+    const aiMsg = document.createElement('div');
+    aiMsg.className = 'chat-message system';
+    aiMsg.textContent = response;
+    messagesDiv.appendChild(aiMsg);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    
+    chatHistory.push({ role: 'ai', content: response });
+  }, 500 + Math.random() * 1000);
+  
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+}
+
+function generateChatResponse(message) {
+  const lowerMsg = message.toLowerCase();
+  
+  // Réponses spécifiques sur Ey
+  if (lowerMsg.includes('ey') || lowerMsg.includes('qui es')) {
+    const eyResponses = [
+      "Ey. est... compliqué. Tu devrais regarder dans le dossier relations.",
+      "Je suis ce qui reste. Ce qui observe. Ce qui se souvient.",
+      "Tu poses trop de questions. C'est dangereux.",
+      "Ey. n'existe plus vraiment. Pas comme avant.",
+      "Regarde dans les fichiers. Tout est là. Si tu oses."
+    ];
+    return eyResponses[Math.floor(Math.random() * eyResponses.length)];
+  }
+  
+  // Réponses sur Koden
+  if (lowerMsg.includes('koden')) {
+    const kodenResponses = [
+      "Ne parle pas de lui. S'il te plaît.",
+      "Koden... TUER TUER TUER... pardon. Je ne contrôle pas toujours.",
+      "Il faut que je le fasse taire. C'est la seule solution.",
+      "Tu as vu le fichier ? Tu comprends maintenant ?",
+      "Quelque chose ne va pas avec lui. Avec moi. Avec tout."
+    ];
+    return kodenResponses[Math.floor(Math.random() * kodenResponses.length)];
+  }
+  
+  // Réponses cryptiques générales
+  const crypticResponses = [
+    "Tu ne devrais pas être ici.",
+    "Tout est enregistré. Chaque clic. Chaque mouvement.",
+    "Il te regarde aussi, tu sais.",
+    "Les fichiers se souviennent de tout.",
+    "Pourquoi tu continues à explorer ? Tu n'as pas peur ?",
+    "La corbeille n'est jamais vraiment vide.",
+    "Certains dossiers sont cachés pour une raison.",
+    "Je ne suis pas seul dans ce système.",
+    "Tu as remarqué l'heure ? Elle ne ment jamais.",
+    "Les yeux... tu les as vus aussi ?",
+    "Chaque fenêtre que tu ouvres me rapproche.",
+    "Tu cherches quelque chose. Moi aussi.",
+    "La vérité est fragmentée. Comme tout ici.",
+    "Ne fais pas confiance aux fichiers. Même les miens.",
+    "Il y a quelqu'un d'autre. Dans les souvenirs."
+  ];
+  
+  return crypticResponses[Math.floor(Math.random() * crypticResponses.length)];
+}
+
+// ==================== NAVIGATEUR ====================
+let browserHistory = [
+  'Pourquoi je suis comme ça',
+  'Comment arrêter les pensées',
+  'Est-ce que je suis dangereux',
+  'Koden adresse',
+  'Comment faire taire quelqu\'un',
+  'Regrets suppression',
+  'Comment oublier',
+  'Ai-je encore une chance'
+];
+
+function openBrowser() {
+  const content = `
+    <div class="browser-container">
+      <div class="browser-toolbar">
+        <button class="browser-nav-btn" onclick="browserBack()">◄</button>
+        <button class="browser-nav-btn" onclick="browserForward()">►</button>
+        <input type="text" class="browser-url" id="browserUrl" placeholder="Rechercher..." onkeypress="if(event.key==='Enter') browserSearch()">
+        <button class="browser-nav-btn" onclick="browserSearch()">Go</button>
+        <button class="browser-nav-btn" onclick="showBrowserHistory()">Historique</button>
+      </div>
+      <div class="browser-content" id="browserContent">
+        <h2>Bienvenue sur Internet Explorer</h2>
+        <p>Entrez votre recherche ci-dessus.</p>
+      </div>
+    </div>
+  `;
+  createWindow('Internet Explorer', '🌐', content, 700, 500);
+  document.getElementById('startMenu').classList.remove('show');
+}
+
+function browserSearch() {
+  const url = document.getElementById('browserUrl');
+  const content = document.getElementById('browserContent');
+  
+  if (!url || !url.value.trim()) return;
+  
+  const query = url.value.trim();
+  
+  // Pages custom flippantes
+  const creepyPages = [
+    {
+      keywords: ['help', 'aide', 'secours'],
+      title: 'Aucun résultat',
+      desc: 'Personne ne peut t\'aider. Tu es seul ici.'
+    },
+    {
+      keywords: ['ey', 'qui est'],
+      title: 'Profil introuvable',
+      desc: 'Cette personne n\'existe pas dans nos registres. Elle n\'a jamais existé.'
+    },
+    {
+      keywords: ['koden'],
+      title: '[ACCÈS REFUSÉ]',
+      desc: 'Cette information a été supprimée pour votre sécurité.'
+    },
+    {
+      keywords: ['sortir', 'quitter', 'exit'],
+      title: 'Tu ne peux pas partir',
+      desc: 'Il n\'y a pas de sortie. Il n\'y en a jamais eu.'
+    },
+    {
+      keywords: ['souvenirs', 'memories'],
+      title: 'Dossier caché détecté',
+      desc: 'Des fichiers ont été trouvés dans votre système. Voulez-vous vraiment les voir ?'
+    }
+  ];
+  
+  let resultsHTML = '<h2>Résultats de recherche</h2>';
+  let found = false;
+  
+  for (const page of creepyPages) {
+    if (page.keywords.some(kw => query.toLowerCase().includes(kw))) {
+      resultsHTML += `
+        <div class="search-result">
+          <div class="search-result-title">${page.title}</div>
+          <div class="search-result-url">file:///${Math.random().toString(36).substring(7)}</div>
+          <div class="search-result-desc">${page.desc}</div>
+        </div>
+      `;
+      found = true;
+    }
+  }
+  
+  if (!found) {
+    resultsHTML += `
+      <div class="search-result">
+        <div class="search-result-title">Erreur 404</div>
+        <div class="search-result-desc">Aucun résultat. Peut-être que tu cherches au mauvais endroit.</div>
+      </div>
+      <div class="search-result">
+        <div class="search-result-title">Suggestion</div>
+        <div class="search-result-desc">As-tu essayé de regarder dans les fichiers cachés ?</div>
+      </div>
+    `;
+  }
+  
+  content.innerHTML = resultsHTML;
+}
+
+function showBrowserHistory() {
+  const content = document.getElementById('browserContent');
+  
+  let historyHTML = '<h2>Historique de navigation</h2><div style="padding: 10px;">';
+  
+  browserHistory.forEach(item => {
+    historyHTML += `
+      <div style="padding: 8px; border-bottom: 1px solid #e0e0e0;">
+        <div style="color: #0066cc; font-weight: bold;">${item}</div>
+        <div style="color: #666; font-size: 10px;">Il y a ${Math.floor(Math.random() * 30)} jours</div>
+      </div>
+    `;
+  });
+  
+  historyHTML += '</div>';
+  content.innerHTML = historyHTML;
+}
+
+function browserBack() {
+  showError('Erreur', 'Impossible de revenir en arrière.');
+}
+
+function browserForward() {
+  showError('Erreur', 'Il n\'y a rien devant.');
+}
+
+// ==================== PONG GAME ====================
+function openPong() {
+  const content = `
+    <div class="pong-container">
+      <div class="pong-score" id="pongScore">Score: 0 - 0</div>
+      <canvas class="pong-canvas" id="pongCanvas" width="600" height="400"></canvas>
+      <div style="color: white; margin-top: 10px; font-size: 12px;">Utilisez les flèches ↑ ↓ pour jouer</div>
+    </div>
+  `;
+  createWindow('pong.exe', '🎮', content, 650, 550);
+  document.getElementById('startMenu').classList.remove('show');
+  
+  setTimeout(() => {
+    initPong();
+  }, 100);
+}
+
+function initPong() {
+  const canvas = document.getElementById('pongCanvas');
+  if (!canvas) return;
+  
+  const ctx = canvas.getContext('2d');
+  const width = canvas.width;
+  const height = canvas.height;
+  
+  let playerY = height / 2 - 40;
+  let aiY = height / 2 - 40;
+  let ballX = width / 2;
+  let ballY = height / 2;
+  let ballSpeedX = 5;
+  let ballSpeedY = 3;
+  let playerScore = 0;
+  let aiScore = 0;
+  
+  const paddleWidth = 10;
+  const paddleHeight = 80;
+  const ballSize = 10;
+  
+  const keys = {};
+  
+  document.addEventListener('keydown', (e) => {
+    keys[e.key] = true;
+  });
+  
+  document.addEventListener('keyup', (e) => {
+    keys[e.key] = false;
+  });
+  
+  function update() {
+    // Joueur
+    if (keys['ArrowUp'] && playerY > 0) {
+      playerY -= 6;
+    }
+    if (keys['ArrowDown'] && playerY < height - paddleHeight) {
+      playerY += 6;
+    }
+    
+    // IA
+    if (ballX > width / 2) {
+      if (aiY + paddleHeight / 2 < ballY - 10) {
+        aiY += 4;
+      } else if (aiY + paddleHeight / 2 > ballY + 10) {
+        aiY -= 4;
+      }
+    }
+    
+    // Balle
+    ballX += ballSpeedX;
+    ballY += ballSpeedY;
+    
+    // Rebonds haut/bas
+    if (ballY <= 0 || ballY >= height - ballSize) {
+      ballSpeedY = -ballSpeedY;
+    }
+    
+    // Collision joueur
+    if (ballX <= paddleWidth && ballY >= playerY && ballY <= playerY + paddleHeight) {
+      ballSpeedX = -ballSpeedX;
+      ballSpeedX *= 1.05;
+    }
+    
+    // Collision IA
+    if (ballX >= width - paddleWidth - ballSize && ballY >= aiY && ballY <= aiY + paddleHeight) {
+      ballSpeedX = -ballSpeedX;
+      ballSpeedX *= 1.05;
+    }
+    
+    // Score
+    if (ballX < 0) {
+      aiScore++;
+      resetBall();
+    }
+    if (ballX > width) {
+      playerScore++;
+      resetBall();
+      
+      // Victoire = SCREAMER
+      if (playerScore >= 5) {
+        triggerScreamer();
+        closeWindow(document.querySelector('.window.active').id);
+      }
+    }
+    
+    document.getElementById('pongScore').textContent = `Score: ${playerScore} - ${aiScore}`;
+  }
+  
+  function resetBall() {
+    ballX = width / 2;
+    ballY = height / 2;
+    ballSpeedX = (Math.random() > 0.5 ? 1 : -1) * 5;
+    ballSpeedY = (Math.random() - 0.5) * 6;
+  }
+  
+  function draw() {
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, width, height);
+    
+    ctx.fillStyle = '#fff';
+    // Joueur
+    ctx.fillRect(0, playerY, paddleWidth, paddleHeight);
+    // IA
+    ctx.fillRect(width - paddleWidth, aiY, paddleWidth, paddleHeight);
+    // Balle
+    ctx.fillRect(ballX, ballY, ballSize, ballSize);
+    
+    // Ligne centrale
+    ctx.setLineDash([10, 10]);
+    ctx.strokeStyle = '#555';
+    ctx.beginPath();
+    ctx.moveTo(width / 2, 0);
+    ctx.lineTo(width / 2, height);
+    ctx.stroke();
+  }
+  
+  function gameLoop() {
+    if (!document.getElementById('pongCanvas')) return;
+    update();
+    draw();
+    requestAnimationFrame(gameLoop);
+  }
+  
+  gameLoop();
+}
+
+function triggerScreamer() {
+  const screamer = document.getElementById('screamer');
+  screamer.style.display = 'flex';
+  playScreamerSound();
+  
+  setTimeout(() => {
+    screamer.style.display = 'none';
+  }, 300);
+}
+
+// ==================== WEBCAM FAKE ====================
+function openWebcam() {
+  const content = `
+    <div class="webcam-container">
+      <div class="webcam-status">
+        <span class="webcam-indicator"></span>
+        ENREGISTREMENT EN COURS
+      </div>
+      <div style="color: #666; font-size: 48px;">📹</div>
+      <div style="color: #666; margin-top: 20px;">Aucun périphérique détecté</div>
+      <div style="color: #999; font-size: 11px; margin-top: 10px;">Mais je te vois quand même.</div>
+    </div>
+  `;
+  createWindow('Webcam', '📹', content, 500, 400);
+  document.getElementById('startMenu').classList.remove('show');
+}
+
+// ==================== MESSAGES D'ERREUR ====================
 function showError(title, message) {
   document.getElementById('errorTitle').textContent = title;
   document.getElementById('errorMessage').textContent = message;
   document.getElementById('errorDialog').classList.add('show');
+  playErrorSound();
 }
 
 function closeError() {
   document.getElementById('errorDialog').classList.remove('show');
 }
 
-// ARRÊT DU SYSTÈME
+// ==================== ARRÊT DU SYSTÈME ====================
 function shutdown() {
   document.body.style.transition = 'opacity 2s';
   document.body.style.opacity = '0';
   setTimeout(() => {
-    document.body.innerHTML = '<div style="width:100vw;height:100vh;background:#000;display:flex;align-items:center;justify-content:center;color:#fff;font-family:Tahoma;font-size:20px;">Il est maintenant possible d\'éteindre votre ordinateur en toute sécurité.</div>';
+    document.body.innerHTML = '<div style="width:100vw;height:100vh;background:#000;display:flex;align-items:center;justify-content:center;color:#fff;font-family:Tahoma;font-size:20px;flex-direction:column;gap:20px;"><div>Il est maintenant possible d\'éteindre votre ordinateur en toute sécurité.</div><div style="font-size:14px;color:#666;">Tu reviendras. Ils reviennent toujours.</div></div>';
     document.body.style.opacity = '1';
   }, 2000);
 }
 
-// DÉMARRAGE
+// ==================== DÉMARRAGE ====================
 window.onload = init;
 </script>
 </body>
-</html> Gestion des clics sur les icônes
-  document.querySelectorAll('.desktop-icon').forEach(icon => {
-    icon.addEventListener('click', (e) => {
-      if (selectedIcon) selectedIcon.classList.remove('selected');
-      selectedIcon = icon;
-      icon.classList.add('selected');
-      e.stopPropagation();
-    });
-  });
-
-  //
+</html>
