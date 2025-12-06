@@ -33,7 +33,7 @@ button, .window-control, .start-button, .start-item, .start-footer, .taskbar-ite
 
 /* BUREAU */
 #desktop {
-  height: calc(100vh - 30px);
+  height: calc(100vh - 40px);
   background: linear-gradient(to bottom, #245edb 0%, #3f8cf3 50%, #245edb 100%);
   position: relative;
   overflow: hidden;
@@ -158,7 +158,7 @@ button, .window-control, .start-button, .start-item, .start-footer, .taskbar-ite
 
 /* BARRE DES TÂCHES */
 #taskbar {
-  height: 30px;
+  height: 40px;
   background: linear-gradient(to bottom, #245edb 0%, #1f4ba8 100%);
   border-top: 1px solid #1941a5;
   display: flex;
@@ -168,18 +168,18 @@ button, .window-control, .start-button, .start-item, .start-footer, .taskbar-ite
 }
 
 .start-button {
-  height: 24px;
+  height: 32px;
   background: linear-gradient(to bottom, #5ebd5e 0%, #3d8b3d 100%);
   border: 1px solid #1a5c1a;
   border-radius: 3px;
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 0 8px;
+  padding: 0 12px;
   cursor: pointer;
   color: white;
   font-weight: bold;
-  font-size: 11px;
+  font-size: 12px;
   box-shadow: 0 1px 2px rgba(0,0,0,0.3);
 }
 
@@ -205,11 +205,11 @@ button, .window-control, .start-button, .start-item, .start-footer, .taskbar-ite
 }
 
 .taskbar-item {
-  height: 22px;
+  height: 30px;
   background: linear-gradient(to bottom, #3d8aed 0%, #2868c8 100%);
   border: 1px solid #1941a5;
   border-radius: 2px;
-  padding: 0 8px;
+  padding: 0 10px;
   display: flex;
   align-items: center;
   gap: 5px;
@@ -449,15 +449,98 @@ button, .window-control, .start-button, .start-item, .start-footer, .taskbar-ite
 /* EXPLORATEUR */
 .explorer-layout {
   display: flex;
+  flex-direction: column;
   height: 100%;
 }
 
-.explorer-sidebar {
-  width: 180px;
+.explorer-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px;
+  background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+  border-bottom: 2px outset #dfdfdf;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.8);
+}
+
+.explorer-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 22px;
+  font-size: 11px;
+  border: 2px solid;
+  border-color: #dfdfdf #808080 #808080 #dfdfdf;
+  background: #c0c0c0;
+  cursor: pointer;
+  transition: none;
+}
+
+.explorer-btn:active {
+  border-color: #808080 #dfdfdf #dfdfdf #808080;
+  background: #a8a8a8;
+}
+
+.explorer-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.explorer-separator {
+  width: 1px;
+  height: 20px;
+  background: #dfdfdf;
+  border-right: 1px solid rgba(255,255,255,0.5);
+  margin: 0 2px;
+}
+
+.explorer-address-bar {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 5px;
   background: #f0f0f0;
-  border-right: 1px solid #c0c0c0;
-  padding: 10px;
+  border-bottom: 2px inset #c0c0c0;
+  font-size: 11px;
+}
+
+.address-bar {
+  flex: 1;
+  padding: 3px 5px;
+  border: 2px inset #c0c0c0;
+  background: white;
+  font-size: 11px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.explorer-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  background: #f0f0f0;
+}
+
+.explorer-sidebar {
+  width: 200px;
+  background: #f0f0f0;
+  border-right: 2px outset #dfdfdf;
+  padding: 5px;
   overflow-y: auto;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.8);
+}
+
+.explorer-sidebar-section {
+  margin-bottom: 10px;
+}
+
+.explorer-sidebar-title {
+  font-size: 10px;
+  font-weight: bold;
+  color: #000080;
+  padding: 3px 5px;
+  margin-bottom: 3px;
+  text-transform: uppercase;
 }
 
 .explorer-tree-item {
@@ -467,34 +550,30 @@ button, .window-control, .start-button, .start-item, .start-footer, .taskbar-ite
   display: flex;
   align-items: center;
   gap: 5px;
+  margin: 1px 0;
+  border: 1px solid transparent;
 }
 
 .explorer-tree-item:hover {
-  background: #d1e5ff;
+  background: #3399ff;
+  color: white;
+  border: 1px solid #0078d7;
+}
+
+.explorer-tree-item.active {
+  background: #3399ff;
+  color: white;
+  border: 1px solid #0078d7;
 }
 
 .explorer-main {
   flex: 1;
   display: flex;
   flex-direction: column;
-}
-
-.explorer-address {
-  padding: 5px;
-  background: #f0f0f0;
-  border-bottom: 1px solid #c0c0c0;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 11px;
-}
-
-.address-bar {
-  flex: 1;
-  padding: 3px 5px;
-  border: 1px solid #7f9db9;
   background: white;
-  font-size: 11px;
+  border: 2px inset #c0c0c0;
+  margin: 5px;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.8);
 }
 
 .explorer-files {
@@ -505,6 +584,26 @@ button, .window-control, .start-button, .start-item, .start-footer, .taskbar-ite
   gap: 15px;
   align-content: start;
   overflow-y: auto;
+  background: white;
+}
+
+.explorer-status {
+  display: flex;
+  align-items: center;
+  padding: 2px 5px;
+  background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+  border-top: 2px inset #c0c0c0;
+  font-size: 10px;
+  color: #000;
+  gap: 10px;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  padding: 2px 5px;
+  background: #c0c0c0;
+  border: 2px inset #dfdfdf;
 }
 
 .file-item {
@@ -756,6 +855,65 @@ button, .window-control, .start-button, .start-item, .start-footer, .taskbar-ite
   letter-spacing: 0.12em;
 }
 
+/* VILLAGE 3D */
+.village-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  position: relative;
+}
+
+#villageCanvas {
+  flex: 1;
+  display: block;
+  background: #000;
+  width: 100%;
+  height: 100%;
+}
+
+.village-dialog {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 600px;
+  background: rgba(0, 0, 0, 0.95);
+  border: 2px solid #00ff00;
+  padding: 12px;
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  color: #00ff00;
+  text-shadow: 0 0 8px rgba(0, 255, 0, 0.6);
+  display: none;
+  z-index: 1000;
+  animation: dialogPop 0.3s ease-out;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.village-dialog.show {
+  display: block;
+}
+
+@keyframes dialogPop {
+  from { opacity: 0; transform: translateX(-50%) scaleY(0.8); }
+  to { opacity: 1; transform: translateX(-50%) scaleY(1); }
+}
+
+.dialog-name {
+  color: #ffff00;
+  font-weight: bold;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.dialog-text {
+  line-height: 1.4;
+}
+
 
 /* SCREAMER */
 .screamer {
@@ -778,6 +936,71 @@ button, .window-control, .start-button, .start-item, .start-footer, .taskbar-ite
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+/* BSOD (Blue Screen of Death) */
+.bsod {
+  position: fixed;
+  inset: 0;
+  background: #0000aa;
+  z-index: 99999;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px;
+  color: #ffffff;
+  font-family: "Courier New", monospace;
+  overflow: hidden;
+}
+
+.bsod.active {
+  display: flex;
+  animation: bsodGlitch 0.15s infinite;
+}
+
+@keyframes bsodGlitch {
+  0%, 100% { background: #0000aa; filter: brightness(1); }
+  50% { background: #0000cc; filter: brightness(1.1); }
+}
+
+.bsod-content {
+  max-width: 800px;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.bsod-title {
+  font-weight: bold;
+  margin-bottom: 20px;
+  font-size: 16px;
+  animation: bsodFlicker 0.8s infinite;
+}
+
+@keyframes bsodFlicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+.bsod-text {
+  margin-bottom: 10px;
+  word-break: break-all;
+}
+
+.bsod-error {
+  color: #ffff00;
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+.bsod-restart {
+  margin-top: 30px;
+  animation: bsodBlink 1s infinite;
+}
+
+@keyframes bsodBlink {
+  0%, 49%, 100% { opacity: 1; }
+  50%, 99% { opacity: 0; }
 }
 
 /* WEBCAM */
@@ -889,6 +1112,616 @@ button, .window-control, .start-button, .start-item, .start-footer, .taskbar-ite
   background: linear-gradient(to bottom, #ffffff 0%, #e8e8e8 100%);
 }
 
+/* PANNEAU DE CONFIGURATION */
+.control-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #ece9d8;
+  color: #000;
+}
+
+.panel-tabs {
+  display: flex;
+  border-bottom: 1px solid #999;
+  background: #d0cec8;
+  padding: 5px;
+  gap: 2px;
+}
+
+.panel-tab {
+  padding: 5px 15px;
+  cursor: pointer;
+  background: #bfbbb0;
+  border: 1px solid;
+  border-color: #dfdbcd #42413f #dfdbcd #d0cdc8;
+  border-radius: 3px 3px 0 0;
+  font-size: 11px;
+  font-weight: bold;
+  color: #000;
+}
+
+.panel-tab.active {
+  background: #ece9d8;
+  border-color: #dfdbcd #42413f #ece9d8 #dfdbcd;
+}
+
+.panel-tab:hover {
+  background: #cfc8bc;
+}
+
+.panel-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+  position: relative;
+}
+
+.panel-section {
+  display: none;
+}
+
+.panel-section.active {
+  display: block;
+}
+
+.panel-section h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 13px;
+  color: #000;
+  border-bottom: 1px solid #999;
+  padding-bottom: 5px;
+}
+
+.setting-item {
+  margin-bottom: 15px;
+  padding: 10px;
+  background: #f0ece4;
+  border: 1px solid #999;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+}
+
+.setting-item label {
+  font-weight: bold;
+  min-width: 120px;
+  color: #000;
+}
+
+.setting-item input[type="color"] {
+  width: 50px;
+  height: 25px;
+  cursor: pointer;
+  border: 1px solid #999;
+}
+
+.setting-item input[type="checkbox"] {
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+.setting-item input[type="range"] {
+  flex: 1;
+  cursor: pointer;
+  max-width: 150px;
+}
+
+.setting-item select {
+  padding: 3px;
+  border: 1px solid #999;
+  background: #fff;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.setting-item button {
+  padding: 4px 12px;
+  background: linear-gradient(to bottom, #f0f0f0 0%, #d8d8d8 100%);
+  border: 1px solid #999;
+  cursor: pointer;
+  font-size: 11px;
+  border-radius: 2px;
+}
+
+.setting-item button:hover {
+  background: linear-gradient(to bottom, #ffffff 0%, #e8e8e8 100%);
+}
+
+.setting-item span {
+  min-width: 40px;
+  text-align: right;
+  color: #666;
+}
+
+.security-status {
+  margin-top: 10px;
+  padding: 10px;
+  background: #000;
+  color: #00ff00;
+  border: 1px solid #00ff00;
+  border-radius: 3px;
+  font-family: "Courier New", monospace;
+  font-size: 10px;
+  min-height: 30px;
+}
+
+/* DÉMINEUR */
+.minesweeper-container {
+  padding: 12px;
+  background: #c0c0c0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.minesweeper-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: bold;
+  color: #000;
+}
+
+.minesweeper-grid {
+  display: inline-grid;
+  grid-template-columns: repeat(8, 30px);
+  gap: 1px;
+  background: #999;
+  padding: 5px;
+}
+
+.mine-cell {
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(to bottom, #dfdbcd 0%, #a0a0a0 100%);
+  border: 2px solid;
+  border-color: #dfdbcd #42413f #42413f #dfdbcd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 12px;
+  user-select: none;
+  color: #000;
+}
+
+.mine-cell:active {
+  border-color: #42413f #dfdbcd #dfdbcd #42413f;
+}
+
+.mine-cell.revealed {
+  background: #c0c0c0;
+  border: 1px solid #999;
+  color: #555;
+}
+
+.mine-cell.revealed.empty {
+  color: #c0c0c0;
+}
+
+.mine-cell.revealed.mine {
+  background: #000;
+  color: #ff0000;
+}
+
+.mine-cell.revealed.number-1 { color: #0000ff; }
+.mine-cell.revealed.number-2 { color: #008000; }
+.mine-cell.revealed.number-3 { color: #ff0000; }
+.mine-cell.revealed.number-4 { color: #000080; }
+.mine-cell.revealed.number-5 { color: #800000; }
+.mine-cell.revealed.number-6 { color: #008080; }
+.mine-cell.revealed.number-7 { color: #000000; }
+.mine-cell.revealed.number-8 { color: #808080; }
+
+/* SNAKE */
+.snake-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 8px;
+  background: #000;
+  overflow: hidden;
+  padding: 8px;
+}
+
+.snake-score {
+  color: #00ff00;
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.snake-canvas {
+  border: 2px solid #00ff00;
+  background: #000;
+  display: block;
+  image-rendering: pixelated;
+}
+
+.snake-hint {
+  color: #00ff00;
+  font-size: 11px;
+  font-family: "Courier New", monospace;
+}
+
+/* TAMAGOTCHI */
+.tamagotchi-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px;
+  background: #c0c0c0;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.tamagotchi-display {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(to bottom, #1a1a2e 0%, #0f3460 100%);
+  border: 3px solid;
+  border-color: #dfdbcd #42413f #42413f #dfdbcd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60px;
+  box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5), 0 2px 5px rgba(0,0,0,0.3);
+  flex-shrink: 0;
+}
+
+.tamagotchi-stats {
+  font-size: 10px;
+  color: #000;
+  text-align: center;
+  background: #dfdbcd;
+  padding: 8px;
+  border: 1px solid #999;
+  min-width: 140px;
+  flex-shrink: 0;
+}
+
+.tamagotchi-stats span {
+  color: #003c74;
+  font-weight: bold;
+}
+
+.tamagotchi-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.tamagotchi-btn {
+  padding: 5px 8px;
+  background: linear-gradient(to bottom, #dfdbcd 0%, #bfbbb0 100%);
+  border: 2px solid;
+  border-color: #dfdbcd #42413f #42413f #dfdbcd;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: bold;
+  color: #000;
+  transition: none;
+}
+
+.tamagotchi-btn:active {
+  border-color: #42413f #dfdbcd #dfdbcd #42413f;
+}
+
+.tamagotchi-btn:hover {
+  background: linear-gradient(to bottom, #ece9d8 0%, #cfc8bc 100%);
+}
+
+/* BLOC-NOTES */
+.notepad-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #fff;
+  color: #000;
+}
+
+.notepad-text {
+  flex: 1;
+  padding: 10px;
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  border: none;
+  outline: none;
+  resize: none;
+  background: #fff;
+  color: #000;
+}
+
+/* CALCULATRICE */
+.calculator-container {
+  padding: 6px;
+  background: #c0c0c0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.calc-display {
+  background: #e8e8e8;
+  color: #000;
+  border: 2px solid;
+  border-color: #dfdfdf #808080 #808080 #dfdfdf;
+  padding: 6px 4px;
+  text-align: right;
+  font-family: "Tahoma", sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  min-height: 32px;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.8), inset -1px -1px 0 rgba(0,0,0,0.3);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 6px;
+}
+
+.calc-buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  flex: 1;
+  min-height: 0;
+}
+
+.calc-btn {
+  padding: 4px 4px;
+  background: linear-gradient(to bottom, #f0f0f0 0%, #d8d8d8 100%);
+  border: 2px solid;
+  border-color: #dfdfdf #808080 #808080 #dfdfdf;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: bold;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  font-family: "Tahoma", sans-serif;
+}
+
+.calc-btn:hover {
+  background: linear-gradient(to bottom, #ffffff 0%, #e8e8e8 100%);
+}
+
+.calc-btn:active {
+  border-color: #808080 #dfdfdf #dfdfdf #808080;
+  background: linear-gradient(to bottom, #c0c0c0 0%, #e8e8e8 100%);
+}
+
+.calc-btn.operator {
+  background: linear-gradient(to bottom, #f0f0f0 0%, #d8d8d8 100%);
+  color: #000;
+}
+
+.calc-btn.operator:active {
+  border-color: #808080 #dfdfdf #dfdfdf #808080;
+}
+
+.calc-btn.equals {
+  background: linear-gradient(to bottom, #f0f0f0 0%, #d8d8d8 100%);
+  color: #000;
+  grid-column: span 2;
+  font-size: 12px;
+}
+
+.calc-btn.equals:active {
+  border-color: #808080 #dfdfdf #dfdfdf #808080;
+}
+
+/* GESTIONNAIRE DE TÂCHES */
+.taskmanager-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #ece9d8;
+  color: #000;
+  font-size: 11px;
+}
+
+.task-tabs {
+  display: flex;
+  border-bottom: 1px solid #999;
+  background: #d0cec8;
+}
+
+.task-tab {
+  padding: 5px 15px;
+  cursor: pointer;
+  background: #bfbbb0;
+  border: 1px solid #999;
+  border-bottom: none;
+}
+
+.task-tab.active {
+  background: #ece9d8;
+}
+
+.task-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.task-item {
+  padding: 8px;
+  background: #fff;
+  border: 1px solid #999;
+  margin-bottom: 5px;
+  cursor: pointer;
+  color: #000;
+}
+
+.task-item:hover {
+  background: #dfdbcd;
+}
+
+.task-item.critical {
+  background: #ffcccc;
+  border-left: 3px solid #ff0000;
+}
+
+.task-buttons {
+  padding: 10px;
+  display: flex;
+  gap: 5px;
+  border-top: 1px solid #999;
+}
+
+.task-btn {
+  padding: 5px 15px;
+  background: linear-gradient(to bottom, #f0f0f0 0%, #d8d8d8 100%);
+  border: 1px solid #999;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.task-btn:hover {
+  background: linear-gradient(to bottom, #ffffff 0%, #e8e8e8 100%);
+}
+
+/* LECTEUR MÉDIA */
+.media-player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 15px;
+  background: #c0c0c0;
+  color: #000;
+  padding: 20px;
+}
+
+.media-screen {
+  width: 280px;
+  height: 140px;
+  background: #e8e8e8;
+  border: 2px solid;
+  border-color: #dfdfdf #808080 #808080 #dfdfdf;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Tahoma", sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  color: #000;
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.8), inset -1px -1px 0 rgba(0,0,0,0.3);
+}
+
+@keyframes mediaGlitch {
+  0%, 100% { filter: none; }
+  50% { filter: hue-rotate(180deg) brightness(1.1); }
+}
+
+@keyframes blink {
+  0%, 49%, 100% { opacity: 1; }
+  50%, 99% { opacity: 0.3; }
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.media-buttons {
+  display: flex;
+  gap: 3px;
+}
+
+.media-btn {
+  padding: 6px 12px;
+  background: linear-gradient(to bottom, #f0f0f0 0%, #d8d8d8 100%);
+  color: #000;
+  border: 2px solid;
+  border-color: #dfdfdf #808080 #808080 #dfdfdf;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 0;
+  font-family: "Tahoma", sans-serif;
+  font-size: 11px;
+}
+
+.media-btn:hover {
+  background: linear-gradient(to bottom, #ffffff 0%, #e8e8e8 100%);
+}
+
+.media-btn:active {
+  border-color: #808080 #dfdfdf #dfdfdf #808080;
+  background: linear-gradient(to bottom, #c0c0c0 0%, #e8e8e8 100%);
+}
+
+/* JOURNAL */
+.journal-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #2a2a2a;
+  color: #888;
+  overflow: hidden;
+}
+
+.journal-entries {
+  flex: 1;
+  overflow: hidden !important;
+  padding: 10px;
+  font-family: "Courier New", monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 100%;
+}
+
+.journal-entry {
+  margin-bottom: 0;
+  padding: 6px 8px;
+  background: #1a1a1a;
+  border-left: 2px solid #555;
+  min-height: 0;
+  flex-shrink: 0;
+}
+
+.journal-date {
+  color: #00ff00;
+  font-weight: bold;
+  margin-bottom: 2px;
+  font-size: 10px;
+}
+
+.journal-text {
+  color: #888;
+  word-break: break-word;
+  font-size: 10px;
+}
+
+.journal-text.corrupted {
+  color: #ff0000;
+  text-decoration: line-through;
+}
+
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .window {
@@ -905,6 +1738,7 @@ button, .window-control, .start-button, .start-item, .start-footer, .taskbar-ite
 
 <div id="desktop">
   <div class="desktop-icons" id="desktopIcons">
+    <!-- TOP LEFT PRIORITY -->
     <div class="desktop-icon" data-type="trash" ondblclick="openTrash()">
       <div class="icon-image">🗑️</div>
       <div class="icon-label">Corbeille</div>
@@ -913,13 +1747,59 @@ button, .window-control, .start-button, .start-item, .start-footer, .taskbar-ite
       <div class="icon-image">📁</div>
       <div class="icon-label">relations</div>
     </div>
+    
+    <!-- DOCUMENTS -->
+    <div class="desktop-icon" data-type="folder" ondblclick="openFolder('Mes documents')">
+      <div class="icon-image">📄</div>
+      <div class="icon-label">Mes documents</div>
+    </div>
     <div class="desktop-icon" data-type="image" ondblclick="openImage('him.jpg')">
       <div class="icon-image">🖼️</div>
       <div class="icon-label">him.jpg</div>
     </div>
+    
+    <!-- GAMES -->
     <div class="desktop-icon" data-type="game" ondblclick="openPong()">
       <div class="icon-image">🎮</div>
       <div class="icon-label">pong.exe</div>
+    </div>
+    <div class="desktop-icon" data-type="game" ondblclick="openMinesweeper()">
+      <div class="icon-image">💣</div>
+      <div class="icon-label">démineur.exe</div>
+    </div>
+    <div class="desktop-icon" data-type="game" ondblclick="openSnake()">
+      <div class="icon-image">🐍</div>
+      <div class="icon-label">snake.exe</div>
+    </div>
+    <div class="desktop-icon" data-type="game" ondblclick="openTamagotchi()">
+      <div class="icon-image">👾</div>
+      <div class="icon-label">compagnon.exe</div>
+    </div>
+    
+    <!-- APPLICATIONS -->
+    <div class="desktop-icon" data-type="app" ondblclick="openNotepad()">
+      <div class="icon-image">📝</div>
+      <div class="icon-label">Bloc-notes</div>
+    </div>
+    <div class="desktop-icon" data-type="app" ondblclick="openCalculator()">
+      <div class="icon-image">🧮</div>
+      <div class="icon-label">Calculatrice</div>
+    </div>
+    <div class="desktop-icon" data-type="app" ondblclick="openBrowser()">
+      <div class="icon-image">🌐</div>
+      <div class="icon-label">Internet Explorer</div>
+    </div>
+    <div class="desktop-icon" data-type="app" ondblclick="openChat()">
+      <div class="icon-image">💬</div>
+      <div class="icon-label">Messagerie</div>
+    </div>
+    <div class="desktop-icon" data-type="app" ondblclick="openMediaPlayer()">
+      <div class="icon-image">🎵</div>
+      <div class="icon-label">Lecteur média</div>
+    </div>
+    <div class="desktop-icon" data-type="app" ondblclick="openJournal()">
+      <div class="icon-image">📓</div>
+      <div class="icon-label">Mon journal</div>
     </div>
   </div>
 </div>
@@ -942,7 +1822,7 @@ button, .window-control, .start-button, .start-item, .start-footer, .taskbar-ite
     <span class="start-user-name">Ey.</span>
   </div>
   <div class="start-items">
-    <div class="start-item" onclick="openMyDocuments()">
+    <div class="start-item" onclick="openFolder('Mes documents')">
       <span class="start-item-icon">📄</span>
       <span>Mes documents</span>
     </div>
@@ -959,9 +1839,48 @@ button, .window-control, .start-button, .start-item, .start-footer, .taskbar-ite
       <span class="start-item-icon">💬</span>
       <span>Messagerie</span>
     </div>
-    <div class="start-item" onclick="openWebcam()">
-      <span class="start-item-icon">📹</span>
-      <span>Webcam</span>
+    <div class="start-separator"></div>
+    <div class="start-item" onclick="openPong()">
+      <span class="start-item-icon">🎮</span>
+      <span>Pong</span>
+    </div>
+    <div class="start-item" onclick="openMinesweeper()">
+      <span class="start-item-icon">💣</span>
+      <span>Démineur</span>
+    </div>
+    <div class="start-item" onclick="openSnake()">
+      <span class="start-item-icon">🐍</span>
+      <span>Snake</span>
+    </div>
+    <div class="start-item" onclick="openTamagotchi()">
+      <span class="start-item-icon">👾</span>
+      <span>Compagnon</span>
+    </div>
+    <div class="start-separator"></div>
+    <div class="start-item" onclick="openNotepad()">
+      <span class="start-item-icon">📝</span>
+      <span>Bloc-notes</span>
+    </div>
+    <div class="start-item" onclick="openCalculator()">
+      <span class="start-item-icon">🧮</span>
+      <span>Calculatrice</span>
+    </div>
+    <div class="start-item" onclick="openTaskManager()">
+      <span class="start-item-icon">⚙️</span>
+      <span>Gestionnaire de tâches</span>
+    </div>
+    <div class="start-item" onclick="openMediaPlayer()">
+      <span class="start-item-icon">🎵</span>
+      <span>Lecteur média</span>
+    </div>
+    <div class="start-item" onclick="openJournal()">
+      <span class="start-item-icon">📓</span>
+      <span>Journal</span>
+    </div>
+    <div class="start-separator"></div>
+    <div class="start-item" onclick="openControlPanel()">
+      <span class="start-item-icon">⚙️</span>
+      <span>Panneau de configuration</span>
     </div>
   </div>
   <div class="start-footer" onclick="shutdown()">
@@ -981,6 +1900,25 @@ button, .window-control, .start-button, .start-item, .start-footer, .taskbar-ite
   </div>
   <div class="error-buttons">
     <button class="error-button" onclick="closeError()">OK</button>
+  </div>
+</div>
+
+<div class="bsod" id="bsod">
+  <div class="bsod-content">
+    <div class="bsod-title">A problem has been detected and windows has been shut down to prevent damage to your computer.</div>
+    <div class="bsod-text"></div>
+    <div class="bsod-text">DRIVER_IRQL_NOT_LESS_OR_EQUAL</div>
+    <div class="bsod-text"></div>
+    <div class="bsod-text">If this is the first time you've seen this Stop error screen, restart your computer. If this screen appears again, follow these steps:</div>
+    <div class="bsod-text"></div>
+    <div class="bsod-text">Check to make sure any new hardware or software is properly installed.</div>
+    <div class="bsod-text">If problems continue, disable or remove newly installed hardware or software.</div>
+    <div class="bsod-text"></div>
+    <div class="bsod-error">ERREUR SYSTÈME DÉTECTÉE : CLAIRETTE.SYS</div>
+    <div class="bsod-error">FICHIER CORROMPU - SUPPRESSION IMPOSSÍVEL</div>
+    <div class="bsod-error">Mémoire de masse défaillante</div>
+    <div class="bsod-text"></div>
+    <div class="bsod-restart">Appuyez sur Ctrl+Alt+Suppr pour redémarrer votre ordinateur.</div>
   </div>
 </div>
 
@@ -1143,9 +2081,9 @@ Elle me fait me sentir... presque humain.
   'Corbeille': {
     type: 'trash',
     files: {
-      'remords.dll': { type: 'corrupted', content: null },
-      'regrets.sys': { type: 'corrupted', content: null },
-      'utilité.exe': { type: 'corrupted', content: null }
+      'Remords.txt': { type: 'corrupted', content: null },
+      'Regrets.txt': { type: 'corrupted', content: null },
+      'photos_supprimees.jpg': { type: 'image', content: null }
     }
   },
   'souvenirs': {
@@ -1189,8 +2127,79 @@ let corruptionLevel = 0;
 let ghostFilesSpawned = [];
 let imageCorrupted = false;
 
+// ==================== SYSTÈME DE PROGRESSION ====================
+let progressionState = {
+  completedTasks: [],
+  secretFileCreated: false
+};
+
+// Charger l'état de progression
+function loadProgression() {
+  const saved = localStorage.getItem('progressionState');
+  if (saved) {
+    progressionState = JSON.parse(saved);
+  }
+}
+
+// Sauvegarder la progression
+function saveProgression() {
+  localStorage.setItem('progressionState', JSON.stringify(progressionState));
+}
+
+// Vérifier et ajouter le fichier secret si toutes les tâches sont complétées
+function checkAllTasksCompleted() {
+  if (progressionState.completedTasks.length === 10 && !progressionState.secretFileCreated) {
+    progressionState.secretFileCreated = true;
+    saveProgression();
+    
+    // Ajouter le fichier au bureau
+    fileSystem['souvenirs'].files['rendezvous.txt'] = {
+      type: 'text',
+      content: `Elle arrive bientôt, je l'attends avec impatience à l'entrepôt.
+
+Les préparatifs sont presque terminés.
+Tout doit être parfait.
+
+Elle ne peut pas savoir.
+Elle ne doit pas savoir.
+
+Mais bientôt... elle saura.
+
+- Ey.`
+    };
+    
+    // Créer une notification
+    showNotification();
+    
+    // Attendre un peu puis ajouter l'icône
+    setTimeout(() => {
+      createNewDesktopIcon('rendezvous.txt', '📝', 'rendezvous.txt', 'text');
+    }, 500);
+  }
+}
+
+// Créer une nouvelle icône sur le bureau
+function createNewDesktopIcon(id, emoji, label, type) {
+  const container = document.getElementById('desktopIcons');
+  const icon = document.createElement('div');
+  icon.className = 'desktop-icon';
+  icon.setAttribute('data-type', type);
+  icon.ondblclick = function() {
+    if (type === 'text') {
+      const content = `<textarea class="notepad-content" readonly>${fileSystem['souvenirs'].files[id].content}</textarea>`;
+      createWindow(label, emoji, content, 500, 400);
+    }
+  };
+  icon.innerHTML = `
+    <div class="icon-image">${emoji}</div>
+    <div class="icon-label">${label}</div>
+  `;
+  container.appendChild(icon);
+}
+
 // ==================== INITIALISATION ====================
 function init() {
+  loadProgression();
   updateClock();
   setInterval(updateClock, 1000);
   
@@ -1426,6 +2435,153 @@ function updateClock() {
   document.getElementById('clock').textContent = timeStr;
 }
 
+// ==================== NOTIFICATIONS SYSTÈME ====================
+function showSystemNotification(title, message, type = 'info') {
+  const notif = document.createElement('div');
+  notif.className = 'system-notification';
+  notif.style.cssText = `
+    position: fixed;
+    bottom: 40px;
+    right: 10px;
+    width: 300px;
+    background: ${type === 'warning' ? '#ffcc00' : type === 'error' ? '#ff3333' : '#ece9d8'};
+    border: 2px solid;
+    border-color: ${type === 'warning' ? '#cc9900' : type === 'error' ? '#990000' : '#999'};
+    padding: 15px;
+    border-radius: 3px;
+    z-index: 10000;
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+    color: #000;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+    animation: slideInRight 0.3s ease-out;
+  `;
+  notif.innerHTML = `
+    <div style="font-weight: bold; margin-bottom: 5px;">${title}</div>
+    <div>${message}</div>
+  `;
+  document.body.appendChild(notif);
+  
+  setTimeout(() => {
+    notif.style.animation = 'slideOutRight 0.3s ease-out';
+    setTimeout(() => notif.remove(), 300);
+  }, 4000);
+}
+
+// Lancer des notifications aléatoires
+setInterval(() => {
+  if (Math.random() > 0.85) {
+    const notifications = [
+      { title: '⚠️ Attention', message: 'Fichiers système corrompus détectés.', type: 'warning' },
+      { title: '🔒 Sécurité', message: 'Tentative d\'accès à des fichiers privés.', type: 'error' },
+      { title: '📥 Mise à jour', message: 'Nouvelle mise à jour disponible: v666.6.6', type: 'info' },
+      { title: '🔍 Scan', message: 'Élément suspect trouvé dans la mémoire.', type: 'warning' },
+      { title: '⚙️ Système', message: 'Processus inconnu exécuté.', type: 'error' }
+    ];
+    const rand = notifications[Math.floor(Math.random() * notifications.length)];
+    showSystemNotification(rand.title, rand.message, rand.type);
+  }
+}, 30000);
+
+// ==================== THÈMES ====================
+const themes = {
+  'Classique': {
+    primary: '#245edb',
+    secondary: '#3f8cf3',
+    text: '#000'
+  },
+  'Noir sombre': {
+    primary: '#1a1a1a',
+    secondary: '#333',
+    text: '#00ff00'
+  },
+  'Matrix': {
+    primary: '#001100',
+    secondary: '#003300',
+    text: '#00ff00'
+  },
+  'Rose glitch': {
+    primary: '#ff0080',
+    secondary: '#ff00ff',
+    text: '#fff'
+  }
+};
+
+function applyTheme(themeName) {
+  const theme = themes[themeName];
+  if (!theme) return;
+
+  const desktop = document.getElementById('desktop');
+  desktop.style.background = `linear-gradient(to bottom, ${theme.primary} 0%, ${theme.secondary} 50%, ${theme.primary} 100%)`;
+  
+  // Appliquer aux fenêtres aussi
+  document.querySelectorAll('.window').forEach(win => {
+    win.style.color = theme.text;
+  });
+}
+
+// ==================== OEUFS DE PÂQUES ====================
+let secretCode = '';
+const secretSequences = {
+  'UP UP DOWN DOWN LEFT RIGHT LEFT RIGHT B A': () => {
+    showError('CHEAT CODE', 'Mode god activé! 👽');
+    document.body.style.filter = 'invert(1) hue-rotate(180deg)';
+  },
+  'K O D E N': () => {
+    showError('ERROR', 'Vous ne devriez pas être ici...');
+    document.body.style.opacity = '0.5';
+    setTimeout(() => { document.body.style.opacity = '1'; }, 2000);
+  },
+  'S T A R T': () => {
+    for (let i = 0; i < 10; i++) {
+      setTimeout(() => {
+        showSystemNotification('💫 Wow', 'Tu as trouvé quelque chose!', 'info');
+      }, i * 500);
+    }
+  }
+};
+
+document.addEventListener('keydown', (e) => {
+  const key = e.key.toUpperCase();
+  secretCode += key + ' ';
+  secretCode = secretCode.slice(-50); // Garder les 50 derniers caractères
+
+  for (const sequence in secretSequences) {
+    if (secretCode.includes(sequence)) {
+      secretSequences[sequence]();
+      secretCode = '';
+      break;
+    }
+  }
+});
+
+// Injection de keyframes manquantes pour les animations
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideInRight {
+    from {
+      transform: translateX(350px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideOutRight {
+    from {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateX(350px);
+      opacity: 0;
+    }
+  }
+`;
+document.head.appendChild(style);
+
 // ==================== MENU DÉMARRER ====================
 function toggleStartMenu() {
   const menu = document.getElementById('startMenu');
@@ -1584,17 +2740,30 @@ function updateTaskbar() {
 }
 
 // ==================== EXPLORATEUR DE FICHIERS ====================
+// Explorer navigation history
+window.explorerHistory = [];
+window.explorerHistoryIndex = -1;
+
 function openFolder(folderName) {
   const content = createExplorerContent(folderName);
-  createWindow(folderName, '📁', content, 700, 500);
+  createWindow(folderName, '📁', content, 800, 550);
   document.getElementById('startMenu').classList.remove('show');
+  // Add to history
+  window.explorerHistory.push(folderName);
+  window.explorerHistoryIndex = window.explorerHistory.length - 1;
 }
 
 function createExplorerContent(folderName) {
   const folder = fileSystem[folderName];
   if (!folder) return '<div style="padding: 20px;">Dossier introuvable</div>';
 
+  // Track opening souvenirs
+  if (folderName === 'souvenirs') {
+    window.visitedSouvenirs = true;
+  }
+
   let filesHTML = '';
+  let fileCount = 0;
   for (const [fileName, fileData] of Object.entries(folder.files)) {
     const icon = getFileIcon(fileData.type);
     filesHTML += `
@@ -1603,28 +2772,68 @@ function createExplorerContent(folderName) {
         <div class="file-name">${fileName}</div>
       </div>
     `;
+    fileCount++;
   }
 
   return `
     <div class="explorer-layout">
-      <div class="explorer-sidebar">
-        <div class="explorer-tree-item" onclick="openFolder('Mes documents')">📄 Mes documents</div>
-        <div class="explorer-tree-item" onclick="openMyComputer()">💻 Poste de travail</div>
-        <div class="explorer-tree-item" onclick="openFolder('relations')">📁 relations</div>
-        <div class="explorer-tree-item" onclick="openTrash()">🗑️ Corbeille</div>
-        <div class="explorer-tree-item" onclick="openFolder('souvenirs')" style="opacity: 0.3;">📂 ???</div>
+      <div class="explorer-toolbar">
+        <button class="explorer-btn" title="Précédent" onclick="explorerNavigateBack()">◄</button>
+        <button class="explorer-btn" title="Suivant" onclick="explorerNavigateForward()">►</button>
+        <button class="explorer-btn" title="Vers le haut" onclick="explorerGoUp()">▲</button>
+        <div class="explorer-separator"></div>
+        <button class="explorer-btn" title="Accueil" onclick="openFolder('Mes documents')">🏠</button>
       </div>
-      <div class="explorer-main">
-        <div class="explorer-address">
-          <span>Adresse:</span>
-          <input type="text" class="address-bar" value="C:\\${folderName}" readonly>
+      <div class="explorer-address-bar">
+        <span>Adresse:</span>
+        <input type="text" class="address-bar" value="C:\\${folderName}" readonly>
+      </div>
+      <div class="explorer-content">
+        <div class="explorer-sidebar">
+          <div class="explorer-sidebar-section">
+            <div class="explorer-sidebar-title">Raccourcis</div>
+            <div class="explorer-tree-item" onclick="openFolder('Mes documents')">📄 Mes documents</div>
+            <div class="explorer-tree-item" onclick="openMyComputer()">💻 Poste de travail</div>
+            <div class="explorer-tree-item" onclick="openTrash()">🗑️ Corbeille</div>
+          </div>
+          <div class="explorer-sidebar-section">
+            <div class="explorer-sidebar-title">Autres</div>
+            <div class="explorer-tree-item" onclick="openFolder('relations')">📁 relations</div>
+            <div class="explorer-tree-item" onclick="openFolder('souvenirs')" style="opacity: 0.3;">📂 ???</div>
+          </div>
         </div>
-        <div class="explorer-files">
-          ${filesHTML}
+        <div class="explorer-main">
+          <div class="explorer-files">
+            ${filesHTML}
+          </div>
         </div>
+      </div>
+      <div class="explorer-status">
+        <span>${fileCount} objet(s)</span>
       </div>
     </div>
   `;
+}
+
+function explorerNavigateBack() {
+  if (window.explorerHistoryIndex > 0) {
+    window.explorerHistoryIndex--;
+    const folderName = window.explorerHistory[window.explorerHistoryIndex];
+    // Recreate window with new content - implementation would need window reference
+  }
+}
+
+function explorerNavigateForward() {
+  if (window.explorerHistoryIndex < window.explorerHistory.length - 1) {
+    window.explorerHistoryIndex++;
+    const folderName = window.explorerHistory[window.explorerHistoryIndex];
+    // Recreate window with new content - implementation would need window reference
+  }
+}
+
+function explorerGoUp() {
+  // Navigate to parent folder
+  openFolder('Mes documents');
 }
 
 function getFileIcon(type) {
@@ -1640,6 +2849,11 @@ function getFileIcon(type) {
 
 function openFile(folderName, fileName) {
   const fileData = fileSystem[folderName].files[fileName];
+  
+  // Track opening koden.txt
+  if (fileName === 'koden.txt' && folderName === 'relations') {
+    // Ce fichier contient "TUEUR" donc la verification automatiquement ok
+  }
   
   if (fileData.type === 'corrupted') {
     playErrorSound();
@@ -1663,50 +2877,95 @@ function openFile(folderName, fileName) {
   }
 }
 
-// ==================== MES DOCUMENTS ====================
-function openMyDocuments() {
-  openFolder('Mes documents');
-}
-
 // ==================== POSTE DE TRAVAIL ====================
 function openMyComputer() {
   const content = `
     <div class="explorer-layout">
-      <div class="explorer-sidebar">
-        <div class="explorer-tree-item" onclick="openFolder('Mes documents')">📄 Mes documents</div>
-        <div class="explorer-tree-item" onclick="openFolder('relations')">📁 relations</div>
-        <div class="explorer-tree-item" onclick="openTrash()">🗑️ Corbeille</div>
+      <div class="explorer-toolbar">
+        <button class="explorer-btn" title="Précédent" onclick="explorerNavigateBack()" disabled>◄</button>
+        <button class="explorer-btn" title="Suivant" onclick="explorerNavigateForward()" disabled>►</button>
+        <button class="explorer-btn" title="Vers le haut" onclick="explorerGoUp()" disabled>▲</button>
+        <div class="explorer-separator"></div>
+        <button class="explorer-btn" title="Accueil" onclick="openFolder('Mes documents')">🏠</button>
       </div>
-      <div class="explorer-main">
-        <div class="explorer-address">
-          <span>Adresse:</span>
-          <input type="text" class="address-bar" value="Poste de travail" readonly>
-        </div>
-        <div class="explorer-files">
-          <div class="file-item" ondblclick="openFolder('Mes documents')">
-            <div class="file-icon">📄</div>
-            <div class="file-name">Mes documents</div>
-          </div>
-          <div class="file-item" ondblclick="openFolder('relations')">
-            <div class="file-icon">📁</div>
-            <div class="file-name">relations</div>
-          </div>
-          <div class="file-item">
-            <div class="file-icon">💾</div>
-            <div class="file-name">Disque local (C:)</div>
+      <div class="explorer-address-bar">
+        <span>Adresse:</span>
+        <input type="text" class="address-bar" value="Poste de travail" readonly>
+      </div>
+      <div class="explorer-content">
+        <div class="explorer-sidebar">
+          <div class="explorer-sidebar-section">
+            <div class="explorer-sidebar-title">Raccourcis</div>
+            <div class="explorer-tree-item" onclick="openFolder('Mes documents')">📄 Mes documents</div>
+            <div class="explorer-tree-item active">💻 Poste de travail</div>
+            <div class="explorer-tree-item" onclick="openTrash()">🗑️ Corbeille</div>
           </div>
         </div>
+        <div class="explorer-main">
+          <div class="explorer-files">
+            <div class="file-item" ondblclick="openFolder('Mes documents')">
+              <div class="file-icon">📄</div>
+              <div class="file-name">Mes documents</div>
+            </div>
+            <div class="file-item" ondblclick="openFolder('relations')">
+              <div class="file-icon">📁</div>
+              <div class="file-name">relations</div>
+            </div>
+            <div class="file-item">
+              <div class="file-icon">💾</div>
+              <div class="file-name">Disque local (C:)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="explorer-status">
+        <span>3 objet(s)</span>
       </div>
     </div>
   `;
-  createWindow('Poste de travail', '💻', content, 700, 500);
+  createWindow('Poste de travail', '💻', content, 800, 550);
   document.getElementById('startMenu').classList.remove('show');
 }
 
 // ==================== CORBEILLE ====================
 function openTrash() {
-  const content = createExplorerContent('Corbeille');
-  createWindow('Corbeille', '🗑️', content, 700, 500);
+  const content = `
+    <div class="explorer-layout">
+      <div class="explorer-toolbar">
+        <button class="explorer-btn" title="Précédent" onclick="explorerNavigateBack()" disabled>◄</button>
+        <button class="explorer-btn" title="Suivant" onclick="explorerNavigateForward()" disabled>►</button>
+        <button class="explorer-btn" title="Vers le haut" onclick="explorerGoUp()" disabled>▲</button>
+        <div class="explorer-separator"></div>
+        <button class="explorer-btn" title="Accueil" onclick="openFolder('Mes documents')">🏠</button>
+      </div>
+      <div class="explorer-address-bar">
+        <span>Adresse:</span>
+        <input type="text" class="address-bar" value="Corbeille" readonly>
+      </div>
+      <div class="explorer-content">
+        <div class="explorer-sidebar">
+          <div class="explorer-sidebar-section">
+            <div class="explorer-sidebar-title">Raccourcis</div>
+            <div class="explorer-tree-item" onclick="openFolder('Mes documents')">📄 Mes documents</div>
+            <div class="explorer-tree-item" onclick="openMyComputer()">💻 Poste de travail</div>
+            <div class="explorer-tree-item active">🗑️ Corbeille</div>
+          </div>
+        </div>
+        <div class="explorer-main">
+          <div class="explorer-files">
+            <div class="file-item" ondblclick="openFile('Corbeille', 'photos_supprimees.jpg')">
+              <div class="file-icon">🖼️</div>
+              <div class="file-name">photos_supprimees.jpg</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="explorer-status">
+        <span>1 objet(s)</span>
+      </div>
+    </div>
+  `;
+  createWindow('Corbeille', '🗑️', content, 800, 550);
   document.getElementById('startMenu').classList.remove('show');
 }
 
@@ -1755,6 +3014,15 @@ function sendChatMessage() {
   if (!input || !input.value.trim()) return;
   
   const userMessage = input.value.trim();
+  
+  // Vérifier si le message contient "Clairette"
+  if (userMessage.toLowerCase().includes('clairette')) {
+    // Déclencher le BSOD
+    triggerBSOD();
+    input.value = '';
+    return;
+  }
+  
   input.value = '';
   
   // Message utilisateur
@@ -1867,9 +3135,20 @@ function browserSearch() {
   
   if (!url || !url.value.trim()) return;
   
-  const query = url.value.trim();
+  const query = url.value.trim().toLowerCase();
   
-  // Pages custom flippantes
+  // Vérifier si c'est une recherche spéciale
+  if (query.includes('ey')) {
+    showEyPage();
+    return;
+  }
+  
+  if (query.includes('koden')) {
+    showKodenPage();
+    return;
+  }
+  
+  // Pages custom flippantes par défaut
   const creepyPages = [
     {
       keywords: ['help', 'aide', 'secours'],
@@ -1877,14 +3156,9 @@ function browserSearch() {
       desc: 'Personne ne peut t\'aider. Tu es seul ici.'
     },
     {
-      keywords: ['ey', 'qui est'],
+      keywords: ['qui est'],
       title: 'Profil introuvable',
       desc: 'Cette personne n\'existe pas dans nos registres. Elle n\'a jamais existé.'
-    },
-    {
-      keywords: ['koden'],
-      title: '[ACCÈS REFUSÉ]',
-      desc: 'Cette information a été supprimée pour votre sécurité.'
     },
     {
       keywords: ['sortir', 'quitter', 'exit'],
@@ -1902,7 +3176,7 @@ function browserSearch() {
   let found = false;
   
   for (const page of creepyPages) {
-    if (page.keywords.some(kw => query.toLowerCase().includes(kw))) {
+    if (page.keywords.some(kw => query.includes(kw))) {
       resultsHTML += `
         <div class="search-result">
           <div class="search-result-title">${page.title}</div>
@@ -1927,7 +3201,148 @@ function browserSearch() {
     `;
   }
   
-  content.innerHTML = resultsHTML;
+  document.getElementById('browserContent').innerHTML = resultsHTML;
+}
+
+function showEyPage() {
+  window.viewedEyPage = true;
+  const content = document.getElementById('browserContent');
+  const glitch = Math.random() > 0.5 ? '█' : '▓';
+  
+  content.innerHTML = `
+    <div style="background: #1a1a1a; color: #888; padding: 20px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.8;">
+      <div style="border-bottom: 2px solid #00ff00; padding-bottom: 10px; margin-bottom: 15px;">
+        <div style="color: #00ff00; font-weight: bold; font-size: 16px;">EY.</div>
+        <div style="color: #666; font-size: 10px;">file:///home/user/profile.html | 404 PARTIALLY FOUND</div>
+      </div>
+      
+      <div style="margin: 15px 0; padding: 10px; border-left: 3px solid #00ff00; background: rgba(0,255,0,0.05);">
+        <div style="color: #00ff00;">// Informations de profil:</div>
+        <div style="color: #888; margin-top: 8px;">
+          <div>Nom: EY. █████████</div>
+          <div>Âge: ██ ans</div>
+          <div>Localisation: ████████████</div>
+          <div>Statut: <span style="color: #ff0000; animation: blink 1s infinite;">OBSERVÉ</span></div>
+          <div style="color: #ff0000; margin-top: 8px;">⚠️ DONNÉES CORROMPUES ⚠️</div>
+        </div>
+      </div>
+      
+      <div style="margin: 15px 0; padding: 10px; background: #0f0f0f; border: 1px dashed #666;">
+        <div style="color: #888;">// Liens relationnels:</div>
+        <div style="margin-top: 8px; color: #666;">
+          <div>→ Connexion détectée: KODEN [SÉCURISÉE]</div>
+          <div>→ Fichiers partagés: ████ items</div>
+          <div>→ Communications: <span style="color: #ff0000;">████████ ENREGISTRÉES</span></div>
+        </div>
+      </div>
+      
+      <div style="margin-top: 20px; padding: 10px; background: rgba(255, 0, 0, 0.1); border: 1px solid #ff0000;">
+        <div style="color: #ff0000; font-weight: bold;">ACCÈS RESTREINT</div>
+        <div style="color: #888; margin-top: 8px; font-size: 11px;">
+          Des parties de ce profil ont été supprimées ou dissimulées.<br>
+          Pourquoi tu cherches ça? Pourquoi maintenant?
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function showKodenPage() {
+  window.viewedKodenPage = true;
+  const content = document.getElementById('browserContent');
+  
+  content.innerHTML = `
+    <div style="background: #1a1a2e; color: #00ff00; padding: 20px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.8; overflow: hidden;">
+      <div style="border-bottom: 2px dashed #00ff00; padding-bottom: 10px; margin-bottom: 15px;">
+        <div style="font-weight: bold; font-size: 16px;">LOCALISATION - KODEN</div>
+        <div style="color: #666; font-size: 10px;">GPS_COORDINATES_DETECTED | RENDERING...</div>
+      </div>
+      
+      <div id="kodenMap" style="width: 100%; height: 300px; background: #0f0f1e; border: 2px solid #00ff00; margin: 15px 0; position: relative; overflow: hidden;">
+        <!-- Map rendue ici -->
+      </div>
+      
+      <div style="margin-top: 15px; padding: 10px; background: rgba(0,255,0,0.1); border-left: 3px solid #00ff00;">
+        <div style="color: #00ff00; font-weight: bold;">INFORMATIONS DE LOCALISATION:</div>
+        <div style="color: #888; margin-top: 8px; font-size: 11px;">
+          <div>Latitude: 48.███████</div>
+          <div>Longitude: 2.█████████</div>
+          <div>Altitude: ███ m</div>
+          <div style="margin-top: 10px; color: #ff0000;">⚠️ ZONE SENSIBLE - ENTRÉE INTERDITE</div>
+          <div style="color: #888; margin-top: 5px; font-size: 10px;">Vous êtes trop proche. Éloignez-vous immédiatement.</div>
+        </div>
+      </div>
+      
+      <div style="margin-top: 15px; padding: 10px; background: #0f0f1e; border: 1px dashed #00ff00; text-align: center;">
+        <div style="color: #00ff00; opacity: 0.7; font-size: 11px; animation: flicker 2s infinite;">
+          ▓▓▓ SURVEILLANCE ACTIVE ▓▓▓
+        </div>
+      </div>
+    </div>
+  `;
+  
+  // Dessiner une mini map simple
+  setTimeout(() => {
+    drawKodenMap();
+  }, 100);
+}
+
+function drawKodenMap() {
+  const mapDiv = document.getElementById('kodenMap');
+  if (!mapDiv) return;
+  
+  const canvas = document.createElement('canvas');
+  canvas.width = mapDiv.offsetWidth;
+  canvas.height = 300;
+  canvas.style.display = 'block';
+  mapDiv.innerHTML = '';
+  mapDiv.appendChild(canvas);
+  
+  const ctx = canvas.getContext('2d');
+  
+  // Fond gris (terrain)
+  ctx.fillStyle = '#0a5f0f';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  // Grille de rues
+  ctx.strokeStyle = '#003300';
+  ctx.lineWidth = 1;
+  for (let i = 0; i < canvas.width; i += 40) {
+    ctx.beginPath();
+    ctx.moveTo(i, 0);
+    ctx.lineTo(i, canvas.height);
+    ctx.stroke();
+  }
+  for (let i = 0; i < canvas.height; i += 40) {
+    ctx.beginPath();
+    ctx.moveTo(0, i);
+    ctx.lineTo(canvas.width, i);
+    ctx.stroke();
+  }
+  
+  // Dessiner des bâtiments gris
+  ctx.fillStyle = '#333';
+  for (let y = 40; y < canvas.height; y += 80) {
+    for (let x = 40; x < canvas.width; x += 80) {
+      ctx.fillRect(x + 5, y + 5, 30, 30);
+      ctx.fillRect(x + 45, y + 5, 30, 30);
+    }
+  }
+  
+  // Maison de Koden en rouge (au centre)
+  ctx.fillStyle = '#ff0000';
+  ctx.fillRect(canvas.width / 2 - 25, canvas.height / 2 - 25, 50, 50);
+  ctx.fillStyle = '#fff';
+  ctx.fillText('K', canvas.width / 2 - 8, canvas.height / 2 + 5);
+  
+  // Pointeur GPS
+  ctx.fillStyle = 'rgba(0, 255, 0, 0.3)';
+  ctx.beginPath();
+  ctx.arc(canvas.width / 2, canvas.height / 2, 40, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#00ff00';
+  ctx.lineWidth = 2;
+  ctx.stroke();
 }
 
 function showBrowserHistory() {
@@ -1956,7 +3371,1084 @@ function browserForward() {
   showError('Erreur', 'Il n\'y a rien devant.');
 }
 
-// ==================== PONG GAME ====================
+// ==================== PANNEAU DE CONFIGURATION ====================
+function openControlPanel() {
+  const content = `
+    <div class="control-panel">
+      <div class="panel-tabs">
+        <div class="panel-tab active" onclick="switchPanelTab(this, 'general')">Général</div>
+        <div class="panel-tab" onclick="switchPanelTab(this, 'display')">Affichage</div>
+        <div class="panel-tab" onclick="switchPanelTab(this, 'sound')">Son</div>
+        <div class="panel-tab" onclick="switchPanelTab(this, 'themes')">Thèmes</div>
+        <div class="panel-tab" onclick="switchPanelTab(this, 'security')">Sécurité</div>
+      </div>
+      <div class="panel-content">
+        <div class="panel-section active" id="general">
+          <h3>Paramètres généraux</h3>
+          <div class="setting-item">
+            <label>Couleur du bureau:</label>
+            <input type="color" id="desktopColor" value="#245edb" onchange="changeDesktopColor(this.value)" />
+          </div>
+          <div class="setting-item">
+            <label>Animations:</label>
+            <input type="checkbox" id="animationsEnabled" checked onchange="toggleAnimations(this.checked)" />
+            <span>Activer les animations</span>
+          </div>
+          <div class="setting-item">
+            <label>Intensité graphique:</label>
+            <select id="graphicsLevel" onchange="setGraphicsLevel(this.value)">
+              <option value="low">Faible</option>
+              <option value="medium" selected>Moyen</option>
+              <option value="high">Élevé</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label>Glitch FX:</label>
+            <input type="checkbox" id="glitchEnabled" checked onchange="toggleGlitch(this.checked)" />
+            <span>Effets de corruption visuelle</span>
+          </div>
+          <div class="setting-item">
+            <label>Densité du scan VHS:</label>
+            <input type="range" min="0" max="100" value="50" id="vhsScanDensity" onchange="setVHSScanDensity(this.value)" />
+            <span id="vhsValue">50%</span>
+          </div>
+        </div>
+        <div class="panel-section" id="display">
+          <h3>Affichage</h3>
+          <div class="setting-item">
+            <label>Résolution:</label>
+            <select id="resolution" onchange="setResolution(this.value)">
+              <option value="1024x768" selected>1024x768</option>
+              <option value="1280x1024">1280x1024</option>
+              <option value="1600x1200">1600x1200</option>
+              <option value="fullscreen">Fullscreen</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label>Contraste:</label>
+            <input type="range" min="0" max="200" value="100" id="contrast" onchange="setContrast(this.value)" />
+            <span id="contrastValue">100%</span>
+          </div>
+          <div class="setting-item">
+            <label>Luminosité:</label>
+            <input type="range" min="0" max="200" value="100" id="brightness" onchange="setBrightness(this.value)" />
+            <span id="brightnessValue">100%</span>
+          </div>
+          <div class="setting-item">
+            <label>Saturation:</label>
+            <input type="range" min="0" max="200" value="100" id="saturation" onchange="setSaturation(this.value)" />
+            <span id="saturationValue">100%</span>
+          </div>
+        </div>
+        <div class="panel-section" id="sound">
+          <h3>Paramètres sonores</h3>
+          <div class="setting-item">
+            <label>Volume global:</label>
+            <input type="range" min="0" max="100" value="50" id="masterVolume" onchange="setMasterVolume(this.value)" />
+            <span id="volumeValue">50%</span>
+          </div>
+          <div class="setting-item">
+            <label>Bruits d'interface:</label>
+            <input type="checkbox" id="soundEnabled" checked onchange="toggleInterfaceSound(this.checked)" />
+            <span>Sons de clics activés</span>
+          </div>
+          <div class="setting-item">
+            <label>Fréquence d'erreur:</label>
+            <select id="errorFrequency" onchange="setErrorFrequency(this.value)">
+              <option value="low">Rare</option>
+              <option value="medium" selected>Normal</option>
+              <option value="high">Fréquent</option>
+            </select>
+          </div>
+        </div>
+        <div class="panel-section" id="themes">
+          <h3>Thèmes</h3>
+          <div class="setting-item">
+            <label>Thème de couleur:</label>
+            <select id="themeSelect" onchange="applyTheme(this.value)">
+              <option value="Classique" selected>Classique XP</option>
+              <option value="Noir sombre">Noir sombre</option>
+              <option value="Matrix">Matrix</option>
+              <option value="Rose glitch">Rose glitch</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label>Curseur:</label>
+            <select id="cursorSelect" onchange="setCursor(this.value)">
+              <option value="default" selected>Normal</option>
+              <option value="pointer">Pointeur</option>
+              <option value="crosshair">Viseur</option>
+              <option value="move">Déplacement</option>
+            </select>
+          </div>
+          <div class="setting-item">
+            <label>Effets visuels creepy:</label>
+            <input type="checkbox" id="creepyEffects" checked onchange="toggleCreepyEffects(this.checked)" />
+            <span>Activer les effets subtils</span>
+          </div>
+        </div>
+        <div class="panel-section" id="security">
+          <h3>Sécurité et Maintenance</h3>
+          <div class="setting-item">
+            <label>Mode Sécurisé:</label>
+            <input type="checkbox" id="safeMode" onchange="toggleSafeMode(this.checked)" />
+            <span>Activer le mode sécurisé</span>
+          </div>
+          <div class="setting-item">
+            <label>Vérification de l'intégrité:</label>
+            <button onclick="scanSystemIntegrity()">Lancer une analyse</button>
+          </div>
+          <div class="setting-item">
+            <label>Historique système:</label>
+            <button onclick="clearSystemHistory()">Effacer l'historique</button>
+          </div>
+          <div id="securityStatus" class="security-status"></div>
+        </div>
+      </div>
+    </div>
+  `;
+  createWindow('Panneau de configuration', '⚙️', content, 600, 500);
+  document.getElementById('startMenu').classList.remove('show');
+}
+
+function switchPanelTab(tabEl, tabId) {
+  // Désactiver tous les tabs et sections
+  document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.panel-section').forEach(s => s.classList.remove('active'));
+  
+  // Activer le tab et la section cliqués
+  tabEl.classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+}
+
+let panelSettings = {
+  desktopColor: '#245edb',
+  animationsEnabled: true,
+  glitchEnabled: true,
+  soundEnabled: true,
+  safeMode: false,
+  masterVolume: 0.5
+};
+
+function changeDesktopColor(color) {
+  panelSettings.desktopColor = color;
+  const desktop = document.getElementById('desktop');
+  desktop.style.background = `linear-gradient(to bottom, ${color} 0%, ${adjustBrightness(color, 0.2)} 50%, ${color} 100%)`;
+}
+
+function adjustBrightness(color, factor) {
+  const num = parseInt(color.replace('#',''), 16);
+  const amt = Math.round(2.55 * factor);
+  const R = Math.min(255, (num >> 16) + amt);
+  const G = Math.min(255, (num >> 8 & 0x00FF) + amt);
+  const B = Math.min(255, (num & 0x0000FF) + amt);
+  return '#' + (0x1000000 + (R<255?R<1?0:R:255)*0x10000 +
+    (G<255?G<1?0:G:255)*0x100 + (B<255?B<1?0:B:255))
+    .toString(16).slice(1);
+}
+
+function toggleAnimations(enabled) {
+  panelSettings.animationsEnabled = enabled;
+  document.body.style.animation = enabled ? '' : 'none';
+}
+
+function toggleGlitch(enabled) {
+  panelSettings.glitchEnabled = enabled;
+  const desktop = document.getElementById('desktop');
+  desktop.style.filter = enabled ? 'none' : 'blur(0px)';
+}
+
+function setGraphicsLevel(level) {
+  const desktop = document.getElementById('desktop');
+  if (level === 'low') {
+    desktop.style.filter = 'blur(0.5px)';
+  } else if (level === 'high') {
+    desktop.style.filter = 'none';
+  } else {
+    desktop.style.filter = 'none';
+  }
+}
+
+function setVHSScanDensity(value) {
+  document.getElementById('vhsValue').textContent = value + '%';
+  const intensity = (100 - value) / 100;
+  const desktop = document.getElementById('desktop');
+  if (desktop.style.animation) {
+    desktop.style.setProperty('--vhs-intensity', intensity);
+  }
+}
+
+function setResolution(res) {
+  const desktop = document.getElementById('desktop');
+  if (res !== 'fullscreen') {
+    const [w, h] = res.split('x');
+    desktop.style.width = w + 'px';
+    desktop.style.height = h + 'px';
+  } else {
+    desktop.style.width = '100%';
+    desktop.style.height = '100vh';
+  }
+}
+
+function setContrast(value) {
+  document.getElementById('contrastValue').textContent = value + '%';
+  document.body.style.filter = `contrast(${value}%) brightness(${document.getElementById('brightness').value}%) saturate(${document.getElementById('saturation').value}%)`;
+}
+
+function setBrightness(value) {
+  document.getElementById('brightnessValue').textContent = value + '%';
+  document.body.style.filter = `contrast(${document.getElementById('contrast').value}%) brightness(${value}%) saturate(${document.getElementById('saturation').value}%)`;
+}
+
+function setSaturation(value) {
+  document.getElementById('saturationValue').textContent = value + '%';
+  document.body.style.filter = `contrast(${document.getElementById('contrast').value}%) brightness(${document.getElementById('brightness').value}%) saturate(${value}%)`;
+}
+
+function setMasterVolume(value) {
+  document.getElementById('volumeValue').textContent = value + '%';
+  panelSettings.masterVolume = value / 100;
+}
+
+function toggleInterfaceSound(enabled) {
+  panelSettings.soundEnabled = enabled;
+}
+
+function setErrorFrequency(freq) {
+  // Cette fonction peut affecter la fréquence des erreurs système
+}
+
+function toggleSafeMode(enabled) {
+  panelSettings.safeMode = enabled;
+  const statusEl = document.getElementById('securityStatus');
+  if (enabled) {
+    statusEl.innerHTML = '<div style="color: #ff6b6b; padding: 10px; border: 1px solid #ff6b6b; margin-top: 10px;"><strong>⚠️ MODE SÉCURISÉ ACTIVÉ</strong><br>Le mode sécurisé n\'est pas disponible sur ce système.<br>Vous allez devoir assumer les conséquences...</div>';
+  } else {
+    statusEl.innerHTML = '';
+  }
+}
+
+function scanSystemIntegrity() {
+  const statusEl = document.getElementById('securityStatus');
+  statusEl.innerHTML = '<div style="color: #00ff00; padding: 10px;">🔍 Analyse en cours...</div>';
+  setTimeout(() => {
+    const issues = Math.random() > 0.7 ? Math.floor(Math.random() * 10) : 0;
+    statusEl.innerHTML = `<div style="color: ${issues > 0 ? '#ff6b6b' : '#00ff00'}; padding: 10px;">✓ Analyse terminée<br>${issues} problème(s) détecté(s)</div>`;
+  }, 2000);
+}
+
+function clearSystemHistory() {
+  showError('Historique', 'Historique système effacé avec succès.');
+}
+
+function setCursor(cursor) {
+  document.body.style.cursor = cursor;
+}
+
+function toggleCreepyEffects(enabled) {
+  if (enabled) {
+    // Ajouter des effets creepy subtils
+    document.body.style.animation = 'none';
+    // Faire bouger légèrement les éléments aléatoirement
+    const observer = new MutationObserver(() => {
+      if (Math.random() > 0.98) {
+        const windows = document.querySelectorAll('.window');
+        if (windows.length > 0) {
+          const randomWindow = windows[Math.floor(Math.random() * windows.length)];
+          randomWindow.style.transform = `rotate(${(Math.random() - 0.5) * 0.5}deg)`;
+          setTimeout(() => { randomWindow.style.transform = 'rotate(0deg)'; }, 100);
+        }
+      }
+    });
+  } else {
+    document.body.style.animation = 'none';
+  }
+}
+
+// ==================== DÉMINEUR ====================
+function openMinesweeper() {
+  const content = `
+    <div class="minesweeper-container">
+      <div class="minesweeper-info">
+        <span>💣 Mines: <span id="mineCount">8</span></span>
+        <span id="gameStatus">En jeu</span>
+        <span>⏱️ Temps: <span id="mineTimer">0</span>s</span>
+      </div>
+      <div class="minesweeper-grid" id="mineGrid"></div>
+      <button onclick="resetMinesweeper()" style="padding: 6px 10px; cursor: pointer; font-size: 10px;">Nouvelle partie</button>
+    </div>
+  `;
+  createWindow('démineur.exe', '💣', content, 300, 320);
+  document.getElementById('startMenu').classList.remove('show');
+  setTimeout(() => initMinesweeper(), 100);
+}
+
+function initMinesweeper() {
+  const GRID_SIZE = 8;
+  const MINE_COUNT = 8;
+  let grid = [];
+  let revealed = [];
+  let gameOver = false;
+  let gameTime = 0;
+  let timerInterval = null;
+
+  function createGrid() {
+    grid = Array(GRID_SIZE * GRID_SIZE).fill(0);
+    let minesPlaced = 0;
+    while (minesPlaced < MINE_COUNT) {
+      const idx = Math.floor(Math.random() * grid.length);
+      if (grid[idx] !== 'M') {
+        grid[idx] = 'M';
+        minesPlaced++;
+      }
+    }
+
+    for (let i = 0; i < grid.length; i++) {
+      if (grid[i] !== 'M') {
+        let count = 0;
+        const row = Math.floor(i / GRID_SIZE);
+        const col = i % GRID_SIZE;
+        for (let r = row - 1; r <= row + 1; r++) {
+          for (let c = col - 1; c <= col + 1; c++) {
+            if (r >= 0 && r < GRID_SIZE && c >= 0 && c < GRID_SIZE) {
+              if (grid[r * GRID_SIZE + c] === 'M') count++;
+            }
+          }
+        }
+        grid[i] = count || '';
+      }
+    }
+  }
+
+  function renderGrid() {
+    const gridEl = document.getElementById('mineGrid');
+    if (!gridEl) return;
+    gridEl.innerHTML = '';
+
+    for (let i = 0; i < grid.length; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'mine-cell';
+      
+      if (revealed[i]) {
+        cell.classList.add('revealed');
+        if (grid[i] === 'M') {
+          cell.classList.add('mine');
+          cell.textContent = '💣';
+        } else if (grid[i] > 0) {
+          cell.classList.add(`number-${grid[i]}`);
+          cell.textContent = grid[i];
+        } else {
+          cell.classList.add('empty');
+        }
+      } else {
+        cell.textContent = '🚩';
+        cell.onclick = () => revealCell(i);
+      }
+      gridEl.appendChild(cell);
+    }
+  }
+
+  function revealCell(idx) {
+    if (gameOver || revealed[idx]) return;
+    
+    if (grid[idx] === 'M') {
+      gameOver = true;
+      revealed[idx] = true;
+      clearInterval(timerInterval);
+      document.getElementById('gameStatus').textContent = '💀 PERDU';
+      revealAll();
+    } else {
+      flood(idx);
+      
+      // Check if won
+      let allRevealed = true;
+      for (let i = 0; i < grid.length; i++) {
+        if (grid[i] !== 'M' && !revealed[i]) {
+          allRevealed = false;
+          break;
+        }
+      }
+      
+      if (allRevealed) {
+        gameOver = true;
+        clearInterval(timerInterval);
+        document.getElementById('gameStatus').textContent = '🎉 GAGNÉ!';
+        // Track win
+        if (!window.minesweeperWins) window.minesweeperWins = 0;
+        window.minesweeperWins++;
+      }
+    }
+    renderGrid();
+  }
+
+  function flood(idx) {
+    if (revealed[idx] || grid[idx] === 'M') return;
+    revealed[idx] = true;
+
+    if (grid[idx] === '') {
+      const row = Math.floor(idx / GRID_SIZE);
+      const col = idx % GRID_SIZE;
+      for (let r = row - 1; r <= row + 1; r++) {
+        for (let c = col - 1; c <= col + 1; c++) {
+          if (r >= 0 && r < GRID_SIZE && c >= 0 && c < GRID_SIZE) {
+            flood(r * GRID_SIZE + c);
+          }
+        }
+      }
+    }
+  }
+
+  function revealAll() {
+    revealed = Array(grid.length).fill(true);
+  }
+
+  revealed = Array(GRID_SIZE * GRID_SIZE).fill(false);
+  createGrid();
+  renderGrid();
+
+  timerInterval = setInterval(() => {
+    gameTime++;
+    const timerEl = document.getElementById('mineTimer');
+    if (timerEl) timerEl.textContent = gameTime;
+  }, 1000);
+}
+
+function resetMinesweeper() {
+  const gridEl = document.getElementById('mineGrid');
+  if (gridEl) {
+    gridEl.innerHTML = '';
+    initMinesweeper();
+  }
+}
+
+// ==================== SNAKE ====================
+function openSnake() {
+  const content = `
+    <div class="snake-container">
+      <div class="snake-score">Score: <span id="snakeScore">0</span></div>
+      <canvas id="snakeCanvas" class="snake-canvas" width="360" height="240"></canvas>
+      <div class="snake-hint">Flèches ou ZQSD pour diriger</div>
+    </div>
+  `;
+  createWindow('snake.exe', '🐍', content, 400, 350);
+  document.getElementById('startMenu').classList.remove('show');
+  setTimeout(() => initSnake(), 100);
+}
+
+function initSnake() {
+  const canvas = document.getElementById('snakeCanvas');
+  if (!canvas) return;
+  
+  const ctx = canvas.getContext('2d');
+  const GRID_SIZE = 20;
+  let snake = [{x: 10, y: 10}];
+  let food = {x: 15, y: 10};
+  let direction = {x: 1, y: 0};
+  let nextDirection = {x: 1, y: 0};
+  let score = 0;
+  let gameRunning = true;
+  let gamePaused = false;
+
+  function drawGrid() {
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = '#111';
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= canvas.width; i += GRID_SIZE) {
+      ctx.beginPath();
+      ctx.moveTo(i, 0);
+      ctx.lineTo(i, canvas.height);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(0, i);
+      ctx.lineTo(canvas.width, i);
+      ctx.stroke();
+    }
+  }
+
+  function draw() {
+    drawGrid();
+
+    // Serpent
+    ctx.fillStyle = '#00ff00';
+    snake.forEach((segment, idx) => {
+      if (idx === 0) ctx.fillStyle = '#00dd00';
+      ctx.fillRect(segment.x * GRID_SIZE + 1, segment.y * GRID_SIZE + 1, GRID_SIZE - 2, GRID_SIZE - 2);
+      ctx.fillStyle = '#00ff00';
+    });
+
+    // Nourriture (creepy)
+    ctx.fillStyle = '#ff0000';
+    ctx.beginPath();
+    ctx.arc(food.x * GRID_SIZE + GRID_SIZE / 2, food.y * GRID_SIZE + GRID_SIZE / 2, GRID_SIZE / 2 - 1, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#8b0000';
+    ctx.fillText('👁️', food.x * GRID_SIZE + 5, food.y * GRID_SIZE + 14);
+  }
+
+  function update() {
+    if (!gameRunning || gamePaused) return;
+
+    direction = {x: nextDirection.x, y: nextDirection.y};
+    const head = {x: snake[0].x + direction.x, y: snake[0].y + direction.y};
+
+    // Collision murs
+    if (head.x < 0 || head.x >= 20 || head.y < 0 || head.y >= 15) {
+      gameRunning = false;
+      showError('GAME OVER', `Vous avez heurté un mur. Score: ${score}`);
+      return;
+    }
+
+    // Collision serpent
+    for (let segment of snake) {
+      if (head.x === segment.x && head.y === segment.y) {
+        gameRunning = false;
+        showError('GAME OVER', `Vous vous êtes mordu. Score: ${score}`);
+        return;
+      }
+    }
+
+    snake.unshift(head);
+
+    // Collision nourriture
+    if (head.x === food.x && head.y === food.y) {
+      score += 10;
+      document.getElementById('snakeScore').textContent = score;
+      food = {x: Math.floor(Math.random() * 20), y: Math.floor(Math.random() * 15)};
+    } else {
+      snake.pop();
+    }
+  }
+
+  function gameLoop() {
+    if (!document.getElementById('snakeCanvas')) return;
+    update();
+    draw();
+    
+    // Tracker le score
+    if (!window.snakeHighScore) window.snakeHighScore = 0;
+    if (score > window.snakeHighScore) {
+      window.snakeHighScore = score;
+    }
+    
+    setTimeout(gameLoop, 100);
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === ' ') {
+      gamePaused = !gamePaused;
+      e.preventDefault();
+    }
+    if (e.key === 'ArrowUp' || e.key === 'z' || e.key === 'Z') { if (direction.y === 0) nextDirection = {x: 0, y: -1}; }
+    if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') { if (direction.y === 0) nextDirection = {x: 0, y: 1}; }
+    if (e.key === 'ArrowLeft' || e.key === 'q' || e.key === 'Q') { if (direction.x === 0) nextDirection = {x: -1, y: 0}; }
+    if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') { if (direction.x === 0) nextDirection = {x: 1, y: 0}; }
+  });
+
+  gameLoop();
+}
+
+// ==================== TAMAGOTCHI ====================
+function openTamagotchi() {
+  const content = `
+    <div class="tamagotchi-container">
+      <div class="tamagotchi-display" id="tamagotchiDisplay">👾</div>
+      <div class="tamagotchi-stats">
+        Faim: <span id="hunger">50</span>%<br>
+        Énergie: <span id="energy">50</span>%<br>
+        Bonheur: <span id="happiness">50</span>%<br>
+        <span id="tamaStatus" style="color: #666; margin-top: 10px;">Stable...</span>
+      </div>
+      <div class="tamagotchi-buttons">
+        <button class="tamagotchi-btn" onclick="tamaNourrir()">Nourrir 🍖</button>
+        <button class="tamagotchi-btn" onclick="tamaJouer()">Jouer 🎮</button>
+        <button class="tamagotchi-btn" onclick="tamaDormir()">Dormir 😴</button>
+      </div>
+    </div>
+  `;
+  createWindow('compagnon.exe', '👾', content, 350, 400);
+  document.getElementById('startMenu').classList.remove('show');
+
+  // Créer une créature persistante (stockée en localStorage)
+  if (!window.tamagotchi) {
+    window.tamagotchi = {
+      hunger: 50,
+      energy: 50,
+      happiness: 50,
+      age: 0,
+      state: 'normal'
+    };
+  }
+
+  updateTamagotchiDisplay();
+  
+  // Initialiser le temps de survie
+  if (!window.tamagotchiStartTime) {
+    window.tamagotchiStartTime = Date.now();
+  }
+  
+  setInterval(updateTamagotchiDisplay, 1000);
+  setInterval(() => {
+    window.tamagotchi.hunger = Math.min(100, window.tamagotchi.hunger + 0.5);
+    window.tamagotchi.energy = Math.max(0, window.tamagotchi.energy - 0.2);
+    window.tamagotchi.happiness = Math.max(0, window.tamagotchi.happiness - 0.3);
+    
+    // Track survival time
+    if (!window.tamagotchiSurvivalTime) window.tamagotchiSurvivalTime = 0;
+    window.tamagotchiSurvivalTime = Date.now() - window.tamagotchiStartTime;
+  }, 2000);
+}
+
+function updateTamagotchiDisplay() {
+  if (!window.tamagotchi) return;
+  
+  document.getElementById('hunger').textContent = Math.round(window.tamagotchi.hunger);
+  document.getElementById('energy').textContent = Math.round(window.tamagotchi.energy);
+  document.getElementById('happiness').textContent = Math.round(window.tamagotchi.happiness);
+
+  let mood = '👾';
+  let status = 'Ça va...';
+
+  if (window.tamagotchi.hunger > 80) {
+    mood = '😭';
+    status = 'J\'ai FAIM!!!';
+  } else if (window.tamagotchi.energy < 20) {
+    mood = '😴';
+    status = 'Trop fatigué...';
+  } else if (window.tamagotchi.happiness < 20) {
+    mood = '😠';
+    status = 'Je m\'ennuie...';
+  } else if (window.tamagotchi.happiness > 75) {
+    mood = '😊';
+    status = 'Heureux! 💕';
+  }
+
+  document.getElementById('tamagotchiDisplay').textContent = mood;
+  document.getElementById('tamaStatus').textContent = status;
+}
+
+function tamaNourrir() {
+  window.tamagotchi.hunger = Math.max(0, window.tamagotchi.hunger - 30);
+  window.tamagotchi.happiness = Math.min(100, window.tamagotchi.happiness + 5);
+}
+
+function tamaJouer() {
+  window.tamagotchi.happiness = Math.min(100, window.tamagotchi.happiness + 20);
+  window.tamagotchi.energy = Math.max(0, window.tamagotchi.energy - 15);
+  window.tamagotchi.hunger = Math.min(100, window.tamagotchi.hunger + 10);
+}
+
+function tamaDormir() {
+  window.tamagotchi.energy = Math.min(100, window.tamagotchi.energy + 50);
+  window.tamagotchi.hunger = Math.min(100, window.tamagotchi.hunger + 10);
+}
+
+// ==================== BLOC-NOTES ====================
+function openNotepad() {
+  const content = `
+    <div class="notepad-container">
+      <textarea class="notepad-text" id="notepadText" placeholder="Écrivez quelque chose..."></textarea>
+    </div>
+  `;
+  createWindow('Bloc-notes', '📝', content, 500, 400);
+  document.getElementById('startMenu').classList.remove('show');
+
+  setTimeout(() => {
+    const textarea = document.getElementById('notepadText');
+    if (textarea) {
+      // Charger le texte depuis le localStorage
+      textarea.value = localStorage.getItem('notepadContent') || '';
+
+      textarea.addEventListener('input', () => {
+        localStorage.setItem('notepadContent', textarea.value);
+      });
+
+      // Corruption textuelle aléatoire subtile
+      setInterval(() => {
+        if (textarea && Math.random() > 0.98) {
+          const pos = Math.floor(Math.random() * textarea.value.length);
+          const chars = textarea.value.split('');
+          if (chars[pos]) {
+            chars[pos] = String.fromCharCode(Math.random() * 255);
+            textarea.value = chars.join('');
+            setTimeout(() => {
+              textarea.value = localStorage.getItem('notepadContent') || '';
+            }, 500);
+          }
+        }
+      }, 1000);
+    }
+  }, 100);
+}
+
+// ==================== CALCULATRICE ====================
+function openCalculator() {
+  const content = `
+    <div class="calculator-container">
+      <div class="calc-display" id="calcDisplay">0</div>
+      <div class="calc-buttons">
+        <button class="calc-btn" onclick="calcInput('7')">7</button>
+        <button class="calc-btn" onclick="calcInput('8')">8</button>
+        <button class="calc-btn" onclick="calcInput('9')">9</button>
+        <button class="calc-btn operator" onclick="calcInput('/')">/</button>
+        <button class="calc-btn" onclick="calcInput('4')">4</button>
+        <button class="calc-btn" onclick="calcInput('5')">5</button>
+        <button class="calc-btn" onclick="calcInput('6')">6</button>
+        <button class="calc-btn operator" onclick="calcInput('*')">×</button>
+        <button class="calc-btn" onclick="calcInput('1')">1</button>
+        <button class="calc-btn" onclick="calcInput('2')">2</button>
+        <button class="calc-btn" onclick="calcInput('3')">3</button>
+        <button class="calc-btn operator" onclick="calcInput('-')">−</button>
+        <button class="calc-btn" onclick="calcInput('0')">0</button>
+        <button class="calc-btn" onclick="calcInput('.')">.</button>
+        <button class="calc-btn operator" onclick="calcInput('+')">+</button>
+        <button class="calc-btn equals" onclick="calcEquals()">=</button>
+      </div>
+    </div>
+  `;
+  createWindow('Calculatrice', '🧮', content, 300, 350);
+  document.getElementById('startMenu').classList.remove('show');
+
+  window.calcDisplay = '0';
+  window.calcInput = '';
+  window.calcOperator = null;
+  window.calcLastValue = null;
+}
+
+function calcInput(value) {
+  if (value === '.' && window.calcInput.includes('.')) return;
+  
+  if (['+', '-', '*', '/'].includes(value)) {
+    if (window.calcLastValue === null && window.calcInput) {
+      window.calcLastValue = parseFloat(window.calcInput);
+      window.calcOperator = value;
+      window.calcInput = '';
+    }
+  } else {
+    window.calcInput += value;
+  }
+
+  document.getElementById('calcDisplay').textContent = window.calcInput || window.calcDisplay;
+}
+
+function calcEquals() {
+  if (window.calcOperator && window.calcLastValue !== null && window.calcInput) {
+    let result = window.calcLastValue;
+    const current = parseFloat(window.calcInput);
+
+    if (window.calcOperator === '+') result += current;
+    if (window.calcOperator === '-') result -= current;
+    if (window.calcOperator === '*') result *= current;
+    if (window.calcOperator === '/') result /= current;
+
+    window.calcDisplay = result;
+    window.calcInput = result;
+    window.calcOperator = null;
+    window.calcLastValue = null;
+    document.getElementById('calcDisplay').textContent = result;
+    
+    // Vérifier si c'est l'équation cachée (2 + 2 × 10 - 4 = 18)
+    if (result === 18) {
+      window.calcState = { result: 18 };
+    }
+  }
+}
+
+// ==================== GESTIONNAIRE DE TÂCHES ====================
+// ==================== MISSIONS & PROGRESSION ====================
+const missions = [
+  {
+    id: 1,
+    title: "Découvrir le secret des noms",
+    description: "Ouvre le fichier 'koden.txt' dans le dossier relations et lis le message.",
+    verify: () => {
+      // Cette tâche nécessite que l'utilisateur ouvre le fichier
+      return document.body.innerHTML.includes('TUEUR');
+    },
+    hint: "Va dans relations → koden.txt"
+  },
+  {
+    id: 2,
+    title: "Calculer l'équation cachée",
+    description: "Ouvre la calculatrice et effectue: 2 + 2 × 10 - 4 = ?",
+    verify: () => {
+      // Vérifier via le state de la calculatrice
+      return window.calcState && window.calcState.result === 18;
+    },
+    hint: "Calculatrice: 2 + 2 × 10 - 4"
+  },
+  {
+    id: 3,
+    title: "Atteindre le score 100 au Snake",
+    description: "Joue au Snake et atteins un score d'au moins 100 points.",
+    verify: () => {
+      return window.snakeHighScore >= 100;
+    },
+    hint: "Mange 10+ nourriture sans mourir"
+  },
+  {
+    id: 4,
+    title: "Trouver le fichier caché",
+    description: "Ouvre le dossier caché 'souvenirs' et trouve le fichier 'avant.txt'.",
+    verify: () => {
+      // Vérifier si l'utilisateur a ouvert le dossier
+      return window.visitedSouvenirs === true;
+    },
+    hint: "Il y a un dossier ??? sur le bureau"
+  },
+  {
+    id: 5,
+    title: "Gagner une partie de Démineur",
+    description: "Complète une grille de Démineur sans exploser de mine.",
+    verify: () => {
+      return window.minesweeperWins >= 1;
+    },
+    hint: "Démine toute la grille sans erreur"
+  },
+  {
+    id: 6,
+    title: "Écrire 50 caractères dans Bloc-notes",
+    description: "Ouvre Bloc-notes et écris un message de 50 caractères minimum.",
+    verify: () => {
+      const content = localStorage.getItem('notepadContent') || '';
+      return content.length >= 50;
+    },
+    hint: "Écris quelque chose de significatif"
+  },
+  {
+    id: 7,
+    title: "Rechercher 'Ey' dans Internet Explorer",
+    description: "Utilise Internet Explorer et recherche 'Ey' pour découvrir les pages cachées.",
+    verify: () => {
+      return window.viewedEyPage === true;
+    },
+    hint: "IE → Recherche 'Ey'"
+  },
+  {
+    id: 8,
+    title: "Découvrir le monde de Koden",
+    description: "Recherche 'Koden' dans Internet Explorer et analyse la carte GPS.",
+    verify: () => {
+      return window.viewedKodenPage === true;
+    },
+    hint: "IE → Recherche 'Koden'"
+  },
+  {
+    id: 9,
+    title: "Maintenir le Tamagotchi vivant 3 minutes",
+    description: "Garde ton compagnon vivant sans le négliger pendant au moins 3 minutes.",
+    verify: () => {
+      return window.tamagotchiSurvivalTime >= 180000; // 3 minutes en ms
+    },
+    hint: "Nourris et divertis ton compagnon régulièrement"
+  },
+  {
+    id: 10,
+    title: "Gagner une partie de Pong contre l'IA",
+    description: "Remporte une partie de Pong en battant l'ordinateur.",
+    verify: () => {
+      return window.pongPlayerWins >= 1;
+    },
+    hint: "Pong → Bats l'IA"
+  }
+];
+
+function openTaskManager() {
+  loadProgression();
+  
+  let tasksHTML = `
+    <div style="padding: 10px; background: #c0c0c0; height: 100%; display: flex; flex-direction: column; overflow: hidden;">
+      <div style="background: #1f1f1f; color: #0f0; padding: 10px; margin-bottom: 10px; border: 2px solid #0f0; font-family: 'Courier New', monospace; flex-shrink: 0;">
+        <div style="font-weight: bold;">SYSTÈME DE PROGRESSION</div>
+        <div style="font-size: 11px;">Tâches complétées: ${progressionState.completedTasks.length}/10</div>
+        <div style="width: 100%; background: #0a0a0a; height: 20px; margin-top: 5px; border: 1px solid #0f0;">
+          <div style="background: linear-gradient(to right, #0f0, #00ff00); height: 100%; width: ${(progressionState.completedTasks.length / 10) * 100}%;"></div>
+        </div>
+      </div>
+      <div style="flex: 1; overflow-y: auto; background: #e8e8e8; border: 2px inset #dfdfdf;">
+  `;
+  
+  missions.forEach(mission => {
+    const isCompleted = progressionState.completedTasks.includes(mission.id);
+    const statusText = isCompleted ? '✓ COMPLÉTÉE' : '○ À FAIRE';
+    const statusColor = isCompleted ? '#0f0' : '#999';
+    
+    tasksHTML += `
+      <div style="padding: 10px; background: ${isCompleted ? '#e0f0e0' : '#f5f5f5'}; border-bottom: 1px solid #ccc; margin-bottom: 5px; border-left: 3px solid ${statusColor};">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+          <strong style="color: ${isCompleted ? '#0a8a0a' : '#000'};">${mission.title}</strong>
+          <span style="font-size: 10px; color: ${statusColor}; font-weight: bold;">${statusText}</span>
+        </div>
+        <div style="font-size: 11px; color: #333; margin-bottom: 5px;">${mission.description}</div>
+        <div style="font-size: 10px; color: #666; font-style: italic; margin-bottom: 5px;">💡 ${mission.hint}</div>
+        <button style="padding: 4px 8px; background: #3d8aed; color: white; border: 1px solid #0078d4; cursor: pointer; font-size: 10px; border-radius: 2px;" onclick="verifyTask(${mission.id})">Vérifier</button>
+      </div>
+    `;
+  });
+  
+  tasksHTML += `
+      </div>
+    </div>
+  `;
+  
+  createWindow('Système de Progression', '📋', tasksHTML, 500, 550);
+  document.getElementById('startMenu').classList.remove('show');
+}
+
+function verifyTask(missionId) {
+  if (progressionState.completedTasks.includes(missionId)) {
+    showError('Info', 'Cette tâche est déjà complétée !');
+    return;
+  }
+  
+  const mission = missions.find(m => m.id === missionId);
+  if (!mission) return;
+  
+  if (mission.verify()) {
+    progressionState.completedTasks.push(missionId);
+    saveProgression();
+    checkAllTasksCompleted();
+    
+    showNotification({
+      title: '✓ Tâche complétée!',
+      message: mission.title,
+      type: 'success'
+    });
+    
+    // Rafraîchir la fenêtre
+    setTimeout(() => {
+      document.querySelectorAll('.window').forEach(w => {
+        if (w.querySelector('[style*="SYSTÈME DE PROGRESSION"]')) {
+          w.remove();
+        }
+      });
+      openTaskManager();
+    }, 300);
+  } else {
+    showError('Tâche non complétée', `${mission.title} n'est pas encore complétée. Vérifie les indices et réessaye.`);
+  }
+}
+
+// ==================== LECTEUR MÉDIA ====================
+function openMediaPlayer() {
+  const content = `
+    <div class="media-player">
+      <div class="media-screen" id="mediaScreen">🔊</div>
+      <div class="media-buttons">
+        <button class="media-btn" onclick="playWeirdSound()">▶ Play</button>
+        <button class="media-btn" onclick="stopWeirdSound()">⏹ Stop</button>
+      </div>
+    </div>
+  `;
+  createWindow('Lecteur média', '🎵', content, 400, 300);
+  document.getElementById('startMenu').classList.remove('show');
+
+  window.mediaAudio = null;
+}
+
+function playWeirdSound() {
+  const screen = document.getElementById('mediaScreen');
+  if (!screen) return;
+
+  screen.textContent = '▶ Lecture...';
+  screen.style.animation = 'mediaGlitch 0.2s infinite';
+
+  // Sons étranges synthétisés
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  const freq = [100, 200, 50, 300, 150][Math.floor(Math.random() * 5)];
+  osc.frequency.value = freq;
+  gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 2);
+  
+  osc.start(audioCtx.currentTime);
+  osc.stop(audioCtx.currentTime + 2);
+
+  setTimeout(() => {
+    screen.textContent = '🔊';
+    screen.style.animation = 'mediaGlitch 3s infinite';
+  }, 2000);
+}
+
+function stopWeirdSound() {
+  const screen = document.getElementById('mediaScreen');
+  if (screen) screen.textContent = '⏹ Arrêté';
+}
+
+// ==================== JOURNAL ====================
+function openJournal() {
+  const today = new Date();
+  const dateStr = today.toLocaleDateString('fr-FR');
+  
+  const content = `
+    <div class="journal-container">
+      <div class="journal-entries" id="journalEntries">
+        <!-- Entrées générées dynamiquement -->
+      </div>
+    </div>
+  `;
+  createWindow('Mon journal', '📓', content, 500, 350);
+  document.getElementById('startMenu').classList.remove('show');
+
+  // Entrées corrompues et étranges
+  const entries = [
+    { date: '2024-12-01', text: 'Tout va bien. J\'ai l\'impression d\'être observé.', corrupted: false },
+    { date: '2024-12-02', text: 'Pourquoi les ombres bougent quand je ne regarde pas?', corrupted: false },
+    { date: '2024-12-03', text: 'Les bruits la nuit... ce n\'est probablement rien.', corrupted: false },
+    { date: '2024-12-04', text: 'J\'ai trouvé des fichiers que je ne me souviens pas avoir créés.', corrupted: false },
+    { date: '2024-12-05', text: '█████ ne devrait pas être ici █████', corrupted: true },
+    { date: '2024-12-06', text: 'Je pense que quelqu\'un me regarde à travers l\'écran...', corrupted: false },
+  ];
+
+  const entriesEl = document.getElementById('journalEntries');
+  entries.forEach(entry => {
+    const entryEl = document.createElement('div');
+    entryEl.className = 'journal-entry';
+    entryEl.innerHTML = `
+      <div class="journal-date">${entry.date}</div>
+      <div class="journal-text ${entry.corrupted ? 'corrupted' : ''}">${entry.text}</div>
+    `;
+    entriesEl.appendChild(entryEl);
+  });
+
+  // Nouvelle entrée toutes les 30s (limité à 8 entrées max)
+  let entryInterval = setInterval(() => {
+    if (!document.getElementById('journalEntries')) {
+      clearInterval(entryInterval);
+      return;
+    }
+    
+    const entriesContainer = document.getElementById('journalEntries');
+    const currentCount = entriesContainer.children.length;
+    
+    if (currentCount < 8) {
+      const randomEvents = [
+        'Les fichiers changent de place...',
+        'Qui regarde ma webcam?',
+        'Je sens comme une présence...',
+        'Le son du disque dur... à 3h du matin.',
+        '████████ █████ ███████'
+      ];
+      const newEntry = document.createElement('div');
+      newEntry.className = 'journal-entry';
+      const corrupted = Math.random() > 0.7;
+      newEntry.innerHTML = `
+        <div class="journal-date">${new Date().toLocaleTimeString('fr-FR')}</div>
+        <div class="journal-text ${corrupted ? 'corrupted' : ''}">${randomEvents[Math.floor(Math.random() * randomEvents.length)]}</div>
+      `;
+      entriesContainer.appendChild(newEntry);
+    } else if (currentCount > 8) {
+      // Supprimer la première entrée si on dépasse le limit
+      entriesContainer.removeChild(entriesContainer.firstChild);
+    }
+  }, 15000);
+}
+
+// ==================== JEUX ====================
+
 function openPong() {
   const content = `
     <div class="pong-container">
@@ -2270,6 +4762,10 @@ function initPong() {
       resetBall('player');
 
       if (playerScore >= 5) {
+        // Track win
+        if (!window.pongPlayerWins) window.pongPlayerWins = 0;
+        window.pongPlayerWins++;
+        
         if (typeof triggerScreamer === 'function') triggerScreamer();
         const activeWin = document.querySelector('.window.active');
         if (activeWin && typeof closeWindow === 'function') {
@@ -2333,7 +4829,30 @@ function initPong() {
 
   gameLoop();
 }
-
+function triggerBSOD() {
+  const bsod = document.getElementById('bsod');
+  bsod.classList.add('active');
+  
+  // Jouer un son d'erreur
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.type = 'sine';
+  osc.frequency.value = 200;
+  gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.8);
+  osc.start(audioCtx.currentTime);
+  osc.stop(audioCtx.currentTime + 0.8);
+  
+  // Fermer toutes les fenêtres
+  setTimeout(() => {
+    document.querySelectorAll('.window').forEach(w => w.remove());
+    openWindows = [];
+    activeWindow = null;
+    updateTaskbar();
+  }, 500);
+}
 
 function triggerScreamer() {
   const screamer = document.getElementById('screamer');
@@ -2389,6 +4908,5 @@ window.onload = init;
 </script>
 </body>
 </html>
-
 
 
