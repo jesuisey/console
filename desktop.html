@@ -718,20 +718,44 @@ button, .window-control, .start-button, .start-item, .start-footer, .taskbar-ite
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 12px;
   height: 100%;
-  background: #000;
+  background: radial-gradient(circle at top, #141425 0%, #050510 55%, #000 100%);
+  padding: 16px;
+  box-sizing: border-box;
 }
 
 .pong-canvas {
-  border: 2px solid #fff;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow:
+    0 0 25px rgba(64, 224, 255, 0.35),
+    0 0 60px rgba(64, 224, 255, 0.15);
+  background: radial-gradient(circle at center, #101020 0%, #050510 60%, #000 100%);
 }
 
 .pong-score {
-  color: #fff;
+  color: #e8f9ff;
   font-size: 20px;
-  margin: 10px;
+  margin: 4px 0 2px;
   font-family: "Courier New", monospace;
+  letter-spacing: 0.08em;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(64, 224, 255, 0.18), rgba(128, 90, 213, 0.12));
+  box-shadow: 0 0 18px rgba(64, 224, 255, 0.35);
 }
+
+.pong-hint {
+  color: #a8b5ff;
+  margin-top: 6px;
+  font-size: 12px;
+  font-family: "Courier New", monospace;
+  opacity: 0.85;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
 
 /* SCREAMER */
 .screamer {
@@ -1938,7 +1962,7 @@ function openPong() {
     <div class="pong-container">
       <div class="pong-score" id="pongScore">Score: 0 - 0</div>
       <canvas class="pong-canvas" id="pongCanvas" width="600" height="400"></canvas>
-      <div style="color: white; margin-top: 10px; font-size: 12px;">Utilisez les flèches ↑ ↓ pour jouer</div>
+      <div class="pong-hint">Utilisez les flèches ↑ ↓ pour jouer</div>
     </div>
   `;
   createWindow('pong.exe', '🎮', content, 650, 550);
@@ -1952,132 +1976,364 @@ function openPong() {
 function initPong() {
   const canvas = document.getElementById('pongCanvas');
   if (!canvas) return;
-  
+
   const ctx = canvas.getContext('2d');
   const width = canvas.width;
   const height = canvas.height;
-  
-  let playerY = height / 2 - 40;
-  let aiY = height / 2 - 40;
+
+  // --- Config globale ---
+  const PADDLE_WIDTH = 12;
+  const PADDLE_HEIGHT = 90;
+  const BALL_SIZE = 12;
+
+  const PLAYER_SPEED = 4;
+  const AI_BASE_SPEED = 3;
+
+  const INITIAL_BALL_SPEED = 3;
+  const SPEED_INCREMENT_FACTOR = 1.02; 
+  const MAX_BALL_SPEED = 10.5;
+
+  const RALLY_EASY = 10;  // avant IA perf
+  const RALLY_HARD = 22;  // IA galère à partir de ce point
+
+  // --- État du jeu ---
+  let playerY = height / 2 - PADDLE_HEIGHT / 2;
+  let aiY = height / 2 - PADDLE_HEIGHT / 2;
+
   let ballX = width / 2;
   let ballY = height / 2;
-  let ballSpeedX = 5;
-  let ballSpeedY = 3;
+  let ballSpeedX = INITIAL_BALL_SPEED * (Math.random() > 0.5 ? 1 : -1);
+  let ballSpeedY = (Math.random() - 0.5) * INITIAL_BALL_SPEED;
+
   let playerScore = 0;
   let aiScore = 0;
-  
-  
-  const paddleWidth = 10;
-  const paddleHeight = 80;
-  const ballSize = 10;
-  
-  
+  let rallyCount = 0; // nombre de coups dans l’échange courant
+
   const keys = {};
-  
+
+  // --- Inputs ---
   document.addEventListener('keydown', (e) => {
     keys[e.key] = true;
   });
-  
+
   document.addEventListener('keyup', (e) => {
     keys[e.key] = false;
   });
-  
+
+  // --- Utilitaires ---
+  function clampBallSpeed() {
+    const speed = Math.hypot(ballSpeedX, ballSpeedY);
+    if (speed > MAX_BALL_SPEED) {
+      const ratio = MAX_BALL_SPEED / speed;
+      ballSpeedX *= ratio;
+      ballSpeedY *= ratio;
+    }
+  }
+
+  function accelerateBall() {
+    ballSpeedX *= SPEED_INCREMENT_FACTOR;
+    ballSpeedY *= SPEED_INCREMENT_FACTOR;
+    clampBallSpeed();
+  }
+
+  function resetBall(scoredByPlayer) {
+    ballX = width / 2;
+    ballY = height / 2;
+    const direction = scoredByPlayer === 'player' ? -1 : 1;
+    ballSpeedX = direction * INITIAL_BALL_SPEED;
+    ballSpeedY = (Math.random() - 0.5) * INITIAL_BALL_SPEED;
+    rallyCount = 0; // nouvel échange
+  }
+
+  // Prédiction de la trajectoire pour l'IA
+  function predictBall() {
+    if (ballSpeedX <= 0) {
+      return { y: height / 2, bounces: 0 };
+    }
+
+    let simX = ballX;
+    let simY = ballY;
+    let simVx = ballSpeedX;
+    let simVy = ballSpeedY;
+    const targetX = width - PADDLE_WIDTH - BALL_SIZE;
+
+    let safety = 0;
+    let bounces = 0;
+
+    while (simX < targetX && safety < 1000) {
+      simX += simVx;
+      simY += simVy;
+
+      if (simY <= 0) {
+        simY = -simY;
+        simVy = -simVy;
+        bounces++;
+      } else if (simY >= height - BALL_SIZE) {
+        simY = 2 * (height - BALL_SIZE) - simY;
+        simVy = -simVy;
+        bounces++;
+      }
+
+      safety++;
+    }
+
+    return { y: simY + BALL_SIZE / 2, bounces };
+  }
+
+  // 0 = IA forte / concentrée ; >1 = IA qui commence à se dégrader
+  function getDifficultyFactor() {
+    if (rallyCount <= RALLY_EASY) return 0;
+    if (rallyCount >= RALLY_HARD) {
+      const extra = Math.min(1, (rallyCount - RALLY_HARD) / 10); 
+      return 1 + extra * 0.7; // max ~1.7
+    }
+    return (rallyCount - RALLY_EASY) / (RALLY_HARD - RALLY_EASY); // 0→1
+  }
+
+  // --- Update ---
   function update() {
+    const prevPlayerY = playerY;
+
     // Joueur
-    if (keys['ArrowUp'] && playerY > 0) {
-      playerY -= 6;
+    if ((keys['ArrowUp'] || keys['z'] || keys['Z']) && playerY > 0) {
+      playerY -= PLAYER_SPEED;
     }
-    if (keys['ArrowDown'] && playerY < height - paddleHeight) {
-      playerY += 6;
+    if ((keys['ArrowDown'] || keys['s'] || keys['S']) && playerY < height - PADDLE_HEIGHT) {
+      playerY += PLAYER_SPEED;
     }
-    
+
+    const playerVelY = playerY - prevPlayerY;
+
     // IA
-    if (ballX > width / 2) {
-      if (aiY + paddleHeight / 2 < ballY - 10) {
-        aiY += 4;
-      } else if (aiY + paddleHeight / 2 > ballY + 10) {
-        aiY -= 4;
+    const aiCenter = aiY + PADDLE_HEIGHT / 2;
+    const ballSpeed = Math.hypot(ballSpeedX, ballSpeedY);
+    const difficultyFactor = getDifficultyFactor();
+
+    if (ballSpeedX > 0 && ballX > width * 0.4) {
+      const prediction = predictBall();
+      const predictedY = prediction.y;
+      const bounceCount = prediction.bounces;
+
+      const verticalDist = Math.abs(aiCenter - predictedY);
+      const distFactor = Math.min(1, verticalDist / (height / 2));
+      const normSpeed = Math.min(1, ballSpeed / MAX_BALL_SPEED);
+
+      let errorRange = 2; // petit tremblement permanent
+      let missChance = 0;
+      let currentAISpeed = AI_BASE_SPEED;
+
+      // Balle simple, si aligné sur l'IA elle l'a rate quasi jamais
+      const isEasyStraight = verticalDist < height * 0.15 && bounceCount <= 1;
+
+      if (difficultyFactor > 0) {
+        const complexityFactor = 1 + Math.min(3, bounceCount) * 0.5; // + rebonds = +complexe pour l'IA
+
+        // Erreur de visée raisonnable qui augmente avec la speed de la balle
+        errorRange +=
+          (4 + 10 * difficultyFactor) * distFactor * complexityFactor +
+          3 * normSpeed * difficultyFactor;
+
+        // Augmentation de difficulté si balle différente de straight pour l'IA
+        if (!isEasyStraight) {
+          missChance =
+            0.05 * difficultyFactor +
+            0.25 * difficultyFactor * distFactor +
+            0.1 * normSpeed * complexityFactor;
+
+          if (rallyCount > RALLY_HARD) {
+            const extra = Math.min(1, (rallyCount - RALLY_HARD) / 10);
+            missChance += 0.15 * extra * complexityFactor;
+          }
+
+          if (missChance > 0.7) missChance = 0.7;
+        }
+
+        // L’IA garde quand même du répondant 
+        currentAISpeed = AI_BASE_SPEED * (1 - 0.25 * Math.min(difficultyFactor, 1.5));
+        if (currentAISpeed < 1.5) currentAISpeed = 1.5;
+      }
+
+      let targetY = predictedY;
+
+      if (missChance > 0 && Math.random() < missChance && !isEasyStraight) {
+        const missDir = aiCenter < predictedY ? 1 : -1;
+        const missAmount = PADDLE_HEIGHT * (0.6 + Math.random() * 0.4); // entre ~0.6 et 1.0 hauteur
+        targetY = predictedY + missDir * missAmount;
+      }
+
+      targetY += (Math.random() - 0.5) * errorRange;
+
+      if (aiCenter < targetY - 10) {
+        aiY += currentAISpeed;
+      } else if (aiCenter > targetY + 10) {
+        aiY -= currentAISpeed;
       }
     }
-    
+
+    aiY = Math.max(0, Math.min(height - PADDLE_HEIGHT, aiY));
+
     // Balle
     ballX += ballSpeedX;
     ballY += ballSpeedY;
-    
-    // Rebonds haut/bas
-    if (ballY <= 0 || ballY >= height - ballSize) {
+
+    if (ballY <= 0) {
+      ballY = 0;
+      ballSpeedY = -ballSpeedY;
+    } else if (ballY >= height - BALL_SIZE) {
+      ballY = height - BALL_SIZE;
       ballSpeedY = -ballSpeedY;
     }
-    
-     // Collision joueur
-    if (ballX <= paddleWidth && ballY >= playerY && ballY <= playerY + paddleHeight) {
-      ballSpeedX = -ballSpeedX;
-      ballSpeedX *= 1.05;
+
+    // --- Collisions raquettes ---
+
+    // Joueur
+    if (
+      ballX <= PADDLE_WIDTH &&
+      ballY + BALL_SIZE >= playerY &&
+      ballY <= playerY + PADDLE_HEIGHT
+    ) {
+      ballX = PADDLE_WIDTH;
+      rallyCount++;
+
+      const speedBefore = Math.hypot(ballSpeedX, ballSpeedY);
+
+      let newVx = Math.abs(ballSpeedX);
+
+      const paddleCenter = playerY + PADDLE_HEIGHT / 2;
+      const ballCenterY = ballY + BALL_SIZE / 2;
+      const impact = (ballCenterY - paddleCenter) / (PADDLE_HEIGHT / 2);
+
+      const impactInfluence = 0.6;
+      const inertiaInfluence = 0.4;
+
+      let newVy =
+        impact * impactInfluence * speedBefore +
+        (playerVelY / PLAYER_SPEED) * inertiaInfluence * speedBefore;
+
+      const maxVy = speedBefore * 0.9;
+      if (newVy > maxVy) newVy = maxVy;
+      if (newVy < -maxVy) newVy = -maxVy;
+
+      const vxSquared = Math.max(
+        speedBefore * speedBefore - newVy * newVy,
+        (speedBefore * 0.4) ** 2
+      );
+      newVx = Math.sqrt(vxSquared);
+
+      ballSpeedX = newVx;
+      ballSpeedY = newVy;
+
+      accelerateBall();
     }
-    
-    // Collision IA
-    if (ballX >= width - paddleWidth - ballSize && ballY >= aiY && ballY <= aiY + paddleHeight) {
-      ballSpeedX = -ballSpeedX;
-      ballSpeedX *= 1.05;
+
+    // IA
+    if (
+      ballX + BALL_SIZE >= width - PADDLE_WIDTH &&
+      ballY + BALL_SIZE >= aiY &&
+      ballY <= aiY + PADDLE_HEIGHT
+    ) {
+      ballX = width - PADDLE_WIDTH - BALL_SIZE;
+      rallyCount++;
+
+      const speedBefore = Math.hypot(ballSpeedX, ballSpeedY);
+
+      let newVx = -Math.abs(ballSpeedX);
+
+      const paddleCenter = aiY + PADDLE_HEIGHT / 2;
+      const ballCenterY = ballY + BALL_SIZE / 2;
+      const impact = (ballCenterY - paddleCenter) / (PADDLE_HEIGHT / 2);
+
+      let newVy = impact * 0.5 * speedBefore;
+
+      const maxVy = speedBefore * 0.9;
+      if (newVy > maxVy) newVy = maxVy;
+      if (newVy < -maxVy) newVy = -maxVy;
+
+      const vxSquared = Math.max(
+        speedBefore * speedBefore - newVy * newVy,
+        (speedBefore * 0.4) ** 2
+      );
+      newVx = -Math.sqrt(vxSquared);
+
+      ballSpeedX = newVx;
+      ballSpeedY = newVy;
+
+      accelerateBall();
     }
-    
-    
+
     // Score
-    if (ballX < 0) {
+    if (ballX < -BALL_SIZE) {
       aiScore++;
-      resetBall();
-    }
-    if (ballX > width) {
+      resetBall('ai');
+    } else if (ballX > width + BALL_SIZE) {
       playerScore++;
-      resetBall();
-      
-      // Victoire = SCREAMER
+      resetBall('player');
+
       if (playerScore >= 5) {
-        triggerScreamer();
-        closeWindow(document.querySelector('.window.active').id);
+        if (typeof triggerScreamer === 'function') triggerScreamer();
+        const activeWin = document.querySelector('.window.active');
+        if (activeWin && typeof closeWindow === 'function') {
+          closeWindow(activeWin.id);
+        }
       }
     }
-    
-    document.getElementById('pongScore').textContent = `Score: ${playerScore} - ${aiScore}`;
+
+    const scoreEl = document.getElementById('pongScore');
+    if (scoreEl) {
+      scoreEl.textContent = `Score: ${playerScore} - ${aiScore}`;
+    }
   }
-  
-  function resetBall() {
-    ballX = width / 2;
-    ballY = height / 2;
-    ballSpeedX = (Math.random() > 0.5 ? 1 : -1) * 5;
-    ballSpeedY = (Math.random() - 0.5) * 6;
-  }
-  
+
+  // --- Dessin ---
   function draw() {
-    ctx.fillStyle = '#000';
+    const gradient = ctx.createLinearGradient(0, 0, width, height);
+    gradient.addColorStop(0, '#050510');
+    gradient.addColorStop(1, '#131336');
+    ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, width, height);
-    
-    ctx.fillStyle = '#fff';
-    // Joueur
-    ctx.fillRect(0, playerY, paddleWidth, paddleHeight);
-    // IA
-    ctx.fillRect(width - paddleWidth, aiY, paddleWidth, paddleHeight);
-    // Balle
-    ctx.fillRect(ballX, ballY, ballSize, ballSize);
-    
-    // Ligne centrale
+
+    ctx.save();
     ctx.setLineDash([10, 10]);
-    ctx.strokeStyle = '#555';
+    ctx.strokeStyle = '#3a3a5a';
+    ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(width / 2, 0);
     ctx.lineTo(width / 2, height);
     ctx.stroke();
+    ctx.restore();
+
+    ctx.save();
+    ctx.shadowBlur = 18;
+    ctx.shadowColor = '#40e0ff';
+
+    ctx.fillStyle = '#e8f9ff';
+    ctx.fillRect(0, playerY, PADDLE_WIDTH, PADDLE_HEIGHT);
+    ctx.fillRect(width - PADDLE_WIDTH, aiY, PADDLE_WIDTH, PADDLE_HEIGHT);
+
+    ctx.beginPath();
+    ctx.arc(
+      ballX + BALL_SIZE / 2,
+      ballY + BALL_SIZE / 2,
+      BALL_SIZE / 2,
+      0,
+      Math.PI * 2
+    );
+    ctx.fillStyle = '#ffffff';
+    ctx.fill();
+    ctx.restore();
   }
-  
+
+  // --- Boucle de jeu ---
   function gameLoop() {
     if (!document.getElementById('pongCanvas')) return;
     update();
     draw();
     requestAnimationFrame(gameLoop);
   }
-  
+
   gameLoop();
 }
+
 
 function triggerScreamer() {
   const screamer = document.getElementById('screamer');
@@ -2133,5 +2389,6 @@ window.onload = init;
 </script>
 </body>
 </html>
+
 
 
