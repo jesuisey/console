@@ -2168,8 +2168,33 @@ Mais bientôt... elle saura.
 - Ey.`
     };
     
-    // Créer une notification
-    showNotification();
+    // Créer une notification spéciale
+    const specialNotif = document.createElement('div');
+    specialNotif.className = 'notification';
+    specialNotif.style.backgroundColor = '#8b0000';
+    specialNotif.style.borderColor = '#ff0000';
+    specialNotif.innerHTML = `
+      <div class="notif-header" style="background: #ff0000;">
+        <span style="font-weight: bold; font-size: 14px;">⚠️ SYSTÈME ALERTE ⚠️</span>
+      </div>
+      <div class="notif-body" style="color: #fff; background: #8b0000;">
+        <span class="notif-icon">📂</span>
+        <div>
+          <strong>NOUVEAU FICHIER DÉTECTÉ</strong><br>
+          Un fichier a été créé sur votre bureau.<br>
+          Progression: 100% ✓
+        </div>
+      </div>
+    `;
+    document.body.appendChild(specialNotif);
+    playErrorSound();
+    
+    setTimeout(() => {
+      specialNotif.style.transition = 'transform 0.3s, opacity 0.3s';
+      specialNotif.style.transform = 'translateX(320px)';
+      specialNotif.style.opacity = '0';
+      setTimeout(() => specialNotif.remove(), 300);
+    }, 8000);
     
     // Attendre un peu puis ajouter l'icône
     setTimeout(() => {
@@ -2382,18 +2407,27 @@ function corruptFileNames() {
   }
 }
 
-function showNotification() {
-  const messages = [
-    { title: 'Système', text: 'Ey. te regarde', icon: '👁️' },
-    { title: 'Alerte', text: 'Quelqu\'un essaie d\'accéder à tes souvenirs', icon: '⚠️' },
-    { title: 'Message', text: 'Nouveau message de [SUPPRIMÉ]', icon: '💬' },
-    { title: 'Erreur', text: 'La mémoire est corrompue', icon: '❌' },
-    { title: 'Système', text: 'Tu ne peux pas t\'échapper', icon: '🔒' },
-    { title: 'Alerte', text: 'Il sait ce que tu as fait', icon: '👁️' },
-    { title: 'Message', text: 'Pourquoi tu continues ?', icon: '❓' }
-  ];
+function showNotification(customMsg) {
+  let msg;
   
-  const msg = messages[Math.floor(Math.random() * messages.length)];
+  if (customMsg) {
+    msg = {
+      title: customMsg.title || 'Système',
+      text: customMsg.message || '',
+      icon: customMsg.type === 'success' ? '✓' : '⚠️'
+    };
+  } else {
+    const messages = [
+      { title: 'Système', text: 'Ey. te regarde', icon: '👁️' },
+      { title: 'Alerte', text: 'Quelqu\'un essaie d\'accéder à tes souvenirs', icon: '⚠️' },
+      { title: 'Message', text: 'Nouveau message de [SUPPRIMÉ]', icon: '💬' },
+      { title: 'Erreur', text: 'La mémoire est corrompue', icon: '❌' },
+      { title: 'Système', text: 'Tu ne peux pas t\'échapper', icon: '🔒' },
+      { title: 'Alerte', text: 'Il sait ce que tu as fait', icon: '👁️' },
+      { title: 'Message', text: 'Pourquoi tu continues ?', icon: '❓' }
+    ];
+    msg = messages[Math.floor(Math.random() * messages.length)];
+  }
   
   const notif = document.createElement('div');
   notif.className = 'notification';
@@ -2852,7 +2886,7 @@ function openFile(folderName, fileName) {
   
   // Track opening koden.txt
   if (fileName === 'koden.txt' && folderName === 'relations') {
-    // Ce fichier contient "TUEUR" donc la verification automatiquement ok
+    window.openedKodenFile = true;
   }
   
   if (fileData.type === 'corrupted') {
@@ -3914,7 +3948,25 @@ function initSnake() {
     if (head.x === food.x && head.y === food.y) {
       score += 10;
       document.getElementById('snakeScore').textContent = score;
-      food = {x: Math.floor(Math.random() * 20), y: Math.floor(Math.random() * 15)};
+      
+      // Trouver une position valide pour la nourriture (pas sur le serpent)
+      let newFood;
+      let found = false;
+      let attempts = 0;
+      while (!found && attempts < 100) {
+        const x = Math.floor(Math.random() * 20);
+        const y = Math.floor(Math.random() * 15);
+        // Vérifier que la position est vide
+        if (!snake.some(segment => segment.x === x && segment.y === y)) {
+          newFood = {x: x, y: y};
+          found = true;
+        }
+        attempts++;
+      }
+      // Si trouvé, utiliser la nouvelle position
+      if (found) {
+        food = newFood;
+      }
     } else {
       snake.pop();
     }
@@ -4116,41 +4168,70 @@ function openCalculator() {
 }
 
 function calcInput(value) {
+  // Éviter les décimaux doubles
   if (value === '.' && window.calcInput.includes('.')) return;
   
   if (['+', '-', '*', '/'].includes(value)) {
-    if (window.calcLastValue === null && window.calcInput) {
-      window.calcLastValue = parseFloat(window.calcInput);
-      window.calcOperator = value;
+    // Si on a du texte dans l'input
+    if (window.calcInput !== '') {
+      const currentNum = parseFloat(window.calcInput);
+      
+      // Si on avait déjà une opération en cours
+      if (window.calcOperator !== null && window.calcLastValue !== null) {
+        let result = window.calcLastValue;
+        
+        // Faire le calcul précédent
+        if (window.calcOperator === '+') result = result + currentNum;
+        else if (window.calcOperator === '-') result = result - currentNum;
+        else if (window.calcOperator === '*') result = result * currentNum;
+        else if (window.calcOperator === '/') result = currentNum !== 0 ? result / currentNum : 0;
+        
+        window.calcLastValue = result;
+        window.calcDisplay = result;
+      } else {
+        // Première opération
+        window.calcLastValue = currentNum;
+      }
+      
       window.calcInput = '';
+      window.calcOperator = value;
+      document.getElementById('calcDisplay').textContent = window.calcDisplay;
+    } else if (window.calcLastValue !== null && window.calcOperator !== value) {
+      // Changement d'opérateur
+      window.calcOperator = value;
     }
   } else {
+    // Ajouter à l'input
     window.calcInput += value;
+    document.getElementById('calcDisplay').textContent = window.calcInput;
   }
-
-  document.getElementById('calcDisplay').textContent = window.calcInput || window.calcDisplay;
 }
 
 function calcEquals() {
-  if (window.calcOperator && window.calcLastValue !== null && window.calcInput) {
-    let result = window.calcLastValue;
-    const current = parseFloat(window.calcInput);
-
-    if (window.calcOperator === '+') result += current;
-    if (window.calcOperator === '-') result -= current;
-    if (window.calcOperator === '*') result *= current;
-    if (window.calcOperator === '/') result /= current;
-
-    window.calcDisplay = result;
-    window.calcInput = result;
-    window.calcOperator = null;
-    window.calcLastValue = null;
-    document.getElementById('calcDisplay').textContent = result;
-    
-    // Vérifier si c'est l'équation cachée (2 + 2 × 10 - 4 = 18)
-    if (result === 18) {
-      window.calcState = { result: 18 };
-    }
+  if (!window.calcOperator || window.calcLastValue === null || !window.calcInput) return;
+  
+  const currentNum = parseFloat(window.calcInput);
+  let result = window.calcLastValue;
+  
+  // Calculer le résultat
+  if (window.calcOperator === '+') result = result + currentNum;
+  else if (window.calcOperator === '-') result = result - currentNum;
+  else if (window.calcOperator === '*') result = result * currentNum;
+  else if (window.calcOperator === '/') result = currentNum !== 0 ? result / currentNum : 0;
+  
+  // Arrondir à 10 décimales pour éviter les erreurs de précision
+  result = Math.round(result * 10000000000) / 10000000000;
+  
+  // Afficher le résultat
+  window.calcDisplay = result;
+  window.calcInput = '';
+  window.calcOperator = null;
+  window.calcLastValue = null;
+  document.getElementById('calcDisplay').textContent = result;
+  
+  // Vérifier si c'est l'équation cachée (2 × 10 - 2 = 18)
+  if (result === 18) {
+    window.calcState = { result: 18 };
   }
 }
 
@@ -4162,32 +4243,12 @@ const missions = [
     title: "Découvrir le secret des noms",
     description: "Ouvre le fichier 'koden.txt' dans le dossier relations et lis le message.",
     verify: () => {
-      // Cette tâche nécessite que l'utilisateur ouvre le fichier
-      return document.body.innerHTML.includes('TUEUR');
+      return window.openedKodenFile === true;
     },
     hint: "Va dans relations → koden.txt"
   },
   {
     id: 2,
-    title: "Calculer l'équation cachée",
-    description: "Ouvre la calculatrice et effectue: 2 + 2 × 10 - 4 = ?",
-    verify: () => {
-      // Vérifier via le state de la calculatrice
-      return window.calcState && window.calcState.result === 18;
-    },
-    hint: "Calculatrice: 2 + 2 × 10 - 4"
-  },
-  {
-    id: 3,
-    title: "Atteindre le score 100 au Snake",
-    description: "Joue au Snake et atteins un score d'au moins 100 points.",
-    verify: () => {
-      return window.snakeHighScore >= 100;
-    },
-    hint: "Mange 10+ nourriture sans mourir"
-  },
-  {
-    id: 4,
     title: "Trouver le fichier caché",
     description: "Ouvre le dossier caché 'souvenirs' et trouve le fichier 'avant.txt'.",
     verify: () => {
@@ -4197,7 +4258,7 @@ const missions = [
     hint: "Il y a un dossier ??? sur le bureau"
   },
   {
-    id: 5,
+    id: 3,
     title: "Gagner une partie de Démineur",
     description: "Complète une grille de Démineur sans exploser de mine.",
     verify: () => {
@@ -4206,7 +4267,7 @@ const missions = [
     hint: "Démine toute la grille sans erreur"
   },
   {
-    id: 6,
+    id: 4,
     title: "Écrire 50 caractères dans Bloc-notes",
     description: "Ouvre Bloc-notes et écris un message de 50 caractères minimum.",
     verify: () => {
@@ -4216,7 +4277,7 @@ const missions = [
     hint: "Écris quelque chose de significatif"
   },
   {
-    id: 7,
+    id: 5,
     title: "Rechercher 'Ey' dans Internet Explorer",
     description: "Utilise Internet Explorer et recherche 'Ey' pour découvrir les pages cachées.",
     verify: () => {
@@ -4225,7 +4286,7 @@ const missions = [
     hint: "IE → Recherche 'Ey'"
   },
   {
-    id: 8,
+    id: 6,
     title: "Découvrir le monde de Koden",
     description: "Recherche 'Koden' dans Internet Explorer et analyse la carte GPS.",
     verify: () => {
@@ -4234,7 +4295,7 @@ const missions = [
     hint: "IE → Recherche 'Koden'"
   },
   {
-    id: 9,
+    id: 7,
     title: "Maintenir le Tamagotchi vivant 3 minutes",
     description: "Garde ton compagnon vivant sans le négliger pendant au moins 3 minutes.",
     verify: () => {
@@ -4243,7 +4304,7 @@ const missions = [
     hint: "Nourris et divertis ton compagnon régulièrement"
   },
   {
-    id: 10,
+    id: 8,
     title: "Gagner une partie de Pong contre l'IA",
     description: "Remporte une partie de Pong en battant l'ordinateur.",
     verify: () => {
@@ -4260,7 +4321,7 @@ function openTaskManager() {
     <div style="padding: 10px; background: #c0c0c0; height: 100%; display: flex; flex-direction: column; overflow: hidden;">
       <div style="background: #1f1f1f; color: #0f0; padding: 10px; margin-bottom: 10px; border: 2px solid #0f0; font-family: 'Courier New', monospace; flex-shrink: 0;">
         <div style="font-weight: bold;">SYSTÈME DE PROGRESSION</div>
-        <div style="font-size: 11px;">Tâches complétées: ${progressionState.completedTasks.length}/10</div>
+        <div style="font-size: 11px;">Tâches complétées: ${progressionState.completedTasks.length}/8</div>
         <div style="width: 100%; background: #0a0a0a; height: 20px; margin-top: 5px; border: 1px solid #0f0;">
           <div style="background: linear-gradient(to right, #0f0, #00ff00); height: 100%; width: ${(progressionState.completedTasks.length / 10) * 100}%;"></div>
         </div>
