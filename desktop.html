@@ -1722,6 +1722,41 @@ button, .window-control, .start-button, .start-item, .start-footer, .taskbar-ite
   text-decoration: line-through;
 }
 
+/* ===== SPRITE ANIMATION ===== */
+
+#spawnCreepyBtn{
+  position: fixed;
+  right: 12px;
+  bottom: 52px;
+  z-index: 1000001;
+  padding: 6px 10px;
+  font-family: Tahoma, sans-serif;
+  font-size: 12px;
+  background: #c0c0c0;
+  border: 2px outset #dfdfdf;
+  color: #000;
+}
+#spawnCreepyBtn:active{ border: 2px inset #dfdfdf; }
+
+.creepy-frame{
+  position: fixed;
+  width: 256px;   /* taille d’affichage (pas la taille PNG) */
+  height: 384px;
+  background: #fff;
+  border: 2px solid #000;
+  z-index: 1000000;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+.creepy-frame img{
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: contain;       /* garde les proportions */
+  object-position: center;
+  image-rendering: pixelated; /* si ça fait trop “crénelé”, remplace par auto */
+}
 /* RESPONSIVE */
 @media (max-width: 768px) {
   .window {
@@ -1735,7 +1770,7 @@ button, .window-control, .start-button, .start-item, .start-footer, .taskbar-ite
 </style>
 </head>
 <body>
-
+<button id="spawnCreepyBtn" onclick="spawnCreepy()">Lancer animation</button>
 <div id="desktop">
   <div class="desktop-icons" id="desktopIcons">
     <!-- TOP LEFT PRIORITY -->
@@ -4954,6 +4989,270 @@ function closeError() {
   document.getElementById('errorDialog').classList.remove('show');
 }
 
+// ==================== CREEPY SOUND ====================
+
+let creepyAudioCtx = null;
+
+function playCreepyAudio(durationMs = 3300) {
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  if (!AudioCtx) return;
+
+  if (!creepyAudioCtx) creepyAudioCtx = new AudioCtx();
+  const ctx = creepyAudioCtx;
+
+  // Certains navigateurs nécessitent un "resume" après interaction utilisateur
+  if (ctx.state === "suspended") ctx.resume();
+
+  const now = ctx.currentTime;
+  const dur = durationMs / 1000;
+
+  // Master gain (volume global) — reste raisonnable
+  const master = ctx.createGain();
+  master.gain.setValueAtTime(0.0001, now);
+  master.gain.exponentialRampToValueAtTime(0.12, now + 0.06); // montée douce
+  master.gain.setValueAtTime(0.10, now + dur - 0.12);
+  master.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+
+  // Filtre pour “analog dread”
+  const filter = ctx.createBiquadFilter();
+  filter.type = "lowpass";
+  filter.frequency.setValueAtTime(900, now);
+  filter.frequency.linearRampToValueAtTime(650, now + dur * 0.6);
+  filter.frequency.linearRampToValueAtTime(800, now + dur);
+  filter.Q.setValueAtTime(0.9, now);
+
+  // Tremolo (amplitude modulation) pour l’instabilité
+  const tremoloGain = ctx.createGain();
+  tremoloGain.gain.setValueAtTime(1.0, now);
+
+  const tremoloOsc = ctx.createOscillator();
+  tremoloOsc.type = "sine";
+  tremoloOsc.frequency.setValueAtTime(6.5, now);
+
+  const tremoloDepth = ctx.createGain();
+  tremoloDepth.gain.setValueAtTime(0.35, now); // profondeur
+
+  tremoloOsc.connect(tremoloDepth);
+  tremoloDepth.connect(tremoloGain.gain);
+
+  // Drone (2 oscillateurs légèrement detunés)
+  const o1 = ctx.createOscillator();
+  o1.type = "sawtooth";
+  o1.frequency.setValueAtTime(58, now); // base
+  o1.detune.setValueAtTime(-9, now);
+
+  const o2 = ctx.createOscillator();
+  o2.type = "triangle";
+  o2.frequency.setValueAtTime(58.7, now);
+  o2.detune.setValueAtTime(11, now);
+
+  const droneGain = ctx.createGain();
+  droneGain.gain.setValueAtTime(0.55, now);
+
+  // Bruit (white noise) filtré pour “grain / static”
+  const noiseBuf = ctx.createBuffer(1, Math.floor(ctx.sampleRate * dur), ctx.sampleRate);
+  const data = noiseBuf.getChannelData(0);
+  for (let i = 0; i < data.length; i++) data[i] = (Math.random() * 2 - 1) * 0.18;
+
+  const noise = ctx.createBufferSource();
+  noise.buffer = noiseBuf;
+
+  const noiseFilter = ctx.createBiquadFilter();
+  noiseFilter.type = "bandpass";
+  noiseFilter.frequency.setValueAtTime(1200, now);
+  noiseFilter.Q.setValueAtTime(0.7, now);
+
+  const noiseGain = ctx.createGain();
+  noiseGain.gain.setValueAtTime(0.0, now);
+  noiseGain.gain.linearRampToValueAtTime(0.30, now + 0.08);
+  noiseGain.gain.setValueAtTime(0.22, now + dur - 0.18);
+  noiseGain.gain.linearRampToValueAtTime(0.0, now + dur);
+
+  // “Pops” rares (petits clicks) pour glitch
+  const popGain = ctx.createGain();
+  popGain.gain.setValueAtTime(0.0, now);
+
+  function schedulePop(t) {
+    const osc = ctx.createOscillator();
+    osc.type = "square";
+    osc.frequency.setValueAtTime(220 + Math.random() * 160, t);
+
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.08, t + 0.005);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.03);
+
+    osc.connect(g);
+    g.connect(popGain);
+
+    osc.start(t);
+    osc.stop(t + 0.04);
+  }
+
+  // 6–10 pops répartis
+  const pops = 6 + Math.floor(Math.random() * 5);
+  for (let i = 0; i < pops; i++) {
+    const t = now + 0.15 + Math.random() * (dur - 0.35);
+    schedulePop(t);
+  }
+
+  // Routing
+  o1.connect(droneGain);
+  o2.connect(droneGain);
+  droneGain.connect(tremoloGain);
+  tremoloGain.connect(filter);
+
+  noise.connect(noiseFilter);
+  noiseFilter.connect(noiseGain);
+  noiseGain.connect(filter);
+
+  popGain.connect(filter);
+
+  filter.connect(master);
+  master.connect(ctx.destination);
+
+  // Start/Stop
+  tremoloOsc.start(now);
+  o1.start(now);
+  o2.start(now);
+  noise.start(now);
+
+  const stopAt = now + dur;
+  tremoloOsc.stop(stopAt);
+  o1.stop(stopAt);
+  o2.stop(stopAt);
+  noise.stop(stopAt);
+
+  // nettoyage (optionnel)
+  setTimeout(() => {
+    try { master.disconnect(); } catch {}
+  }, durationMs + 250);
+}
+
+
+
+// ==================== SPRITE ANIMATION ====================
+
+// ===== CONFIG =====
+const FRAME_DIR = "images/creepysprite/";      // ✅ NOUVEAU: dossier des images
+const FRAME_PREFIX = "creepy";    // creepy1.png, creepy2.png, ...
+const MAX_FRAME = 11;             // creepy1..creepy11
+const EXT = ".png";
+
+// Cadre d’affichage (doit matcher le CSS)
+const BOX_W = 256;
+const BOX_H = 384;
+
+// ✅ 11 timings (ms) pour 11 frames
+// (progressif: lent -> plus rapide -> lent)
+const FRAME_DELAYS = [
+  260, 240, 220, 200, 190, 180, 180, 200, 220, 250, 300
+];
+
+const HOLD_LAST_MS = 350;  // pause sur la dernière frame
+const FADE_OUT_MS = 180;
+
+function buildFrameList() {
+  const frames = [];
+  for (let i = 1; i <= MAX_FRAME; i++) {
+    // ✅ CHANGEMENT: préfixe images/
+    frames.push(`${FRAME_DIR}${FRAME_PREFIX}${i}${EXT}`);
+  }
+  return frames;
+}
+
+function randomPos() {
+  const maxX = Math.max(0, window.innerWidth - BOX_W);
+  const maxY = Math.max(0, window.innerHeight - BOX_H - 40);
+  return {
+    x: Math.floor(Math.random() * (maxX + 1)),
+    y: Math.floor(Math.random() * (maxY + 1)),
+  };
+}
+
+// Précharge pour éviter clignotements (optionnel mais conseillé)
+function preloadFrames(urls) {
+  return Promise.all(
+    urls.map(
+      (url) =>
+        new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () => resolve({ url, ok: true });
+          img.onerror = () => resolve({ url, ok: false });
+          img.src = url;
+        })
+    )
+  );
+}
+
+async function spawnCreepy() {
+  const frames = buildFrameList();
+
+  // Précharge (et ignore celles manquantes)
+  const results = await preloadFrames(frames);
+  const available = results.filter((r) => r.ok).map((r) => r.url);
+
+  if (available.length === 0) {
+    alert("Aucune frame trouvée (ex: images/creepy1.png). Vérifie le dossier images/.");
+    return;
+  }
+
+  // ✅ Durée audio: somme des delays réellement joués + hold + fade (approx)
+  // Tu peux aussi mettre une valeur fixe (ex: 4200).
+  const audioMs =
+    FRAME_DELAYS.slice(0, Math.min(available.length, FRAME_DELAYS.length)).reduce((a, b) => a + b, 0) +
+    HOLD_LAST_MS +
+    FADE_OUT_MS;
+
+  playCreepyAudio(audioMs);
+
+  // Cadre
+  const wrap = document.createElement("div");
+  wrap.className = "creepy-frame";
+
+  const pos = randomPos();
+  wrap.style.left = pos.x + "px";
+  wrap.style.top = pos.y + "px";
+
+  const img = document.createElement("img");
+  wrap.appendChild(img);
+  document.body.appendChild(wrap);
+
+  let i = 0;
+  img.src = available[i];
+
+  // Lecture avec délais variables
+  const step = () => {
+    i++;
+
+    if (i >= available.length) {
+      // pause dernière frame, puis fade out
+      setTimeout(() => {
+        wrap.style.transition = `opacity ${FADE_OUT_MS}ms linear`;
+        wrap.style.opacity = "0";
+        setTimeout(() => wrap.remove(), FADE_OUT_MS);
+      }, HOLD_LAST_MS);
+      return;
+    }
+
+    img.src = available[i];
+
+    const delay =
+      FRAME_DELAYS[i] ??
+      FRAME_DELAYS[FRAME_DELAYS.length - 1] ??
+      220;
+
+    setTimeout(step, delay);
+  };
+
+  // premier délai
+  const firstDelay = FRAME_DELAYS[0] ?? 260;
+  setTimeout(step, firstDelay);
+}
+
+// expose la fonction pour onclick
+window.spawnCreepy = spawnCreepy;
+
 // ==================== ARRÊT DU SYSTÈME ====================
 function shutdown() {
   document.body.style.transition = 'opacity 2s';
@@ -4967,6 +5266,7 @@ function shutdown() {
 // ==================== DÉMARRAGE ====================
 window.onload = init;
 </script>
+
 </body>
 </html>
 
